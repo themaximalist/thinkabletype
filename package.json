@@ -1,0 +1,26 @@
+{
+    "name": "hypertype",
+    "version": "0.0.1",
+    "description": "Hypergraph DSL",
+    "main": "src/index.js",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "test": "mocha -r esm",
+        "test:watch": "mocha -r esm --watch"
+    },
+    "keywords": [
+        "hypergraph",
+        "dsl"
+    ],
+    "author": "Brad Jasper",
+    "license": "MIT",
+    "dependencies": {
+        "esm": "^3.2.25"
+    },
+    "devDependencies": {
+        "mocha": "^8.3.0",
+        "ts-node": "^10.9.2"
+    }
+}
