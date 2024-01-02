@@ -1,5 +1,3 @@
-const uuid = require("uuid").v4;
-
 export class Node {
     constructor(node, hypergraph) {
         this.hypergraph = hypergraph;
@@ -99,6 +97,7 @@ export class Hypergraph {
     reset() {
         this._nodes = {};
         this._hyperedges = {};
+        this.pageranks = {};
     }
 
     get nodes() {
@@ -151,23 +150,31 @@ export class Hypergraph {
             const hyperedge = Hyperedge.create(input, this);
 
             for (const node of hyperedge.nodes) {
-                this.addNode(node);
+                this.addNode(node, true);
             }
 
             this._hyperedges[hyperedge.id()] = hyperedge;
+
+            this.calculatePageRank();
+
             return hyperedge;
         } else {
             return this.addNode(input);
         }
     }
 
-    addNode(input) {
+    addNode(input, bulk = false) {
         const node = Node.create(input, this);
         if (this.hasNode(node)) {
             return node;
         }
 
         this._nodes[node.id()] = node;
+
+        if (!bulk) {
+            this.calculatePageRank();
+        }
+
         return node;
     }
 
@@ -212,4 +219,85 @@ export class Hypergraph {
         const hyperedges = input.split("\n").map(line => line.split(" -> "));
         return new Hypergraph(hyperedges);
     }
+
+    calculatePageRank(iterations = 100, dampingFactor = 0.85, precision = 3) {
+        // Initialize PageRank for each node
+        let pageRanks = {};
+        const initialRank = 1 / this.nodes.length;
+        this.nodes.forEach(node => {
+            pageRanks[node.id()] = initialRank;
+        });
+
+        // Iterate PageRank calculation
+        for (let i = 0; i < iterations; i++) {
+            let newPageRanks = {};
+
+            // Distribute ranks from each node to other nodes via hyperedges
+            this.nodes.forEach(node => {
+                let outboundRank = 0;
+
+                const hyperedges = node.hyperedges();
+                hyperedges.forEach(hyperedge => {
+                    // equally distribute the rank among all nodes in the hyperedge
+                    const share = pageRanks[node.id()] / hyperedge.nodes.length;
+                    hyperedge.nodes.forEach(neighbor => {
+                        if (!node.equal(neighbor)) {
+                            if (!newPageRanks[neighbor.id()]) {
+                                newPageRanks[neighbor.id()] = 0;
+                            }
+                            newPageRanks[neighbor.id()] += share;
+                        }
+                    });
+                });
+            });
+
+            // Apply damping factor and update ranks
+            this.nodes.forEach(node => {
+                const rankFromSelf = (1 - dampingFactor) / this.nodes.length;
+                const rankFromOthers = dampingFactor * (newPageRanks[node.id()] || 0);
+                pageRanks[node.id()] = rankFromSelf + rankFromOthers;
+            });
+        }
+
+        // Round the PageRanks to the desired precision
+        Object.keys(pageRanks).forEach(nodeId => {
+            pageRanks[nodeId] = parseFloat(pageRanks[nodeId].toFixed(precision));
+        });
+
+        this.pageranks = pageRanks;
+
+        return pageRanks;
+    }
+
+    pagerank(nodeId, precision = 3) {
+        // Ensure the PageRanks are calculated
+        const pageRanks = this.calculatePageRank(100, 0.85, precision);
+
+        // Object to hold contributions
+        let contributions = {};
+
+        this.nodes.forEach(node => {
+            // Initialize contribution from each node
+            contributions[node.id()] = 0;
+
+            // Calculate contributions from hyperedges
+            const hyperedges = node.hyperedges();
+            hyperedges.forEach(hyperedge => {
+                if (hyperedge.hasNode(nodeId)) {
+                    // Distribute the rank equally among nodes in the hyperedge
+                    const share = pageRanks[node.id()] / hyperedge.nodes.length;
+                    contributions[node.id()] += share;
+                }
+            });
+        });
+
+        // Round off the contribution values
+        Object.keys(contributions).forEach(nodeId => {
+            contributions[nodeId] = parseFloat(contributions[nodeId].toFixed(precision));
+        });
+
+        return contributions;
+    }
+
+
 }

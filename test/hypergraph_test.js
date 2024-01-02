@@ -1,5 +1,4 @@
 // select the node as an object and perform operations on it (closest neighboors)
-// page rank
 // embedding
 // implicit hyperedges (computational AI graph)
 
@@ -216,6 +215,21 @@ A -> B -> D`);
     assert(graph.has(["A", "B", "C"]));
     assert(graph.has(["A", "B", "D"]));
     assert(graph.has(["A", "B"]));
+  });
+
+  it("pagerank", function () {
+    const graph = Hypergraph.parse(`A -> B -> C
+A -> B -> D
+A -> B -> E
+A -> C -> Z`);
+    assert(graph);
+
+    assert(graph.pageranks);
+    assert(graph.pageranks["A"] > 0);
+    assert(graph.pageranks["B"] > 0);
+    assert(graph.pageranks["Z"] > 0);
+
+    assert(graph.pagerank("Z")["C"] > 0);
   });
 
 });
