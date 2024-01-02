@@ -172,37 +172,50 @@ describe("Hypergraph", function () {
     assert.equal(hyperedge3.id(), "B -> C");
   });
 
-  /*
-  it.only("implicit subgraph", function () {
+  it("implicit subgraph", function () {
     const graph = new Hypergraph();
     const hyperedge = graph.add(["A", "B", "C"]); // A -> B and B -> C are implicit hyperedges
 
     assert(hyperedge.has(["A", "B"]));
-    // assert(hyperedge.has(["A", "B", "C"]));
-  });
-  */
-
-  /*
-  it.only("has subgraph", function () {
-    const graph = new Hypergraph();
-    const hyperedge = graph.add(["A", "B", "C"]);
+    assert(hyperedge.has(["B", "C"]));
     assert(hyperedge.has(["A", "B", "C"]));
+
+    assert(!hyperedge.has(["A", "C"]));
+    assert(!hyperedge.has(["A", "B", "C", "D"]));
   });
-  */
 
-  // get hyperedges based on a hyperedge (subgraph)
+  it("allows complex nodes", function () {
+    const graph = new Hypergraph();
+    const node1 = graph.add(1);
+    assert(node1);
+    assert(node1.node == 1);
 
-  /*
-  it.only("get node children", function () {
+    const date = new Date();
+    const node2 = graph.add(date);
+    assert(node2);
+    assert(node2.node == date);
+  });
+
+  it("get hyperedges for subgraph", function () {
     const graph = new Hypergraph();
     graph.add(["A", "B", "C"]);
     graph.add(["A", "B", "D"]);
+    graph.add(["A", "1", "D"]);
+    graph.add(["A", "2", "B", "C"]);
 
-    const node = graph.get("B");
-    const children = node.children();
-
-    console.log(children);
+    assert(graph.get(["A", "B"]).hyperedges().length == 2);
+    assert(graph.get(["A", "B", "C"]).hyperedges().length == 1);
   });
-  */
+
+  it("parses hypertype", function () {
+    const graph = Hypergraph.parse(`A -> B -> C
+A -> B -> D`);
+    assert(graph);
+    assert(graph.nodes.length == 4);
+    assert(graph.hyperedges.length == 2);
+    assert(graph.has(["A", "B", "C"]));
+    assert(graph.has(["A", "B", "D"]));
+    assert(graph.has(["A", "B"]));
+  });
 
 });

@@ -25,13 +25,13 @@ export class Node {
     }
 
     static create(input, hypergraph) {
-        if (typeof input === "string") {
-            return new Node(input, hypergraph);
-        } else if (input instanceof Node) {
+        if (input instanceof Node) {
             return input;
         }
 
-        return null;
+        input = String(input);
+
+        return new Node(input, hypergraph);
     }
 
 }
@@ -39,6 +39,7 @@ export class Node {
 export class Hyperedge {
     constructor(nodes, hypergraph) {
         this.nodes = nodes;
+        this.hypergraph = hypergraph;
     }
 
     id() {
@@ -47,33 +48,40 @@ export class Hyperedge {
 
     has(node_or_edge) {
         if (node_or_edge instanceof Node || typeof node_or_edge === "string") {
-            for (const node of this.nodes) {
-                if (node.equal(node_or_edge)) {
-                    return true;
-                }
+            return this.hasNode(node_or_edge);
+        }
+
+        return this.hasHyperedge(node_or_edge);
+    }
+
+    hasNode(node_or_str) {
+        for (const node of this.nodes) {
+            if (node.equal(node_or_str)) {
+                return true;
             }
-
-            return false;
-        }
-
-        let hyperedge = null;
-
-        if (node_or_edge instanceof Hyperedge) {
-            hyperedge = node_or_edge;
-        } else if (Array.isArray(node_or_edge)) {
-            hyperedge = new Hyperedge(node_or_edge, this.hypergraph);
-        }
-
-        if (!hyperedge) {
-            return false;
         }
 
         return false;
     }
 
+    hasHyperedge(hyperedge) {
+        if (Array.isArray(hyperedge)) {
+            hyperedge = Hyperedge.create(hyperedge, this.hypergraph);
+        }
+
+        if (!hyperedge instanceof Hyperedge) {
+            return false;
+        }
+
+        return this.id().indexOf(hyperedge.id()) !== -1;
+    }
 
     equal(hyperedge) {
         return this.id() === hyperedge.id();
+    }
+
+    hyperedges() {
+        return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.hasHyperedge(this));
     }
 
     static create(input, hypergraph) {
@@ -118,15 +126,24 @@ export class Hypergraph {
             return null;
         }
 
-        return this._hyperedges[input.id()];
+        const hyperedge = this._hyperedges[input.id()];
+        if (hyperedge) {
+            return hyperedge;
+        }
+
+        return input;
     }
 
     getNode(input) {
-        if (input instanceof Node) {
-            return this._nodes[input.node];
-        } else {
-            return this._nodes[input];
+        if (typeof input === "string") {
+            input = Node.create(input, this);
         }
+
+        if (!input instanceof Node) {
+            return false;
+        }
+
+        return this._nodes[input.id()];
     }
 
     add(input) {
@@ -163,11 +180,11 @@ export class Hypergraph {
     }
 
     hasNode(input) {
-        if (input instanceof Node) {
-            return this._nodes[input.node] !== undefined;
-        } else {
-            return this._nodes[input] !== undefined;
+        if (typeof input === "string") {
+            input = Node.create(input, this);
         }
+
+        return this._nodes[input.id()] !== undefined;
     }
 
     hasHyperedge(input) {
@@ -175,11 +192,13 @@ export class Hypergraph {
             input = Hyperedge.create(input, this);
         }
 
-        if (!input instanceof Hyperedge) {
-            return false;
+        for (const hyperedge of this.hyperedges) {
+            if (hyperedge.hasHyperedge(input)) {
+                return true;
+            }
         }
 
-        return this._hyperedges[input.id()] !== undefined;
+        return false;
     }
 
     load(hyperedges = []) {
@@ -187,5 +206,10 @@ export class Hypergraph {
         for (const hyperedge of hyperedges) {
             this.add(hyperedge);
         }
+    }
+
+    static parse(input) {
+        const hyperedges = input.split("\n").map(line => line.split(" -> "));
+        return new Hypergraph(hyperedges);
     }
 }
