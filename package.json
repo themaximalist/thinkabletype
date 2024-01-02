@@ -17,7 +17,8 @@
     "author": "Brad Jasper",
     "license": "MIT",
     "dependencies": {
-        "esm": "^3.2.25"
+        "esm": "^3.2.25",
+        "uuid": "^9.0.1"
     },
     "devDependencies": {
         "mocha": "^8.3.0",
