@@ -5,7 +5,7 @@
 
 const assert = require("assert");
 
-const Hypergraph = require("../src/hypergraph").default;
+const { Hypergraph, Node, Hyperedge } = require("../src/hypergraph");
 
 describe("Hypergraph", function () {
   it("init empty", function () {
@@ -53,7 +53,6 @@ describe("Hypergraph", function () {
     assert(hyperedge.nodes.length == 2);
     assert(hyperedge.nodes[0].node == "A");
     assert(hyperedge.nodes[1].node == "B");
-
   });
 
   it("add multiple hyperedge", function () {
@@ -148,13 +147,49 @@ describe("Hypergraph", function () {
   it("get hyperedges for node", function () {
     const graph = new Hypergraph();
     graph.add(["A", "B", "C"]);
-    graph.add(["A", "B", "C", "D"]);
+    const hyperedge = graph.add(["A", "B", "C", "D"]);
 
     const hyperedges = graph.get("A").hyperedges();
     assert(hyperedges.length == 2);
+
+    assert(hyperedge.nodes[0].hyperedges().length == 2);
   });
 
-  // get hyperedges based on a node
+  it("node and edge id", function () {
+    const graph = new Hypergraph();
+    const nodeA = graph.add("A");
+    const nodeB = graph.add("B");
+    assert.equal(nodeA.id(), "A");
+    assert.equal(nodeB.id(), "B");
+
+    const hyperedge = graph.add(["A", "B", "C"]);
+    assert.equal(hyperedge.id(), "A -> B -> C");
+
+    const hyperedge2 = Hyperedge.create(["A", "B"], graph);
+    assert.equal(hyperedge2.id(), "A -> B");
+
+    const hyperedge3 = Hyperedge.create(["B", "C"], graph);
+    assert.equal(hyperedge3.id(), "B -> C");
+  });
+
+  /*
+  it.only("implicit subgraph", function () {
+    const graph = new Hypergraph();
+    const hyperedge = graph.add(["A", "B", "C"]); // A -> B and B -> C are implicit hyperedges
+
+    assert(hyperedge.has(["A", "B"]));
+    // assert(hyperedge.has(["A", "B", "C"]));
+  });
+  */
+
+  /*
+  it.only("has subgraph", function () {
+    const graph = new Hypergraph();
+    const hyperedge = graph.add(["A", "B", "C"]);
+    assert(hyperedge.has(["A", "B", "C"]));
+  });
+  */
+
   // get hyperedges based on a hyperedge (subgraph)
 
   /*
