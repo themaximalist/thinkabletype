@@ -1,9 +1,17 @@
-const csv = require("papaparse");
+import csv from "papaparse";
+import embeddings from "@themaximalist/embeddings.js";
 
 export class Node {
     constructor(node, hypergraph) {
         this.hypergraph = hypergraph;
         this.node = node;
+
+        this.loaded = false;
+        this.embedding = [];
+        embeddings(this.node).then((embedding) => {
+            this.loaded = true;
+            this.embedding = embedding;
+        });
     }
 
     id() {
@@ -44,6 +52,10 @@ export class Hyperedge {
     constructor(nodes, hypergraph) {
         this.nodes = nodes;
         this.hypergraph = hypergraph;
+    }
+
+    get loaded() {
+        return this.nodes.every(node => node.loaded);
     }
 
     id() {
@@ -112,6 +124,10 @@ export class Hypergraph {
 
     get hyperedges() {
         return Object.values(this._hyperedges);
+    }
+
+    get loaded() {
+        return this.nodes.every(node => node.loaded);
     }
 
     get(input) {

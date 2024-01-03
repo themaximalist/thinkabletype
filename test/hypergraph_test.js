@@ -2,9 +2,8 @@
 // embedding
 // implicit hyperedges (computational AI graph)
 
-const assert = require("assert");
-
-const { Hypergraph, Node, Hyperedge } = require("../src/hypergraph");
+import { Hypergraph, Node, Hyperedge } from "../src/hypergraph.js";
+import assert from "assert";
 
 describe("Hypergraph", function () {
   it("init empty", function () {
@@ -234,6 +233,47 @@ A,C,Z`);
 
   it("parses comma in hypertype", function () {
     const graph = Hypergraph.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs.`);
+    assert(graph);
+    assert(graph.nodes.length == 3);
+    assert(graph.hyperedges.length == 1);
+    assert(graph.has("hypertype"));
+    assert(graph.has("tagline"));
+    assert(graph.has("Turning C,S,V,s into Hypergraphs."));
+  });
+
+  it("generates embedding for node", async function () {
+    this.timeout(10000); // first run is slow
+
+    const graph = new Hypergraph();
+    assert(graph);
+
+    const node = graph.add("Ted Nelson");
+
+    while (!node.loaded) {
+      await new Promise(r => setTimeout(r, 10));
+    }
+
+    assert(node.embedding);
+    assert(node.embedding.length == 384);
+  });
+
+  it.only("generates embedding for nodes in hyperedge", async function () {
+    this.timeout(10000); // first run is slow
+
+    const graph = new Hypergraph(["Ted Nelson", "invented", "hypertext"]);
+    assert(graph);
+
+    while (!graph.loaded) {
+      await new Promise(r => setTimeout(r, 10));
+    }
+
+    assert(graph.get("Ted Nelson").embedding.length == 384);
+    assert(graph.get("invented").embedding.length == 384);
+    assert(graph.get("hypertext").embedding.length == 384);
+  });
+
+  it.skip("finds similar nodes in embedding space", function () {
+    const graph = Hypergraph.parse(`Red,Green,Blue,Pink`);
     assert(graph);
     assert(graph.nodes.length == 3);
     assert(graph.hyperedges.length == 1);
