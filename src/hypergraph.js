@@ -1,5 +1,7 @@
+// cache embeddings
+
 import csv from "papaparse";
-import embeddings from "@themaximalist/embeddings.js";
+import embeddings from "./embeddings.js"
 
 export class Node {
     constructor(node, hypergraph) {

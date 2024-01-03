@@ -257,7 +257,7 @@ A,C,Z`);
     assert(node.embedding.length == 384);
   });
 
-  it.only("generates embedding for nodes in hyperedge", async function () {
+  it("generates embedding for nodes in hyperedge", async function () {
     this.timeout(10000); // first run is slow
 
     const graph = new Hypergraph(["Ted Nelson", "invented", "hypertext"]);
