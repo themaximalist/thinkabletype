@@ -162,13 +162,13 @@ describe("Hypergraph", function () {
     assert.equal(nodeB.id(), "B");
 
     const hyperedge = graph.add(["A", "B", "C"]);
-    assert.equal(hyperedge.id(), "A -> B -> C");
+    assert.equal(hyperedge.id(), "A,B,C");
 
     const hyperedge2 = Hyperedge.create(["A", "B"], graph);
-    assert.equal(hyperedge2.id(), "A -> B");
+    assert.equal(hyperedge2.id(), "A,B");
 
     const hyperedge3 = Hyperedge.create(["B", "C"], graph);
-    assert.equal(hyperedge3.id(), "B -> C");
+    assert.equal(hyperedge3.id(), "B,C");
   });
 
   it("implicit subgraph", function () {
@@ -207,8 +207,8 @@ describe("Hypergraph", function () {
   });
 
   it("parses hypertype", function () {
-    const graph = Hypergraph.parse(`A -> B -> C
-A -> B -> D`);
+    const graph = Hypergraph.parse(`A,B,C
+A,B,D`);
     assert(graph);
     assert(graph.nodes.length == 4);
     assert(graph.hyperedges.length == 2);
@@ -218,10 +218,10 @@ A -> B -> D`);
   });
 
   it("pagerank", function () {
-    const graph = Hypergraph.parse(`A -> B -> C
-A -> B -> D
-A -> B -> E
-A -> C -> Z`);
+    const graph = Hypergraph.parse(`A,B,C
+A,B,D
+A,B,E
+A,C,Z`);
     assert(graph);
 
     assert(graph.pageranks);
@@ -232,4 +232,5 @@ A -> C -> Z`);
     assert(graph.pagerank("Z")["C"] > 0);
   });
 
+  // TODO: test csv parsing where node has a comma in it
 });

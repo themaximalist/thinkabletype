@@ -1,3 +1,5 @@
+const csv = require("papaparse");
+
 export class Node {
     constructor(node, hypergraph) {
         this.hypergraph = hypergraph;
@@ -5,7 +7,11 @@ export class Node {
     }
 
     id() {
-        return this.node;
+        if (this.node.indexOf(",") !== -1) {
+            return `"${this.node}"`;
+        } else {
+            return this.node;
+        }
     }
 
     equal(node_or_str) {
@@ -41,7 +47,7 @@ export class Hyperedge {
     }
 
     id() {
-        return this.nodes.map(node => node.id()).join(" -> ");
+        return this.nodes.map(node => node.id()).join(",");
     }
 
     has(node_or_edge) {
@@ -216,7 +222,7 @@ export class Hypergraph {
     }
 
     static parse(input) {
-        const hyperedges = input.split("\n").map(line => line.split(" -> "));
+        const hyperedges = csv.parse(input).data;
         return new Hypergraph(hyperedges);
     }
 
