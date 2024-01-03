@@ -232,5 +232,17 @@ A,C,Z`);
     assert(graph.pagerank("Z")["C"] > 0);
   });
 
-  // TODO: test csv parsing where node has a comma in it
+  it("parses comma in hypertype", function () {
+    const graph = Hypergraph.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs.`);
+    assert(graph);
+    assert(graph.nodes.length == 3);
+    assert(graph.hyperedges.length == 1);
+    assert(graph.has("hypertype"));
+    assert(graph.has("tagline"));
+    assert(graph.has("Turning C,S,V,s into Hypergraphs."));
+  });
 });
+
+
+// embeddings
+// vector search
