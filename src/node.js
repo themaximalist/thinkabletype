@@ -1,3 +1,5 @@
+import { suggest } from "./llm.js";
+
 export default class Node {
 
     constructor(symbol, hypergraph) {
@@ -25,6 +27,11 @@ export default class Node {
 
     similar(num = 3, threshold = 1.0) {
         return this.hypergraph.similar(this, num, threshold);
+    }
+
+    async suggest() {
+        const symbol = await suggest(this.symbol);
+        return await Node.create(symbol, this.hypergraph);
     }
 
     static id(symbol) {

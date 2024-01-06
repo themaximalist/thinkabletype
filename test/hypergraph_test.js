@@ -1,10 +1,5 @@
-// select the node as an object and perform operations on it (closest neighboors)
-// llm.js
-// implicit hyperedges (computational AI graph) ..new connections
-
 import Hypergraph from "../src/hypergraph.js";
 import Hyperedge from "../src/hyperedge.js";
-import Node from "../src/node.js";
 
 import assert from "assert";
 
