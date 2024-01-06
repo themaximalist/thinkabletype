@@ -261,8 +261,8 @@ A,B,D`);
     assert(graph.has(["A", "B"]));
   });
 
-  it.skip("pagerank", function () {
-    const graph = Hypergraph.parse(`A,B,C
+  it("pagerank", async function () {
+    const graph = await Hypergraph.parse(`A,B,C
 A,B,D
 A,B,E
 A,C,Z`);
@@ -271,8 +271,7 @@ A,C,Z`);
     assert(graph.pageranks);
     assert(graph.pageranks["A"] > 0);
     assert(graph.pageranks["B"] > 0);
-    assert(graph.pageranks["Z"] > 0);
-
+    assert(graph.pageranks["C"] > 0);
     assert(graph.pagerank("Z")["C"] > 0);
   });
 
@@ -286,43 +285,34 @@ A,C,Z`);
     assert(graph.has("Turning C,S,V,s into Hypergraphs."));
   });
 
-  it.only("skips dupes", async function () {
+  it("skips dupes", async function () {
     const graph = new Hypergraph();
-    console.log("ADD Red");
     await graph.add("Red");
-    console.log("==========================");
-
-    console.log("ADD Red");
     await graph.add("Red");
 
-    console.log("==========================");
     assert(graph);
     assert(graph.nodes.length == 1);
 
     const nodes = await graph.similar("Redish");
-    console.log(nodes);
     assert(nodes.length == 1);
   });
 
-  /*
   it("finds similar nodes in embedding space", async function () {
     this.timeout(2000);
     this.slow(1000);
-  
-    const graph = Hypergraph.parse(`Red,Green,Blue,Pink`);
+
+    const graph = await Hypergraph.parse(`Red,Green,Blue,Pink`);
     assert(graph);
     assert(graph.nodes.length == 4);
     assert(graph.hyperedges.length == 1);
     assert(graph.has("Red"));
-  
+
     const nodes = await graph.similar("Redish");
-    console.log(nodes);
     assert(nodes.length == 1);
-    assert(nodes[0].node.node == "Red");
+    assert(nodes[0].node.symbol == "Red");
     assert(nodes[0].distance > 0);
     assert(nodes[0].distance < 0.5);
   });
-  */
 });
 
 // TODO: hyperedge contains a sub hyperedge (in specific order)

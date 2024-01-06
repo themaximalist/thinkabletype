@@ -67,22 +67,3 @@ export default class Node {
         return false;
     }
 }
-
-class NodeBak {
-    constructor(node, hypergraph) {
-
-    }
-
-
-
-    static create(input, hypergraph) {
-        if (input instanceof Node) {
-            return input;
-        }
-
-        input = String(input);
-
-        return new Node(input, hypergraph);
-    }
-
-}
