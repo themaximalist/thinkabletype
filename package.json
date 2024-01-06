@@ -18,8 +18,8 @@
     "author": "Brad Jasper",
     "license": "MIT",
     "dependencies": {
-        "@themaximalist/embeddings.js": "^0.0.1",
-        "@themaximalist/vectordb.js": "^0.0.1",
+        "@themaximalist/embeddings.js": "^0.0.2",
+        "@themaximalist/vectordb.js": "^0.0.2",
         "esm": "^3.2.25",
         "papaparse": "^5.4.1",
         "uuid": "^9.0.1"

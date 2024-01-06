@@ -1,123 +1,35 @@
-// cache embeddings
+import csv from "papaparse"
+import VectorDB from "@themaximalist/vectordb.js"
 
-import csv from "papaparse";
-import embeddings from "./embeddings.js"
+import Node from "./node.js";
+import Hyperedge from "./hyperedge.js";
 
-export class Node {
-    constructor(node, hypergraph) {
-        this.hypergraph = hypergraph;
-        this.node = node;
 
-        this.loaded = false;
-        this.embedding = [];
-        embeddings(this.node).then((embedding) => {
-            this.loaded = true;
-            this.embedding = embedding;
-        });
-    }
-
-    id() {
-        if (this.node.indexOf(",") !== -1) {
-            return `"${this.node}"`;
-        } else {
-            return this.node;
-        }
-    }
-
-    equal(node_or_str) {
-        if (node_or_str instanceof Node) {
-            return this.id() === node_or_str.id();
-        } else if (typeof node_or_str === "string") {
-            return this.id() === node_or_str;
-        }
-
-        return false;
-    }
-
-    hyperedges() {
-        return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.has(this));
-    }
-
-    static create(input, hypergraph) {
-        if (input instanceof Node) {
-            return input;
-        }
-
-        input = String(input);
-
-        return new Node(input, hypergraph);
-    }
-
-}
-
-export class Hyperedge {
-    constructor(nodes, hypergraph) {
-        this.nodes = nodes;
-        this.hypergraph = hypergraph;
-    }
-
-    get loaded() {
-        return this.nodes.every(node => node.loaded);
-    }
-
-    id() {
-        return this.nodes.map(node => node.id()).join(",");
-    }
-
-    has(node_or_edge) {
-        if (node_or_edge instanceof Node || typeof node_or_edge === "string") {
-            return this.hasNode(node_or_edge);
-        }
-
-        return this.hasHyperedge(node_or_edge);
-    }
-
-    hasNode(node_or_str) {
-        for (const node of this.nodes) {
-            if (node.equal(node_or_str)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    hasHyperedge(hyperedge) {
-        if (Array.isArray(hyperedge)) {
-            hyperedge = Hyperedge.create(hyperedge, this.hypergraph);
-        }
-
-        if (!hyperedge instanceof Hyperedge) {
-            return false;
-        }
-
-        return this.id().indexOf(hyperedge.id()) !== -1;
-    }
-
-    equal(hyperedge) {
-        return this.id() === hyperedge.id();
-    }
-
-    hyperedges() {
-        return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.hasHyperedge(this));
-    }
-
-    static create(input, hypergraph) {
-        const nodes = input.map(node => Node.create(node, hypergraph));
-        return new Hyperedge(nodes, hypergraph);
-    }
-}
-
-export class Hypergraph {
-    constructor(hyperedges) {
-        this.reset();
-        this.load(hyperedges);
-    }
-
-    reset() {
+export default class Hypergraph {
+    constructor() {
+        this.vectordb = new VectorDB();
         this._nodes = {};
         this._hyperedges = {};
         this.pageranks = {};
+    }
+
+    static async load(hyperedges = []) {
+
+    }
+
+    get(input) {
+        if (Array.isArray(input)) { return Hyperedge.get(input, this) }
+        return Node.get(input, this);
+    }
+
+    has(input) {
+        if (Array.isArray(input)) { return Hyperedge.has(input, this) }
+        return Node.has(input, this);
+    }
+
+    async create(input) {
+        if (Array.isArray(input)) { return await Hyperedge.create(input, this) }
+        return await Node.create(input, this);
     }
 
     get nodes() {
@@ -127,90 +39,14 @@ export class Hypergraph {
     get hyperedges() {
         return Object.values(this._hyperedges);
     }
+}
 
-    get loaded() {
-        return this.nodes.every(node => node.loaded);
-    }
+class HypergraphBak {
 
-    get(input) {
-        if (Array.isArray(input)) {
-            return this.getHyperedge(input);
-        } else {
-            return this.getNode(input);
-        }
-    }
 
-    getHyperedge(input) {
-        if (Array.isArray(input)) {
-            input = Hyperedge.create(input, this);
-        }
 
-        if (!input instanceof Hyperedge) {
-            return null;
-        }
 
-        const hyperedge = this._hyperedges[input.id()];
-        if (hyperedge) {
-            return hyperedge;
-        }
-
-        return input;
-    }
-
-    getNode(input) {
-        if (typeof input === "string") {
-            input = Node.create(input, this);
-        }
-
-        if (!input instanceof Node) {
-            return false;
-        }
-
-        return this._nodes[input.id()];
-    }
-
-    add(input) {
-        if (Array.isArray(input)) {
-            const hyperedge = Hyperedge.create(input, this);
-
-            for (const node of hyperedge.nodes) {
-                this.addNode(node, true);
-            }
-
-            this._hyperedges[hyperedge.id()] = hyperedge;
-
-            this.calculatePageRank();
-
-            return hyperedge;
-        } else {
-            return this.addNode(input);
-        }
-    }
-
-    addNode(input, bulk = false) {
-        const node = Node.create(input, this);
-        if (this.hasNode(node)) {
-            return node;
-        }
-
-        this._nodes[node.id()] = node;
-
-        if (!bulk) {
-            this.calculatePageRank();
-        }
-
-        return node;
-    }
-
-    has(input) {
-        if (Array.isArray(input)) {
-            return this.hasHyperedge(input);
-        } else {
-            return this.hasNode(input);
-        }
-    }
-
-    hasNode(input) {
+    async hasNode(input) {
         if (typeof input === "string") {
             input = Node.create(input, this);
         }
@@ -230,6 +66,33 @@ export class Hypergraph {
         }
 
         return false;
+    }
+
+    async similar(input) {
+        if (typeof input === "string") {
+            input = Node.create(input, this);
+        }
+
+        if (!input instanceof Node) {
+            return [];
+        }
+
+        await this.waitForLoaded();
+
+        const embeddings = await this.vectordb.search(input.node, 5, 1);
+        const results = [];
+        for (const embedding of embeddings) {
+            if (embedding.input == input.node) continue;
+
+            const node = this.getNode(embedding.input);
+            await node.waitForLoaded();
+            results.push({ distance: embedding.distance, node });
+        }
+
+
+        results.sort((a, b) => a.distance - b.distance);
+
+        return results;
     }
 
     load(hyperedges = []) {
@@ -325,3 +188,7 @@ export class Hypergraph {
 
 
 }
+
+
+// TODO: move pagerank to library
+// TODO: try to find a way around waitForLoaded() ...super annoying
