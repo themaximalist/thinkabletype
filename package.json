@@ -1,5 +1,5 @@
 {
-    "name": "hypertype",
+    "name": "@themaximalist/hypertype",
     "version": "0.0.1",
     "description": "Hypergraph DSL",
     "type": "module",
