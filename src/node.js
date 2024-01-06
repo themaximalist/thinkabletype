@@ -9,11 +9,25 @@ export default class Node {
         return Node.id(this.symbol);
     }
 
+    equal(node) {
+        if (node instanceof Node) {
+            return this.id() === node.id();
+        } else if (typeof node === "string") {
+            return this.id() === node;
+        }
+
+        return false;
+    }
+
+    hyperedges() {
+        return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.has(this));
+    }
+
     static id(symbol) {
         if (symbol instanceof Node) { return symbol.id() }
         if (typeof symbol !== "string") { symbol = String(symbol) }
-        if (symbol.indexOf(",") !== -1) { return `"${symbol}"` }
-        return symbol;
+        if (symbol.indexOf(",") !== -1) { symbol = `"${symbol}"` }
+        return `NODE:${symbol}`;
     }
 
     static get(symbol, hypergraph) {
@@ -25,7 +39,7 @@ export default class Node {
         if (symbol instanceof Node) { return symbol }
 
         const node = new Node(symbol, hypergraph);
-        await hypergraph.vectordb.add(node.symbol);
+        await hypergraph.vectordb.add(String(node.symbol));
         return node;
     }
 
@@ -60,19 +74,6 @@ class NodeBak {
     }
 
 
-    equal(node_or_str) {
-        if (node_or_str instanceof Node) {
-            return this.id() === node_or_str.id();
-        } else if (typeof node_or_str === "string") {
-            return this.id() === node_or_str;
-        }
-
-        return false;
-    }
-
-    hyperedges() {
-        return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.has(this));
-    }
 
     static create(input, hypergraph) {
         if (input instanceof Node) {

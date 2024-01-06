@@ -30,6 +30,20 @@ export default class Hyperedge {
         return false;
     }
 
+    equal(hyperedge) {
+        if (hyperedge instanceof Hyperedge) {
+            return this.id() === hyperedge.id();
+        } else if (Array.isArray(hyperedge)) {
+            return this.id() === Hyperedge.id(hyperedge);
+        }
+
+        return false;
+    }
+
+    hyperedges() {
+        return Object.keys(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.indexOf(this.id()) !== -1);
+    }
+
     static id(nodes) {
         return nodes.map(node => Node.id(node)).join(",");
     }
@@ -48,9 +62,23 @@ export default class Hyperedge {
 
     static get(nodes, hypergraph) {
         const id = Hyperedge.id(nodes);
-        return hypergraph._hyperedges[id];
-    }
+        let hyperedge = hypergraph._hyperedges[id];
 
+        // full match
+        if (hyperedge) {
+            return hyperedge;
+        }
+
+        // partial match
+        hyperedge = [];
+        for (const n of nodes) {
+            const node = Node.get(n, hypergraph);
+            if (!node) { return null }
+            hyperedge.push(node);
+        }
+
+        return new Hyperedge(hyperedge, hypergraph);
+    }
 
     static async add(nodes, hypergraph) {
         const hyperedge = await Hyperedge.create(nodes, hypergraph);
@@ -101,10 +129,6 @@ class HyperedgeBak {
         }
 
         return this.id().indexOf(hyperedge.id()) !== -1;
-    }
-
-    equal(hyperedge) {
-        return this.id() === hyperedge.id();
     }
 
     hyperedges() {

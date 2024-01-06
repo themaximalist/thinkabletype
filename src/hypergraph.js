@@ -14,7 +14,17 @@ export default class Hypergraph {
     }
 
     static async load(hyperedges = []) {
+        const graph = new Hypergraph();
+        for (const hyperedge of hyperedges) {
+            await graph.add(hyperedge);
+        }
 
+        return graph;
+    }
+
+    static async parse(input) {
+        const hyperedges = csv.parse(input).data;
+        return await Hypergraph.load(hyperedges);
     }
 
     get(input) {
@@ -107,10 +117,6 @@ class HypergraphBak {
         }
     }
 
-    static parse(input) {
-        const hyperedges = csv.parse(input).data;
-        return new Hypergraph(hyperedges);
-    }
 
     calculatePageRank(iterations = 100, dampingFactor = 0.85, precision = 3) {
         // Initialize PageRank for each node
