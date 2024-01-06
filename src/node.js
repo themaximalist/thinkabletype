@@ -6,14 +6,31 @@ export default class Node {
     }
 
     id() {
-        const symbol = String(this.symbol);
+        return Node.id(this.symbol);
+    }
+
+    static id(symbol) {
+        if (symbol instanceof Node) { return symbol.id() }
+        if (typeof symbol !== "string") { symbol = String(symbol) }
         if (symbol.indexOf(",") !== -1) { return `"${symbol}"` }
         return symbol;
     }
 
+    static get(symbol, hypergraph) {
+        const id = Node.id(symbol);
+        return hypergraph._nodes[id];
+    }
+
     static async create(symbol, hypergraph) {
+        if (symbol instanceof Node) { return symbol }
+
         const node = new Node(symbol, hypergraph);
         await hypergraph.vectordb.add(node.symbol);
+        return node;
+    }
+
+    static async add(symbol, hypergraph) {
+        const node = await Node.create(symbol, hypergraph);
         hypergraph._nodes[node.id()] = node;
         return node;
     }

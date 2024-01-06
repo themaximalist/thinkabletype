@@ -15,26 +15,41 @@ describe("Hypergraph", function () {
     assert(graph.nodes.length == 0);
   });
 
-  it.only("create node", async function () {
+  it("create node (but dont add to graph)", async function () {
     const graph = new Hypergraph();
 
-    await graph.create("A");
-    await graph.create("A"); // dupe
-    assert(graph.nodes.length == 1);
-    assert(graph.has("A"));
+    const A = await graph.create("A");
+    assert(graph.nodes.length == 0);
+    assert(!graph.has("A"));
+    assert(!graph.has(A));
 
-    await graph.create("B");
+    const B = await graph.create("B");
     await graph.create("B"); // dupe
-    assert(graph.nodes.length == 2);
-    assert(graph.has("B"));
+    assert(graph.nodes.length == 0);
+    assert(!graph.has("B"));
+    assert(!graph.has(B));
   });
 
-  // create symbol/embedding/vectordb without adding it to the graph (useful for search)
-
-  /*
-  it("add node object", function () {
+  it("add node", async function () {
     const graph = new Hypergraph();
-    const a = graph.add("A");
+
+    const A = await graph.add("A");
+    await graph.add("A"); // dupe
+    assert(graph.nodes.length == 1);
+    assert(graph.has("A"));
+    assert(graph.has(A));
+
+    const B = await graph.add("B");
+    await graph.add("B"); // dupe
+    assert(graph.nodes.length == 2);
+    assert(graph.has("B"));
+    assert(graph.has(B));
+  });
+
+
+  it("add node object", async function () {
+    const graph = new Hypergraph();
+    const a = await graph.add("A");
     assert(a);
     graph.add(a); // dupe
     assert(graph.nodes.length == 1);
@@ -42,10 +57,10 @@ describe("Hypergraph", function () {
     assert(graph.has(a));
   });
 
-  it("add hyperedge", function () {
+  it("add hyperedge", async function () {
     const graph = new Hypergraph();
-    graph.add(["A", "B"]);
-    graph.add(["A", "B"]);
+    await graph.add(["A", "B"]);
+    await graph.add(["A", "B"]);
     assert(graph.nodes.length == 2);
     assert(graph.has("A"));
     assert(graph.has("B"));
@@ -55,11 +70,28 @@ describe("Hypergraph", function () {
 
     const hyperedge = graph.get(["A", "B"]);
     assert(hyperedge);
+    assert(hyperedge instanceof Hyperedge);
     assert(hyperedge.nodes.length == 2);
-    assert(hyperedge.nodes[0].node == "A");
-    assert(hyperedge.nodes[1].node == "B");
+    assert(hyperedge.nodes[0].symbol == "A");
+    assert(hyperedge.nodes[1].symbol == "B");
+
+    const A = graph.get("A");
+    assert(hyperedge.has("A"));
+    assert(hyperedge.has(A));
+    assert(hyperedge.has("B"));
+    assert(!hyperedge.has("C"));
+
+    assert(hyperedge.has(["A"]));
+    assert(hyperedge.has(["B"]));
+    assert(hyperedge.has(["A", "B"]));
+    assert(!hyperedge.has(["A", "B", "C"]));
   });
 
+  // TODO: Bug with id()... if you have BARD and say has("B") it will return true
+
+  // TODO: hyperedge.has
+
+  /*
   it("add multiple hyperedge", function () {
     const graph = new Hypergraph();
     graph.add(["A", "B"]);
@@ -285,3 +317,5 @@ A,C,Z`);
   });
   */
 });
+
+// TODO: hyperedge contains a sub hyperedge (in specific order)

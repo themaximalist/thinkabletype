@@ -27,6 +27,11 @@ export default class Hypergraph {
         return Node.has(input, this);
     }
 
+    async add(input) {
+        if (Array.isArray(input)) { return await Hyperedge.add(input, this) }
+        return await Node.add(input, this);
+    }
+
     async create(input) {
         if (Array.isArray(input)) { return await Hyperedge.create(input, this) }
         return await Node.create(input, this);

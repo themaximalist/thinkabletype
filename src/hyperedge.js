@@ -6,19 +6,72 @@ export default class Hyperedge {
         this.hypergraph = hypergraph;
     }
 
-    get loaded() {
-        return this.nodes.every(node => node.loaded);
-    }
-
-    async waitForLoaded() {
-        while (!this.loaded) {
-            await new Promise(resolve => setTimeout(resolve, 50));
-        }
-    }
-
     id() {
-        return this.nodes.map(node => node.id()).join(",");
+        return Hyperedge.id(this.nodes);
     }
+
+    get symbols() {
+        return this.nodes.map(node => node.symbol);
+    }
+
+    has(node_or_edge) {
+        if (node_or_edge instanceof Node) {
+            return this.symbols.indexOf(node_or_edge.symbol) !== -1;
+        } else if (typeof node_or_edge === "string") {
+            return this.symbols.indexOf(node_or_edge) !== -1;
+        } else if (node_or_edge instanceof Hyperedge) {
+            const id = node_or_edge.id();
+            return this.id().indexOf(id) !== -1;
+        } else if (Array.isArray(node_or_edge)) {
+            const id = Hyperedge.id(node_or_edge);
+            return this.id().indexOf(id) !== -1;
+        }
+
+        return false;
+    }
+
+    static id(nodes) {
+        return nodes.map(node => Node.id(node)).join(",");
+    }
+
+    static has(nodes, hypergraph) {
+        const id = Hyperedge.id(nodes);
+        const hyperedge_ids = Object.keys(hypergraph._hyperedges);
+        for (const hyperedge_id of hyperedge_ids) {
+            if (hyperedge_id.indexOf(id) !== -1) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    static get(nodes, hypergraph) {
+        const id = Hyperedge.id(nodes);
+        return hypergraph._hyperedges[id];
+    }
+
+
+    static async add(nodes, hypergraph) {
+        const hyperedge = await Hyperedge.create(nodes, hypergraph);
+        for (const node of hyperedge.nodes) {
+            await Node.add(node, hypergraph);
+        }
+
+        hypergraph._hyperedges[hyperedge.id()] = hyperedge;
+
+        return hyperedge;
+    }
+
+    static async create(hyperedge, hypergraph) {
+        if (hyperedge instanceof Hyperedge) { return hyperedge }
+
+        const nodes = await Promise.all(hyperedge.map(node => Node.create(node, hypergraph)));
+        return new Hyperedge(nodes, hypergraph);
+    }
+}
+
+class HyperedgeBak {
 
     has(node_or_edge) {
         if (node_or_edge instanceof Node || typeof node_or_edge === "string") {
@@ -56,10 +109,5 @@ export default class Hyperedge {
 
     hyperedges() {
         return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.hasHyperedge(this));
-    }
-
-    static create(input, hypergraph) {
-        const nodes = input.map(node => Node.create(node, hypergraph));
-        return new Hyperedge(nodes, hypergraph);
     }
 }
