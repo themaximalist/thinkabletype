@@ -1,3 +1,6 @@
+import debug from "debug";
+const log = debug("hypertype:test:llm");
+
 // llm.js
 // implicit hyperedges (computational AI graph) ..new connections
 
@@ -10,35 +13,50 @@ import assert from "assert";
 describe("Hypergraph LLM", function () {
     this.timeout(10000);
     this.slow(5000);
-    it("suggest connection", async function () {
-        const graph = new Hypergraph();
-        assert(graph);
-        assert(graph.nodes.length == 0);
 
-        const A = await graph.create("A");
-        assert(A);
-        assert(A.symbol === "A");
+    it("node suggest", async function () {
+        this.timeout(30000);
+        this.slow(15000);
 
-        const B = await A.suggest();
-        assert(B);
-        assert(B.symbol === "B");
+        const data = {
+            "Steve Jobs": ["Apple Inc.", "NeXT", "Pixar", "Macintosh", "iPhone"],
+            "Ted Nelson": ["hypertext", "World Wide Web", "HTML", "Tim Berners-Lee", "Robert Cailliau", "Vannevar Bush", "As We May Think", "Memex", "DARPA", "Information Age", "cyberspace"]
+        };
 
-        assert(!graph.has(B));
-        const edge = await graph.add([A, B]);
-        assert(edge.has(B));
-        assert(graph.has(B));
+        for (const symbol in data) {
+            const graph = new Hypergraph();
+
+            log(`finding similar for ${symbol}`);
+            const node = await graph.add(symbol);
+            const nodes = await node.suggest();
+
+            let expected = data[symbol];
+            assert(expected.length > 0);
+            for (const node of nodes) {
+                expected = expected.filter(symbol => symbol.indexOf(node.symbol) !== -1);
+            }
+            assert(expected.length === 0, expected);
+        }
     });
 
-    it("suggest connection alt1", async function () {
-        const graph = new Hypergraph();
-        const ted = await graph.add("Ted Nelson");
-        assert(ted);
+    it("hyperedge suggest", async function () {
+        this.timeout(30000);
+        this.slow(15000);
 
-        const tim = await ted.suggest();
-        assert(tim);
-        assert(tim.symbol === "Tim Berners-Lee");
+        const graph = new Hypergraph();
+        const hyperedge = await graph.add(["Ted Nelson", "inventor"]);
+        const nodes = await hyperedge.suggest();
+
+        const symbols = nodes.map(node => node.symbol.toLowerCase());
+        assert(!symbols.includes("ted nelson"));
+        assert(!symbols.includes("inventor"));
+        assert(!symbols.includes("ted nelson inventor"));
+        assert(symbols.includes("hypertext"));
+        assert(symbols.includes("xanadu"));
+        assert(symbols.includes("hypermedia"));
     });
 
-    // TODO: hyperedge.suggest();
+
+
     // TODO: graph.suggest([node, hyperedge, etc...])
 });

@@ -1,5 +1,7 @@
 import Node from "./node.js";
 
+import { suggest } from "./llm.js";
+
 export default class Hyperedge {
     constructor(nodes, hypergraph) {
         this.nodes = nodes;
@@ -46,6 +48,16 @@ export default class Hyperedge {
 
     hyperedges() {
         return Object.keys(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.indexOf(this.id()) !== -1);
+    }
+
+    async suggest() {
+        const symbols = await suggest(this.symbol);
+        const nodes = await Promise.all(symbols.map(symbol => Node.create(symbol, this.hypergraph)));
+        return nodes.filter(node => {
+            if (this.has(node)) return false;
+            if (node.symbol === this.symbol) return false;
+            return true;
+        });
     }
 
     async similar(num = 3, threshold = 1.0) {

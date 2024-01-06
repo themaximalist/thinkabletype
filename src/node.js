@@ -30,8 +30,8 @@ export default class Node {
     }
 
     async suggest() {
-        const symbol = await suggest(this.symbol);
-        return await Node.create(symbol, this.hypergraph);
+        const symbols = await suggest(this.symbol);
+        return await Promise.all(symbols.map(symbol => Node.create(symbol, this.hypergraph)));
     }
 
     static id(symbol) {
