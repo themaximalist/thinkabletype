@@ -314,5 +314,3 @@ A,C,Z`);
     assert(nodes[0].distance < 0.5);
   });
 });
-
-// TODO: hyperedge contains a sub hyperedge (in specific order)
