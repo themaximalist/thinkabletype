@@ -81,37 +81,9 @@ export default class Hypergraph {
 
         for (const { input: symbol, distance } of matches) {
             if (symbol == node.symbol) continue;
-            results.push({ distance, node: await Node.get(symbol, this) });
+            const newNode = await Node.get(symbol, this);
+            if (newNode) results.push({ distance, node: newNode });
         }
-
-        results.sort((a, b) => a.distance - b.distance);
-
-        return results;
-
-
-    }
-
-    async _similar(input) {
-        if (typeof input === "string") {
-            input = Node.create(input, this);
-        }
-
-        if (!input instanceof Node) {
-            return [];
-        }
-
-        await this.waitForLoaded();
-
-        const embeddings = await this.vectordb.search(input.node, 5, 1);
-        const results = [];
-        for (const embedding of embeddings) {
-            if (embedding.input == input.node) continue;
-
-            const node = this.getNode(embedding.input);
-            await node.waitForLoaded();
-            results.push({ distance: embedding.distance, node });
-        }
-
 
         results.sort((a, b) => a.distance - b.distance);
 

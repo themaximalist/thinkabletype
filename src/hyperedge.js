@@ -14,6 +14,10 @@ export default class Hyperedge {
         return this.nodes.map(node => node.symbol);
     }
 
+    get symbol() {
+        return Hyperedge.symbol(this.nodes);
+    }
+
     has(node_or_edge) {
         if (node_or_edge instanceof Node) {
             return this.symbols.indexOf(node_or_edge.symbol) !== -1;
@@ -44,8 +48,30 @@ export default class Hyperedge {
         return Object.keys(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.indexOf(this.id()) !== -1);
     }
 
+    async similar(num = 3, threshold = 1.0) {
+        const matches = await this.hypergraph.vectordb.search(this.symbol, num, threshold);
+
+        const results = [];
+        for (const match of matches) {
+            if (match.input == this.symbol) continue;
+            for (const hyperedge of this.hypergraph.hyperedges) {
+                if (hyperedge.symbol == match.input) {
+                    results.push({ distance: match.distance, hyperedge });
+                }
+            }
+        }
+
+        results.sort((a, b) => a.distance - b.distance);
+
+        return results;
+    }
+
     static id(nodes) {
         return nodes.map(node => Node.id(node)).join(",");
+    }
+
+    static symbol(nodes) {
+        return nodes.map(node => (node instanceof Node ? node.symbol : symbol)).join(" ");
     }
 
     static has(nodes, hypergraph) {
@@ -91,47 +117,13 @@ export default class Hyperedge {
         return hyperedge;
     }
 
-    static async create(hyperedge, hypergraph) {
-        if (hyperedge instanceof Hyperedge) { return hyperedge }
+    static async create(nodes, hypergraph) {
+        if (nodes instanceof Hyperedge) { return hyperedge }
 
-        const nodes = await Promise.all(hyperedge.map(node => Node.create(node, hypergraph)));
-        return new Hyperedge(nodes, hypergraph);
-    }
-}
+        const edge = await Promise.all(nodes.map(node => Node.create(node, hypergraph)));
+        const hyperedge = new Hyperedge(edge, hypergraph);
 
-class HyperedgeBak {
-
-    has(node_or_edge) {
-        if (node_or_edge instanceof Node || typeof node_or_edge === "string") {
-            return this.hasNode(node_or_edge);
-        }
-
-        return this.hasHyperedge(node_or_edge);
-    }
-
-    hasNode(node_or_str) {
-        for (const node of this.nodes) {
-            if (node.equal(node_or_str)) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    hasHyperedge(hyperedge) {
-        if (Array.isArray(hyperedge)) {
-            hyperedge = Hyperedge.create(hyperedge, this.hypergraph);
-        }
-
-        if (!hyperedge instanceof Hyperedge) {
-            return false;
-        }
-
-        return this.id().indexOf(hyperedge.id()) !== -1;
-    }
-
-    hyperedges() {
-        return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.hasHyperedge(this));
+        await hypergraph.vectordb.add(hyperedge.symbol);
+        return hyperedge;
     }
 }

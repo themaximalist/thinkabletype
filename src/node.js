@@ -23,6 +23,10 @@ export default class Node {
         return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.has(this));
     }
 
+    similar(num = 3, threshold = 1.0) {
+        return this.hypergraph.similar(this, num, threshold);
+    }
+
     static id(symbol) {
         if (symbol instanceof Node) { return symbol.id() }
         if (typeof symbol !== "string") { symbol = String(symbol) }
