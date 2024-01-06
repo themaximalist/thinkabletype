@@ -1,9 +1,10 @@
 import csv from "papaparse"
-import VectorDB from "@themaximalist/vectordb.js"
 
 import Node from "./node.js";
 import Hyperedge from "./hyperedge.js";
 import { calculatePageRank, pageRank } from "./pagerank.js";
+import { suggest } from "./llm.js";
+import VectorDB from "@themaximalist/vectordb.js"
 
 export default class Hypergraph {
     constructor() {
@@ -88,5 +89,22 @@ export default class Hypergraph {
         results.sort((a, b) => a.distance - b.distance);
 
         return results;
+    }
+
+    async suggest() {
+        const args = await Promise.all(Array.from(arguments).map(arg => Node.create(arg, this)));
+        if (args.length === 0) { return [] }
+
+        // TODO: support hyperedges
+        const combined_symbol = args.map(args => args.symbol).join(" and ");
+        const symbols = await suggest(combined_symbol);
+
+        const nodes = await Promise.all(symbols.map(symbol => Node.create(symbol, this)));
+        return nodes.filter(node => {
+            for (const arg of args) {
+                if (arg.equal(node)) return false;
+            }
+            return true;
+        });
     }
 }

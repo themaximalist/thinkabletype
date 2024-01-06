@@ -1,12 +1,7 @@
 import debug from "debug";
 const log = debug("hypertype:test:llm");
 
-// llm.js
-// implicit hyperedges (computational AI graph) ..new connections
-
 import Hypergraph from "../src/hypergraph.js";
-import Hyperedge from "../src/hyperedge.js";
-import Node from "../src/node.js";
 
 import assert from "assert";
 
@@ -56,7 +51,28 @@ describe("Hypergraph LLM", function () {
         assert(symbols.includes("hypermedia"));
     });
 
+    it("graph suggest", async function () {
+        this.timeout(30000);
+        this.slow(15000);
 
+        const graph = new Hypergraph();
+        const node1 = await graph.add("Steve Jobs");
+        const node2 = await graph.add("Walt Disney");
 
-    // TODO: graph.suggest([node, hyperedge, etc...])
+        const nodes = await graph.suggest(node1, node2);
+
+        const symbols = nodes.map(node => node.symbol.toLowerCase());
+        let found = false;
+        for (const symbol of symbols) {
+            if (symbol.includes("pixar")) {
+                found = true;
+                break;
+            }
+        }
+
+        assert(found);
+    });
 });
+
+// TODO: hyperedge connect
+// TODO: graph.suggest hyperedge
