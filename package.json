@@ -1,7 +1,7 @@
 {
     "name": "@themaximalist/hypertype",
     "version": "0.0.1",
-    "description": "Hypergraph DSL",
+    "description": "Hypergraph Programming Language",
     "type": "module",
     "main": "src/index.js",
     "directories": {

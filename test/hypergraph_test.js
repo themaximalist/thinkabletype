@@ -355,9 +355,4 @@ A,C,Z`);
     assert(nodes[0].distance > 0);
     assert(nodes[0].distance < 0.5);
   });
-
-
-  // llm given two nodes, find a third node
-  // llm given two edges, find a third node/edge
-
 });
