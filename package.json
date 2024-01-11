@@ -19,13 +19,13 @@
     "license": "MIT",
     "dependencies": {
         "@themaximalist/embeddings.js": "^0.0.2",
-        "@themaximalist/llm.js": "^0.3.2",
         "@themaximalist/vectordb.js": "^0.0.2",
         "esm": "^3.2.25",
         "papaparse": "^5.4.1",
         "uuid": "^9.0.1"
     },
     "devDependencies": {
+        "@themaximalist/llm.js": "^0.3.9",
         "mocha": "^10.2.0",
         "ts-node": "^10.9.2"
     }
