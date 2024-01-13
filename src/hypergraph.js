@@ -13,7 +13,7 @@ export default class Hypergraph {
         if (typeof options.llm === "undefined") { options.llm = {} }
 
         this.options = options;
-        this.vectordb = new VectorDB(options.vectordbOptions);
+        this.vectordb = new VectorDB(options.vectordb);
         this._nodes = {};
         this._hyperedges = {};
         this.pageranks = {};
