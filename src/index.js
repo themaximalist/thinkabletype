@@ -1,1 +1,2 @@
-export { default as Hypergraph } from "./hypergraph.js";
+import Hypergraph from "./hypergraph.js";
+export default Hypergraph;
