@@ -18,14 +18,24 @@
     "author": "Brad Jasper",
     "license": "MIT",
     "dependencies": {
-        "@themaximalist/embeddings.js": "^0.0.4",
-        "@themaximalist/vectordb.js": "^0.0.4",
-        "@themaximalist/llm.js": "^0.3.9",
+        "@themaximalist/embeddings.js": "^0.0.5",
+        "@themaximalist/llm.js": "^0.4.7",
+        "@themaximalist/vectordb.js": "^0.0.6",
         "papaparse": "^5.4.1",
         "uuid": "^9.0.1"
     },
     "devDependencies": {
+        "dotenv-extended": "^2.9.0",
+        "lodash": "^4.17.21",
         "mocha": "^10.2.0",
         "ts-node": "^10.9.2"
+    },
+    "peerDependencies": {
+        "@xenova/transformers": "^2.14.0"
+    },
+    "peerDependenciesMeta": {
+        "@xenova/transformers": {
+            "optional": true
+        }
     }
 }

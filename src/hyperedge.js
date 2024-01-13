@@ -1,4 +1,5 @@
 import Node from "./node.js";
+import merge from "lodash/merge.js";
 
 import { suggest } from "./llm.js";
 
@@ -50,8 +51,9 @@ export default class Hyperedge {
         return Object.keys(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.indexOf(this.id()) !== -1);
     }
 
-    async suggest() {
-        const symbols = await suggest(this.symbol);
+    async suggest(options = {}) {
+        const llmOptions = merge({}, this.hypergraph.options.llm, options);
+        const symbols = await suggest(this.symbol, llmOptions);
         const nodes = await Promise.all(symbols.map(symbol => Node.create(symbol, this.hypergraph)));
         return nodes.filter(node => {
             if (this.has(node)) return false;

@@ -1,4 +1,5 @@
 import { suggest } from "./llm.js";
+import merge from "lodash/merge.js";
 
 export default class Node {
 
@@ -29,8 +30,9 @@ export default class Node {
         return this.hypergraph.similar(this, num, threshold);
     }
 
-    async suggest() {
-        const symbols = await suggest(this.symbol);
+    async suggest(options = {}) {
+        const llmOptions = merge({}, this.hypergraph.options.llm, options);
+        const symbols = await suggest(this.symbol, llmOptions);
         return await Promise.all(symbols.map(symbol => Node.create(symbol, this.hypergraph)));
     }
 
