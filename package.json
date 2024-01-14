@@ -18,9 +18,9 @@
     "author": "Brad Jasper",
     "license": "MIT",
     "dependencies": {
-        "@themaximalist/embeddings.js": "^0.0.5",
+        "@themaximalist/embeddings.js": "^0.0.7",
         "@themaximalist/llm.js": "^0.4.7",
-        "@themaximalist/vectordb.js": "^0.0.6",
+        "@themaximalist/vectordb.js": "^0.0.7",
         "papaparse": "^5.4.1",
         "uuid": "^9.0.1"
     },
