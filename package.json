@@ -18,12 +18,14 @@
     "author": "Brad Jasper",
     "license": "MIT",
     "dependencies": {
-        "@themaximalist/vectordb-lite.js": "git+ssh://git@github-themaximalist:themaximal1st/vectordb-lite.js.git",
+        "@themaximalist/llm.js": "^0.5.0",
+        "@themaximalist/vectordb.js": "^0.0.7",
+        "dotenv-extended": "^2.9.0",
+        "lodash": "^4.17.21",
+        "papaparse": "^5.4.1",
         "uuid": "^9.0.1"
     },
     "devDependencies": {
-        "dotenv-extended": "^2.9.0",
-        "lodash": "^4.17.21",
         "mocha": "^10.2.0",
         "ts-node": "^10.9.2"
     },
