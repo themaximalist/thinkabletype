@@ -79,6 +79,28 @@ export default class Hypergraph {
         return Object.values(this._hyperedges);
     }
 
+    get hypergraph() {
+        // this could be managed more efficiently by a better data structure
+        // basically we manage everything through hyperedges
+        // but sometimes nodes have no hyperedge...so to return everything we have to check
+        const unique = new Set();
+        const hypergraph = [];
+        for (const hyperedge of this.hyperedges) {
+            hypergraph.push(hyperedge.symbols);
+            for (const symbol of hyperedge.symbols) {
+                unique.add(symbol);
+            }
+        }
+
+        for (const node of this.nodes) {
+            if (!unique.has(node.symbol)) {
+                hypergraph.push([node.symbol]);
+            }
+        }
+
+        return hypergraph;
+    }
+
     async similar(node, num = 3, threshold = 1.0) {
         if (typeof node === "string") {
             node = await Node.create(node, this);

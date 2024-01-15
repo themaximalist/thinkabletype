@@ -355,4 +355,30 @@ A,C,Z`);
     assert(nodes[0].distance > 0);
     assert(nodes[0].distance < 0.5);
   });
+
+  // hyperedge's always have nodes but nodes don't always have hyperedges
+  // we want to test we can get the full view back, including nodes that don't have hyperedges
+  it("get entire hypergraph (nodes and hyperedges)", async function () {
+    const graph = new Hypergraph();
+
+    const A = await graph.add("A");
+    const B = await graph.add("B");
+    const C = await graph.add("C");
+
+    const AB = await graph.add(["A", "B"]);
+
+    assert(await graph.has("A"));
+    assert(await graph.has("B"));
+    assert(await graph.has("C"));
+    assert(await graph.has(["A", "B"]));
+
+    const all = await graph.hypergraph;
+    assert.equal(all.length, 2);
+    assert.equal(all[0].length, 2);
+    assert.equal(all[0][0], "A");
+    assert.equal(all[0][1], "B");
+
+    assert.equal(all[1].length, 1);
+    assert.equal(all[1][0], "C");
+  });
 });
