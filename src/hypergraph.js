@@ -1,13 +1,123 @@
 import csv from "papaparse"
-import merge from "lodash/merge.js";
+// import merge from "lodash/merge.js";
 
 import Node from "./node.js";
 import Hyperedge from "./hyperedge.js";
-import { calculatePageRank, pageRank } from "./pagerank.js";
-import { suggest } from "./llm.js";
-import VectorDB from "@themaximalist/vectordb.js"
+
+// import { calculatePageRank, pageRank } from "./pagerank.js";
+// import { suggest } from "./llm.js";
+// import VectorDB from "@themaximalist/vectordb.js"
 
 export default class Hypergraph {
+    constructor(hyperedges = [], options = { vectordb: {}, llm: {} }) {
+        this._nodes = {};
+        this._hyperedges = {};
+
+        for (const hyperedge of hyperedges) {
+            this.add(hyperedge);
+        }
+    }
+
+    get nodes() {
+        const nodes = {};
+        for (const node of Object.values(this._nodes)) {
+            nodes[node.id] = node;
+        }
+
+        for (const hyperedge of this.hyperedges) {
+            for (const node of hyperedge.nodes) {
+                nodes[node.id] = node;
+            }
+        }
+
+        return Object.values(nodes);
+    }
+
+    get hyperedges() {
+        return Object.values(this._hyperedges);
+    }
+
+    get isLoaded() {
+        return this.hyperedges.filter(hyperedge => !hyperedge.isLoaded).length === 0;
+    }
+
+    get(input) {
+        if (input instanceof Node) {
+            return this._nodes[input.id];
+        } else if (typeof input === "string") {
+            return this._nodes[input];
+        } else if (input instanceof Hyperedge) {
+            return this._hyperedges[input.id];
+        } else if (Array.isArray(input)) {
+            return this._hyperedges[Hyperedge.id(input)];
+        }
+
+        return null;
+    }
+
+    has(input) {
+        if (input instanceof Node) {
+            return !!this._nodes[input.id];
+        } else if (typeof input === "string") {
+            return !!this._nodes[input];
+        } else if (input instanceof Hyperedge) {
+            return this._hyperedges[input.id];
+        } else if (Array.isArray(input)) {
+            return this._hyperedges[Hyperedge.id(input)];
+        }
+
+        return null;
+
+    }
+
+    add(input, object = null) {
+        const node_or_edge = this.create(input, object);
+        if (node_or_edge instanceof Node) {
+            this._nodes[node_or_edge.id] = node_or_edge;
+        } else if (node_or_edge instanceof Hyperedge) {
+            this._hyperedges[node_or_edge.id] = node_or_edge;
+            for (const node of node_or_edge.nodes) {
+                this._nodes[node.id] = node;
+            }
+        }
+
+        return node_or_edge;
+    }
+
+    create(input, object = null) {
+        if (Array.isArray(input)) { return Hyperedge.create(input, this) }
+        return Node.create(input, this, object);
+    }
+
+    all() {
+        // this could be managed more efficiently by a better data structure
+        // basically we manage everything through hyperedges
+        // but sometimes nodes have no hyperedge...so to return everything we have to check
+        const unique = new Set();
+        const hypergraph = [];
+        for (const hyperedge of this.hyperedges) {
+            hypergraph.push(hyperedge.symbols);
+            for (const symbol of hyperedge.symbols) {
+                unique.add(symbol);
+            }
+        }
+
+        for (const node of this.nodes) {
+            if (!unique.has(node.symbol)) {
+                hypergraph.push([node.symbol]);
+            }
+        }
+
+        return hypergraph;
+    }
+
+    static parse(input, options = {}) {
+        const hyperedges = csv.parse(input, options.parse || {}).data;
+        return new Hypergraph(hyperedges, options);
+    }
+}
+
+class Hypergraph1 {
     constructor(options = {}) {
         if (typeof options.vectordb === "undefined") { options.vectordb = {} }
         if (typeof options.llm === "undefined") { options.llm = {} }
@@ -31,19 +141,11 @@ export default class Hypergraph {
     }
 
     static async parse(input, options = {}) {
-        const hyperedges = csv.parse(input).data;
+        const hyperedges = csv.parse(input, options.parse || {}).data;
         return await Hypergraph.load(hyperedges, options);
     }
 
-    get(input) {
-        if (Array.isArray(input)) { return Hyperedge.get(input, this) }
-        return Node.get(input, this);
-    }
 
-    has(input) {
-        if (Array.isArray(input)) { return Hyperedge.has(input, this) }
-        return Node.has(input, this);
-    }
 
     pagerank(symbol) {
         if (typeof symbol === "string") {
@@ -79,27 +181,6 @@ export default class Hypergraph {
         return Object.values(this._hyperedges);
     }
 
-    get hypergraph() {
-        // this could be managed more efficiently by a better data structure
-        // basically we manage everything through hyperedges
-        // but sometimes nodes have no hyperedge...so to return everything we have to check
-        const unique = new Set();
-        const hypergraph = [];
-        for (const hyperedge of this.hyperedges) {
-            hypergraph.push(hyperedge.symbols);
-            for (const symbol of hyperedge.symbols) {
-                unique.add(symbol);
-            }
-        }
-
-        for (const node of this.nodes) {
-            if (!unique.has(node.symbol)) {
-                hypergraph.push([node.symbol]);
-            }
-        }
-
-        return hypergraph;
-    }
 
     async similar(node, num = 3, threshold = 1.0) {
         if (typeof node === "string") {

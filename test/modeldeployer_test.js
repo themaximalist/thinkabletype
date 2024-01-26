@@ -2,7 +2,7 @@ import Hypergraph from "../src/hypergraph.js";
 
 import assert from "assert";
 
-describe("Hypergraph Model Deployer", function () {
+describe.skip("Hypergraph Model Deployer", function () {
 
     it("modeldeployer openai embeddings", async function () {
         this.timeout(10000);

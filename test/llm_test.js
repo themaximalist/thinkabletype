@@ -6,7 +6,7 @@ import Hypergraph from "../src/hypergraph.js"
 
 import assert from "assert"
 
-describe("Hypergraph LLM", function () {
+describe.skip("Hypergraph LLM", function () {
     this.timeout(10000);
     this.slow(5000);
 

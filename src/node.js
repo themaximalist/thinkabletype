@@ -1,22 +1,22 @@
-import { suggest } from "./llm.js";
-import merge from "lodash/merge.js";
+// import { suggest } from "./llm.js";
+// import merge from "lodash/merge.js";
 
 export default class Node {
-
-    constructor(symbol, hypergraph) {
+    constructor(symbol, hypergraph, object = null) {
         this.symbol = symbol;
         this.hypergraph = hypergraph;
+        this.object = object;
     }
 
-    id() {
-        return Node.id(this.symbol);
+    get id() {
+        return this.symbol;
     }
 
     equal(node) {
         if (node instanceof Node) {
-            return this.id() === node.id();
+            return this.id === node.id;
         } else if (typeof node === "string") {
-            return this.id() === node;
+            return this.id === node;
         }
 
         return false;
@@ -26,6 +26,18 @@ export default class Node {
         return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.has(this));
     }
 
+    static create(node, hypergraph, object = null) {
+        if (node instanceof Node) { return node }
+        return new Node(node, hypergraph, object);
+    }
+}
+
+
+
+class Node1 {
+
+
+
     similar(num = 3, threshold = 1.0) {
         return this.hypergraph.similar(this, num, threshold);
     }
@@ -34,13 +46,6 @@ export default class Node {
         const llmOptions = merge({}, this.hypergraph.options.llm, options);
         const symbols = await suggest(this.symbol, llmOptions);
         return await Promise.all(symbols.map(symbol => Node.create(symbol, this.hypergraph)));
-    }
-
-    static id(symbol) {
-        if (symbol instanceof Node) { return symbol.id() }
-        if (typeof symbol !== "string") { symbol = String(symbol) }
-        if (symbol.indexOf(",") !== -1) { symbol = `"${symbol}"` }
-        return `NODE:${symbol}`;
     }
 
     static get(symbol, hypergraph) {
@@ -62,21 +67,5 @@ export default class Node {
         return node;
     }
 
-    static has(symbol, hypergraph) {
-        if (typeof symbol === "string") {
-            for (const node of hypergraph.nodes) {
-                if (node.symbol === symbol) {
-                    return true;
-                }
-            }
-        } else if (symbol instanceof Node) {
-            for (const node of hypergraph.nodes) {
-                if (node.symbol === symbol.symbol) {
-                    return true;
-                }
-            }
-        }
 
-        return false;
-    }
 }

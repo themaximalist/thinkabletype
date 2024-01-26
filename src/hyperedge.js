@@ -1,55 +1,111 @@
 import Node from "./node.js";
-import merge from "lodash/merge.js";
+// import merge from "lodash/merge.js";
 
-import { suggest } from "./llm.js";
+// import { suggest } from "./llm.js";
+
+// import { mergeGraphs, stringToColor } from "./utils";
+// import Node from "./Node";
+import { arrayContains } from "./utils.js";
 
 export default class Hyperedge {
     constructor(nodes, hypergraph) {
-        this.nodes = nodes;
+        this.nodes = nodes.map(node => Node.create(node, hypergraph));
         this.hypergraph = hypergraph;
     }
 
-    id() {
-        return Hyperedge.id(this.nodes);
+    get id() {
+        return Hyperedge.id(this.nodes.map(node => node.id))
     }
 
     get symbols() {
         return this.nodes.map(node => node.symbol);
     }
 
-    get symbol() {
-        return Hyperedge.symbol(this.nodes);
-    }
-
-    has(node_or_edge) {
-        if (node_or_edge instanceof Node) {
-            return this.symbols.indexOf(node_or_edge.symbol) !== -1;
-        } else if (typeof node_or_edge === "string") {
-            return this.symbols.indexOf(node_or_edge) !== -1;
-        } else if (node_or_edge instanceof Hyperedge) {
-            const id = node_or_edge.id();
-            return this.id().indexOf(id) !== -1;
-        } else if (Array.isArray(node_or_edge)) {
-            const id = Hyperedge.id(node_or_edge);
-            return this.id().indexOf(id) !== -1;
+    equal(hyperedge) {
+        if (hyperedge instanceof Hyperedge) {
+            return this.id === hyperedge.id;
+        } else if (Array.isArray(hyperedge)) {
+            return this.id === Hyperedge.id(hyperedge);
         }
 
         return false;
     }
 
-    equal(hyperedge) {
-        if (hyperedge instanceof Hyperedge) {
-            return this.id() === hyperedge.id();
-        } else if (Array.isArray(hyperedge)) {
-            return this.id() === Hyperedge.id(hyperedge);
+    get(input) {
+        for (const node of this.nodes) {
+            if (node.equal(input)) {
+                return node;
+            }
+        }
+
+        return null;
+    }
+
+    has(input) {
+        if (input instanceof Node) {
+            return this.symbols.includes(input.symbol);
+        } else if (typeof input === "string") {
+            return this.symbols.includes(input);
+        } else if (input instanceof Hyperedge) {
+            return arrayContains(this.symbols, input.symbols);
+        } else if (Array.isArray(input)) {
+            return arrayContains(this.symbols, input);
         }
 
         return false;
     }
 
     hyperedges() {
-        return Object.keys(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.indexOf(this.id()) !== -1);
+        return Object.values(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.has(this));
     }
+
+    static create(hyperedge, hypergraph) {
+        if (hyperedge instanceof Hyperedge) { return hyperedge }
+        return new Hyperedge(hyperedge, hypergraph);
+    }
+
+    static id(symbols) {
+        return symbols.join("->");
+    }
+
+    /*
+    prevNode(index) {
+        if (index === 0) {
+            return null;
+        }
+ 
+        return this.createNode(this.symbols[index - 1], index - 1);
+    }
+ 
+    nextNode() {
+        if (index === this.length - 1) {
+            return null;
+        }
+ 
+        return this.createNode(this.symbols[index + 1], index + 1);
+    }
+ 
+    startNode() {
+        return this.nodes[0];
+    }
+ 
+    endNode() {
+        return this.nodes[this.nodes.length - 1];
+    }
+ 
+    containsSymbol(symbol) {
+        return this.symbols.includes(symbol);
+    }
+    */
+
+
+}
+
+
+
+class Hyperedge1 {
+
+
 
     async suggest(options = {}) {
         const llmOptions = merge({}, this.hypergraph.options.llm, options);
