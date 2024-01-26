@@ -59,6 +59,26 @@ export default class Hyperedge {
         return Object.values(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.has(this));
     }
 
+    add(input) {
+        if (input instanceof Node) {
+            this.nodes.push(input);
+            this.hypergraph._nodes[input.id] = input;
+        } else if (typeof input === "string") {
+            const node = Node.create(input, this.hypergraph);
+            this.nodes.push(node);
+            this.hypergraph._nodes[node.id] = node;
+        } else if (input instanceof Hyperedge) {
+            for (const node of input.nodes) {
+                this.add(node);
+            }
+        } else if (Array.isArray(input)) {
+            for (const symbol of input) {
+                this.add(symbol);
+            }
+        }
+
+    }
+
     static create(hyperedge, hypergraph) {
         if (hyperedge instanceof Hyperedge) { return hyperedge }
         return new Hyperedge(hyperedge, hypergraph);
@@ -67,37 +87,6 @@ export default class Hyperedge {
     static id(symbols) {
         return symbols.join("->");
     }
-
-    /*
-    prevNode(index) {
-        if (index === 0) {
-            return null;
-        }
- 
-        return this.createNode(this.symbols[index - 1], index - 1);
-    }
- 
-    nextNode() {
-        if (index === this.length - 1) {
-            return null;
-        }
- 
-        return this.createNode(this.symbols[index + 1], index + 1);
-    }
- 
-    startNode() {
-        return this.nodes[0];
-    }
- 
-    endNode() {
-        return this.nodes[this.nodes.length - 1];
-    }
- 
-    containsSymbol(symbol) {
-        return this.symbols.includes(symbol);
-    }
-    */
-
 
 }
 

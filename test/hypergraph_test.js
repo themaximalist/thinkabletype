@@ -4,6 +4,7 @@ import Hyperedge from "../src/hyperedge.js";
 import assert from "assert";
 
 // TODO: good way to build out nodes into hyperedges efficiently...good way to replace
+// TODO: isDirty check
 // TODO: way to wait for loading to complete & check on status
 
 describe("Hypergraph", function () {
@@ -259,20 +260,6 @@ A,B,D`);
     assert(graph.has(["A", "B", "D"]));
   });
 
-  it.skip("pagerank", async function () {
-    const graph = await Hypergraph.parse(`A,B,C
-A,B,D
-A,B,E
-A,C,Z`);
-    assert(graph);
-
-    assert(graph.pageranks);
-    assert(graph.pageranks["A"] > 0);
-    assert(graph.pageranks["B"] > 0);
-    assert(graph.pageranks["C"] > 0);
-    assert(graph.pagerank("Z")["C"] > 0);
-  });
-
   it("parses comma in hypertype", async function () {
     const graph = Hypergraph.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs.`);
     assert(graph);
@@ -281,82 +268,6 @@ A,C,Z`);
     assert(graph.has("hypertype"));
     assert(graph.has("tagline"));
     assert(graph.has("Turning C,S,V,s into Hypergraphs."));
-  });
-
-  it.skip("skips dupes on vectordb", async function () {
-    const graph = new Hypergraph();
-    graph.add("Red");
-    graph.add("Red");
-
-    assert(graph);
-    assert(graph.nodes.length == 1);
-
-    const nodes = await graph.similar("Redish");
-    assert(nodes.length == 1);
-  });
-
-  it.skip("finds similar nodes in embedding space", async function () {
-    this.timeout(2000);
-    this.slow(1000);
-
-    const graph = await Hypergraph.parse(`Red,Green,Blue,Pink`);
-    assert(graph);
-    assert(graph.nodes.length == 4);
-    assert(graph.hyperedges.length == 1);
-    assert(graph.has("Red"));
-
-    const nodes = await graph.similar("Redish");
-    assert(nodes.length == 1);
-    assert(nodes[0].node.symbol == "Red");
-    assert(nodes[0].distance > 0);
-    assert(nodes[0].distance < 0.5);
-  });
-
-  it.skip("finds similar nodes in embedding space", async function () {
-    this.timeout(2000);
-    this.slow(1000);
-
-    const graph = await Hypergraph.parse(`Red,Green,Blue,Pink`);
-    assert(graph);
-    assert(graph.nodes.length == 4);
-    assert(graph.hyperedges.length == 1);
-    assert(graph.has("Red"));
-
-    const nodes = await graph.similar("Redish");
-    assert(nodes.length == 1);
-    assert(nodes[0].node.symbol == "Red");
-    assert(nodes[0].distance > 0);
-    assert(nodes[0].distance < 0.5);
-  });
-
-  it.skip("node similar shorthand", async function () {
-    this.timeout(2000);
-    this.slow(1000);
-
-    const graph = await Hypergraph.parse(`Red,Green,Blue,Pink`);
-    const pink = graph.get("Pink");
-
-    const nodes = await pink.similar();
-    assert(nodes[0].node.symbol == "Red");
-    assert(nodes[0].distance > 0);
-    assert(nodes[0].distance < 1);
-  });
-
-  it.skip("hyperedge similar", async function () {
-    this.timeout(2000);
-    this.slow(1000);
-
-    const graph = new Hypergraph();
-    const edge1 = await graph.add(["Red", "Green", "Blue"]);
-    const edge2 = await graph.add(["Red", "White", "Blue"]);
-    await graph.add(["Bob", "Bill", "Sally"]);
-
-    const nodes = await edge1.similar();
-    assert(nodes.length == 1);
-    assert(nodes.length == 1);
-    assert(nodes[0].hyperedge.equal(edge2));
-    assert(nodes[0].distance > 0);
-    assert(nodes[0].distance < 0.5);
   });
 
   // hyperedge's always have nodes but nodes don't always have hyperedges
@@ -375,7 +286,7 @@ A,C,Z`);
     assert(graph.has("C"));
     assert(graph.has(["A", "B"]));
 
-    const all = graph.all();
+    const all = graph.all;
     assert.equal(all.length, 2);
     assert.equal(all[0].length, 2);
     assert.equal(all[0][0], "A");
@@ -383,5 +294,50 @@ A,C,Z`);
 
     assert.equal(all[1].length, 1);
     assert.equal(all[1][0], "C");
+  });
+
+  it("all hides free nodes in edges", async function () {
+    const graph = new Hypergraph();
+
+    const A = graph.add("A");
+    const B = graph.add("B");
+    const C = graph.add("C");
+
+    assert.equal(graph.nodes.length, 3);
+    assert.equal(graph.hyperedges.length, 0);
+    assert.equal(graph.all.length, 3);
+
+    graph.add([A, B, C]);
+
+    assert.equal(graph.nodes.length, 3);
+    assert.equal(graph.hyperedges.length, 1);
+    assert.equal(graph.all.length, 1); // collapses down to one node
+  });
+
+  it("iteratively build edge", async function () {
+    const graph = new Hypergraph();
+
+    const edge = graph.add(["A"]);
+
+    assert.equal(graph.nodes.length, 1);
+    assert.equal(graph.hyperedges.length, 1);
+    assert.equal(graph.all.length, 1);
+
+    const edge1 = graph.get(["A"]);
+    assert(edge1);
+    assert.equal(edge.id, edge1.id);
+
+    edge1.add("B");
+    assert(edge1.has("B"));
+    assert(graph.has("B"));
+
+    edge1.add(["C", "D"]);
+    assert(edge1.has("C"));
+    assert(graph.has("D"));
+    assert(edge1.has(["A", "B", "C", "D"]));
+
+    assert.equal(graph.nodes.length, 4);
+    assert.equal(graph.hyperedges.length, 1);
+    assert.equal(graph.all.length, 1); // collapses down to one node
   });
 });

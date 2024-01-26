@@ -41,6 +41,29 @@ export default class Hypergraph {
         return this.hyperedges.filter(hyperedge => !hyperedge.isLoaded).length === 0;
     }
 
+    get all() {
+        // this could be managed more efficiently by a better data structure
+        // basically we manage everything through hyperedges
+        // but sometimes nodes have no hyperedge...so to return everything we have to check
+        const unique = new Set();
+        const hypergraph = [];
+        for (const hyperedge of this.hyperedges) {
+            hypergraph.push(hyperedge.symbols);
+            for (const symbol of hyperedge.symbols) {
+                unique.add(symbol);
+            }
+        }
+
+        for (const node of this.nodes) {
+            if (!unique.has(node.symbol)) {
+                hypergraph.push([node.symbol]);
+            }
+        }
+
+        return hypergraph;
+    }
+
+
     get(input) {
         if (input instanceof Node) {
             return this._nodes[input.id];
@@ -87,28 +110,6 @@ export default class Hypergraph {
     create(input, object = null) {
         if (Array.isArray(input)) { return Hyperedge.create(input, this) }
         return Node.create(input, this, object);
-    }
-
-    all() {
-        // this could be managed more efficiently by a better data structure
-        // basically we manage everything through hyperedges
-        // but sometimes nodes have no hyperedge...so to return everything we have to check
-        const unique = new Set();
-        const hypergraph = [];
-        for (const hyperedge of this.hyperedges) {
-            hypergraph.push(hyperedge.symbols);
-            for (const symbol of hyperedge.symbols) {
-                unique.add(symbol);
-            }
-        }
-
-        for (const node of this.nodes) {
-            if (!unique.has(node.symbol)) {
-                hypergraph.push([node.symbol]);
-            }
-        }
-
-        return hypergraph;
     }
 
     static parse(input, options = {}) {
