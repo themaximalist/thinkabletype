@@ -3,10 +3,6 @@ import Hyperedge from "../src/hyperedge.js";
 
 import assert from "assert";
 
-// TODO: good way to build out nodes into hyperedges efficiently...good way to replace
-// TODO: isDirty check
-// TODO: way to wait for loading to complete & check on status
-
 describe("Hypergraph", function () {
   it("init empty", function () {
     const graph = new Hypergraph();

@@ -4,7 +4,8 @@ import csv from "papaparse"
 import Node from "./node.js";
 import Hyperedge from "./hyperedge.js";
 
-// import { calculatePageRank, pageRank } from "./pagerank.js";
+import { calculatePageRank, pageRank } from "./pagerank.js";
+
 // import { suggest } from "./llm.js";
 // import VectorDB from "@themaximalist/vectordb.js"
 
@@ -12,6 +13,7 @@ export default class Hypergraph {
     constructor(hyperedges = [], options = { vectordb: {}, llm: {} }) {
         this._nodes = {};
         this._hyperedges = {};
+        this.needsSyncPagerank = false;
 
         for (const hyperedge of hyperedges) {
             this.add(hyperedge);
@@ -108,8 +110,32 @@ export default class Hypergraph {
     }
 
     create(input, object = null) {
+        this.needsSyncPagerank = true;
         if (Array.isArray(input)) { return Hyperedge.create(input, this) }
         return Node.create(input, this, object);
+    }
+
+    get needsSync() {
+        return this.needsSyncPagerank;
+    }
+
+    sync() {
+        this.syncPagerank();
+    }
+
+    syncPagerank() {
+        this.pageranks = calculatePageRank(this);
+        this.needsSyncPagerank = false;
+    }
+
+    pagerank(symbol) {
+        if (typeof symbol === "string") {
+            symbol = this.get(symbol);
+        }
+
+        if (!symbol instanceof Node) { return 0 }
+
+        return pageRank(this, symbol);
     }
 
     static parse(input, options = {}) {
