@@ -1,2 +1,5 @@
 import Hypergraph from "./hypergraph.js";
-export default Hypergraph;
+
+export default class Hypertype extends Hypergraph {
+
+}

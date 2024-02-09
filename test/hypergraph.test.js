@@ -1,9 +1,17 @@
 import Hypergraph from "../src/hypergraph.js";
 import Hyperedge from "../src/hyperedge.js";
 
+// TODO: migrate Hypergraph from HyperTyper into HyperType
+// TODO: create ForceGraph extension for exporting to ForceGraph
+// TODO: build indexes into HyperType
+// TODO: build searching, filtering, embeddings, LLM, interwingle into HyperType
+
+// TODO: edit/remove data. should also update indexes
+// TODO: activity parameter..way to expose in UI background sync is happening
+
 import assert from "assert";
 
-describe("Hypergraph", function () {
+describe.only("Hypergraph", function () {
   it("init empty", function () {
     const graph = new Hypergraph();
     assert(graph);

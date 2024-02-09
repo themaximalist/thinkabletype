@@ -56,17 +56,17 @@ export default class Hyperedge {
     }
 
     hyperedges() {
-        return Object.values(this.hypergraph._hyperedges).filter(hyperedge => hyperedge.has(this));
+        return this.hypergraph.hyperedges.filter(hyperedge => hyperedge.has(this));
     }
 
     add(input) {
         if (input instanceof Node) {
             this.nodes.push(input);
-            this.hypergraph._nodes[input.id] = input;
+            this.hypergraph._nodes.set(input.id, input);
         } else if (typeof input === "string") {
             const node = Node.create(input, this.hypergraph);
             this.nodes.push(node);
-            this.hypergraph._nodes[node.id] = node;
+            this.hypergraph._nodes.set(node.id, node);
         } else if (input instanceof Hyperedge) {
             for (const node of input.nodes) {
                 this.add(node);

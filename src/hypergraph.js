@@ -12,9 +12,20 @@ import { calculatePageRank, pageRank } from "./pagerank.js";
 // import VectorDB from "@themaximalist/vectordb.js"
 
 export default class Hypergraph {
-    constructor(hyperedges = [], options = { vectordb: {}, llm: {} }) {
-        this._nodes = {};
-        this._hyperedges = {};
+    static INTERWINGLE = {
+        ISOLATED: 0,
+        CONFLUENCE: 1,
+        FUSION: 2,
+        BRIDGE: 3
+    };
+
+    constructor(hyperedges = [], options = {}) {
+        this.options = options;
+        if (typeof this.options.interwingle === "undefined") this.options.interwingle = Hypergraph.INTERWINGLE.ISOLATED;
+
+        this._nodes = new Map();
+        this._hyperedges = new Map();
+
         this.needsSyncPagerank = false;
 
         for (const hyperedge of hyperedges) {
@@ -22,13 +33,29 @@ export default class Hypergraph {
         }
     }
 
+    get isIsolated() {
+        return this.options.interwingle === Hypergraph.INTERWINGLE.ISOLATED;
+    }
+
+    get isConfluence() {
+        return this.options.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE;
+    }
+
+    get isFusion() {
+        return this.options.interwingle >= Hypergraph.INTERWINGLE.FUSION;
+    }
+
+    get isBridge() {
+        return this.options.interwingle >= Hypergraph.INTERWINGLE.BRIDGE;
+    }
+
     get nodes() {
         const nodes = {};
-        for (const node of Object.values(this._nodes)) {
+        for (const node of this._nodes.values()) {
             nodes[node.id] = node;
         }
 
-        for (const hyperedge of this.hyperedges) {
+        for (const hyperedge of this._hyperedges.values()) {
             for (const node of hyperedge.nodes) {
                 nodes[node.id] = node;
             }
@@ -38,7 +65,7 @@ export default class Hypergraph {
     }
 
     get hyperedges() {
-        return Object.values(this._hyperedges);
+        return Array.from(this._hyperedges.values());
     }
 
     get isLoaded() {
@@ -70,13 +97,13 @@ export default class Hypergraph {
 
     get(input) {
         if (input instanceof Node) {
-            return this._nodes[input.id];
+            return this._nodes.get(input.id);
         } else if (typeof input === "string") {
-            return this._nodes[input];
+            return this._nodes.get(input)
         } else if (input instanceof Hyperedge) {
-            return this._hyperedges[input.id];
+            return this._hyperedges.get(input.id);
         } else if (Array.isArray(input)) {
-            return this._hyperedges[Hyperedge.id(input)];
+            return this._hyperedges.get(Hyperedge.id(input));
         }
 
         return null;
@@ -84,13 +111,13 @@ export default class Hypergraph {
 
     has(input) {
         if (input instanceof Node) {
-            return !!this._nodes[input.id];
+            return !!this._nodes.has(input.id);
         } else if (typeof input === "string") {
-            return !!this._nodes[input];
+            return !!this._nodes.has(input);
         } else if (input instanceof Hyperedge) {
-            return this._hyperedges[input.id];
+            return this._hyperedges.has(input.id);
         } else if (Array.isArray(input)) {
-            return this._hyperedges[Hyperedge.id(input)];
+            return this._hyperedges.has(Hyperedge.id(input));
         }
 
         return null;
@@ -100,11 +127,11 @@ export default class Hypergraph {
     add(input, object = null) {
         const node_or_edge = this.create(input, object);
         if (node_or_edge instanceof Node) {
-            this._nodes[node_or_edge.id] = node_or_edge;
+            this._nodes.set(node_or_edge.id, node_or_edge);
         } else if (node_or_edge instanceof Hyperedge) {
-            this._hyperedges[node_or_edge.id] = node_or_edge;
+            this._hyperedges.set(node_or_edge.id, node_or_edge);
             for (const node of node_or_edge.nodes) {
-                this._nodes[node.id] = node;
+                this._nodes.set(node.id, node);
             }
         }
 
