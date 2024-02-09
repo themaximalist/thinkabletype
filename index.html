@@ -166,7 +166,7 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="
 <p>You can import an existing <code>.hypertype</code> file (a CSV
 file)</p>
 <div class="sourceCode" id="cb5"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> HyperType <span class="im">from</span> <span class="st">&quot;@themaximalist/hypertype</span></span>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> HyperType <span class="im">from</span> <span class="st">&quot;@themaximalist/hypertype&quot;</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> HyperType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;secret_research_project.hypertype&quot;</span>)<span class="op">;</span></span></code></pre></div>
 <p>Or you can build up a HyperType file programatically</p>
 <div class="sourceCode" id="cb6"><pre
@@ -197,6 +197,8 @@ Copilot</strong></p>
 <div class="sourceCode" id="cb10"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> steve_invented <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;Steve Jobs&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span>])<span class="op">;</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> steve_invented<span class="op">.</span><span class="fu">suggest</span>()<span class="op">;</span> <span class="co">// iPhone, Macintosh, NeXT, ...</span></span></code></pre></div>
+<p>HyperType lets you create data in an intuitive way, and offer tools
+to manage and amplify it.</p>
 <h2 id="the-design-of-hypertype">The Design of HyperType</h2>
 <p>A language for ideas needs a structureless structure. That’s exactly
 what Stephen Wolfram found hypergraphs to be while working on his
@@ -205,48 +207,24 @@ Universal Theory of Physics project.</p>
 represent information in HyperText systems.</p>
 <p><em>HyperType combines these ideas</em>, using the hypergraph as the
 fundamental unit in the HyperText system.</p>
-<p>This high-level connecting of ideas is more about symbolic ideas
-than</p>
-<p>HyperType is symbolic, which aims to be a higher-level
-connecting-of-ideas language.</p>
-<p>Symbolic programming is not like regular programming, instead of
-bottom-up it’s top-down. It’s high-level. It’s declarative. You say what
-you want and the computer does the work.</p>
+<p>HyperType is a lot closer to symbolic programming than iterative
+programming. In iterative programming, you describe every little step.
+In symbolic programming, you describe the high-level concepts. It’s
+top-down rather than bottom-up.</p>
 <p>Something magical happens with symbolic programming. Like a looking
 glass, “the program” is a reflection of the connected symbols. It’s a
 lot like language. You have legalese and then you have poetry.</p>
 <p>HyperType is not a programming language in and of itself—but this
 high-level connecting of ideas is creating a sum greater than it’s
 parts.</p>
-<h2 id="managing-complexity">Managing Complexity</h2>
-<p>Hypergraphs can get extremely complex. This is a feature though, not
-a bug—you want it to be able to handle complexity.</p>
-<p>But you want to be able to manage it—which is what HyperType helps
-with.</p>
-<p><strong>1. Everything is deeply Interwingled</strong></p>
-<p>Manage the interconnectedness of ideas by scaling up the
-“interwingle” parameter or scaling it down.</p>
-<p><strong>2. Context</strong></p>
-<p>But there are tons of ways HyperType tames the complexity of the
-hypergraph:</p>
-<ol type="1">
-<li>Limiting scope</li>
-</ol>
-<p>But making the user manage all the complexity won’t work.</p>
-<p>This is where embeddings, vector databases and LLMs come in. Together
-these tools help predict, organize, connect, update, explore, cluster
-and make sense of complex HyperType programs.</p>
-<h2 id="hypertype-programming-interface">HyperType Programming
-Interface</h2>
-<p>You can build up HyperType programatically:</p>
-<div class="sourceCode" id="cb11"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> HyperType <span class="im">from</span> <span class="st">&quot;@themaximalist/hypertype.js&quot;</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HtyperType</span>()<span class="op">;</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> steve <span class="op">=</span> <span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">create</span>(<span class="st">&quot;Steve Jobs&quot;</span>)<span class="op">;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> invented <span class="op">=</span> <span class="cf">await</span> htypertype<span class="op">.</span><span class="fu">create</span>(<span class="st">&quot;invented&quot;</span>)<span class="op">;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedge <span class="op">=</span> <span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">create</span>([steve<span class="op">,</span> invented])<span class="op">;</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> inventions <span class="op">=</span> <span class="cf">await</span> hyperedge<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [&quot;Apple&quot;, &quot;NeXT&quot;, &quot;Pixar&quot;, &quot;Macintosh&quot;, &quot;iPhone&quot;]</span></span></code></pre></div>
+<p>AI lets humans be human—letting us tell the computer what we want
+rather than tell every little step of how to get there. HyperType is
+like this—it’s declarative, you say what you want, and the program tries
+to fill in the gaps.</p>
+<h2 id="alpha">Alpha</h2>
+<p>HyperType is under heavy development and still subject to breaking
+changes. There isn’t a full release yet, but the alpha code is available
+to try and experiment with.</p>
 <h2 id="projects">Projects</h2>
 <p><code>LLM.js</code> is currently used in the following projects:</p>
 <ul>

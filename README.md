@@ -91,7 +91,7 @@ npm install @themaximalist/hypertype
 You can import an existing `.hypertype` file (a CSV file)
 
 ```javascript
-import HyperType from "@themaximalist/hypertype
+import HyperType from "@themaximalist/hypertype"
 const hypertype = HyperType.parse("secret_research_project.hypertype");
 ```
 
@@ -139,13 +139,11 @@ await steve_invented.suggest(); // iPhone, Macintosh, NeXT, ...
 
 
 
-
+HyperType lets you create data in an intuitive way, and offer tools to manage and amplify it.
 
 
 
 ## The Design of HyperType
-
-
 
 A language for ideas needs a structureless structure. That's exactly what Stephen Wolfram found hypergraphs to be while working on his Universal Theory of Physics project.
 
@@ -153,71 +151,19 @@ Ted Nelson created Zig Zag as a "hyperstructure" kit—a way to represent inform
 
 *HyperType combines these ideas*, using the hypergraph as the fundamental unit in the HyperText system.
 
-
-
-
-
-
-
-
-
-This high-level connecting of ideas is more about symbolic ideas than 
-
-HyperType is symbolic, which aims to be a higher-level connecting-of-ideas language.
-
-Symbolic programming is not like regular programming, instead of bottom-up it's top-down. It's high-level. It's declarative. You say what you want and the computer does the work.
+HyperType is a lot closer to symbolic programming than iterative programming. In iterative programming, you describe every little step. In symbolic programming, you describe the high-level concepts. It's top-down rather than bottom-up.
 
 Something magical happens with symbolic programming. Like a looking glass, "the program" is a reflection of the connected symbols. It's a lot like language. You have legalese and then you have poetry.
 
 HyperType is not a programming language in and of itself—but this high-level connecting of ideas is creating a sum greater than it's parts.
 
+AI lets humans be human—letting us tell the computer what we want rather than tell every little step of how to get there. HyperType is like this—it's declarative, you say what you want, and the program tries to fill in the gaps.
 
 
 
+## Alpha
 
-
-
-
-
-## Managing Complexity
-
-Hypergraphs can get extremely complex. This is a feature though, not a bug—you want it to be able to handle complexity.
-
-But you want to be able to manage it—which is what HyperType helps with.
-
-**1. Everything is deeply Interwingled**
-
-Manage the interconnectedness of ideas by scaling up the "interwingle" parameter or scaling it down.
-
-**2. Context**
-
-
-
-   
-
-But there are tons of ways HyperType tames the complexity of the hypergraph:
-
-1. Limiting scope
-
-But making the user manage all the complexity won't work.
-
-This is where embeddings, vector databases and LLMs come in. Together these tools help predict, organize, connect, update, explore, cluster and make sense of complex HyperType programs.
-
-
-
-## HyperType Programming Interface
-
-You can build up HyperType programatically:
-
-```javascript
-import HyperType from "@themaximalist/hypertype.js"
-const hypertype = new HtyperType();
-
-const steve = await hypertype.create("Steve Jobs");
-const invented = await htypertype.create("invented");
-const hyperedge = await hypertype.create([steve, invented]);
-const inventions = await hyperedge.similar(); // ["Apple", "NeXT", "Pixar", "Macintosh", "iPhone"]
-```
+HyperType is under heavy development and still subject to breaking changes. There isn't a full release yet, but the alpha code is available to try and experiment with.
 
 
 
