@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="description" content="HyperType is a symbolic information programming language based on hypergraphs" />
+  <title>HyperType — Information Language</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        background-color: #2a211c;
+        color: #bdae9d;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #bdae9d;  padding-left: 4px; }
+    div.sourceCode
+      { color: #bdae9d; background-color: #2a211c; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ffff00; } /* Alert */
+    code span.an { color: #0066ff; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { } /* Attribute */
+    code span.bn { color: #44aa43; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #43a8ed; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #049b0a; } /* Char */
+    code span.cn { } /* Constant */
+    code span.co { color: #888888; font-style: italic; } /* Comment */
+    code span.do { color: #0066ff; font-style: italic; } /* Documentation */
+    code span.dt { text-decoration: underline; } /* DataType */
+    code span.dv { color: #44aa43; } /* DecVal */
+    code span.er { color: #ffff00; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #44aa43; } /* Float */
+    code span.fu { color: #ff9358; font-weight: bold; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #0066ff; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #43a8ed; font-weight: bold; } /* Keyword */
+    code span.op { } /* Operator */
+    code span.pp { font-weight: bold; } /* Preprocessor */
+    code span.sc { color: #049b0a; } /* SpecialChar */
+    code span.ss { color: #049b0a; } /* SpecialString */
+    code span.st { color: #049b0a; } /* String */
+    code span.va { } /* Variable */
+    code span.vs { color: #049b0a; } /* VerbatimString */
+    code span.wa { color: #ffff00; font-weight: bold; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="style.css" />
+  <script defer data-domain="hypertype.themaximalist.com" src="https://s.cac.app/js/script.outbound-links.js"></script>
+</head>
+<body>
+<a class="fork-me" href="https://github.com/themaximal1st/hypertype"><img decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy" data-recalc-dims="1"></a>
+<header id="title-block-header">
+<h1 class="title">HyperType — Information Language</h1>
+</header>
+<h1 id="hypertype">hypertype</h1>
+<p><img src="logo.png" alt="HyperType" /></p>
+<blockquote>
+<p>Multidimensional Mind Mapping</p>
+<p>Interwingled Information Language</p>
+<p>HyperText over Hypergraphs</p>
+<p>A Language for Learning</p>
+<p>Cognitive Cartography</p>
+<p>A Database for Dreamers</p>
+<p>An IDE for Imagination</p>
+<p>A DSL for Data Explorers</p>
+<p>A Knowledge Graph Toolkit</p>
+</blockquote>
+<p>HyperType is a way to represent concepts, ideas and information.</p>
+<p>It’s great at building <a href="https://hypertyper.com">knowledge
+graphs</a> and aims to work the way you think.</p>
+<p>It’s simple. It’s based on a hypergraph, which doesn’t sound simple,
+but it is:</p>
+<div class="sourceCode" id="cb1"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="at">Ted Nelson,invented,HyperText</span></span></code></pre></div>
+<p>That’s it, a series of connected ideas. Typically separated by a
+<code>,</code> or <code>-&gt;</code></p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="at">Tim Berners-Lee -&gt; invented -&gt; WWW</span></span></code></pre></div>
+<p>What matters less is the syntax, and more that there are only two
+things:</p>
+<ul>
+<li>Symbols</li>
+<li>Connections</li>
+</ul>
+<p>Together these form the building blocks of HyperType.</p>
+<h2 id="a-new-kind-of-knowledge-graph">A New Kind of Knowledge
+Graph</h2>
+<p>Current knowledge graphs limit how we think. They don’t visualize
+information in the way it’s actually shaped.</p>
+<p>Mind Mapping tries to squeeze complex relationships into a 2D
+hierarchy—stripped of context, interconnections and intuition.</p>
+<p>HyperType is not about creating a simplified view of some information
+in your head—it’s about getting lost in the forest, discovering deep
+insights, and finding your way back.</p>
+<p>Here is <a href="https://hypertyper.com">HyperTyper</a>, a frontend
+UI to HyperType.</p>
+<video src="public/videos/hypertyper.mp4" autoplay muted loop>
+</video>
+<h2 id="hypertyping">HyperTyping</h2>
+<p>Creating a <code>.hypertype</code> file is as simple as creating a
+text file with one or more of these connected ideas.</p>
+<div class="sourceCode" id="cb3"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">Ted Nelson -&gt; invented -&gt; HyperText</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">Tim Berners-Lee -&gt; invented -&gt; WWW</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">HyperText -&gt; influenced -&gt; WWW</span></span></code></pre></div>
+<p>HyperType reads this file, builds the symbols and connections—and
+understand these ideas are interconnected.</p>
+<p>Interconnectedness is a core idea in HyperType—called
+<strong>interwingle</strong>. Interwingle means knowledge is deeply
+interconnected and there isn’t a clean way to divide it up.</p>
+<p>HyperType provides this tool and many more to work with your
+information.</p>
+<p>From PageRank, to Text Similarity, to LLMs, HyperType wants you to do
+the hard work of thinking—and then it will do everything it can to help
+you hit the high notes.</p>
+<h2 id="hypertype-interface">HyperType Interface</h2>
+<p>HyperType is a lot of things. It’s a DSL, it’s a parser, it’s a
+hypergraph database, it’s a text similarity vector search engine, it’s
+an AI Research Copilot.</p>
+<p>But at it’s core, it’s just a library. You can install it from NPM
+like this</p>
+<div class="sourceCode" id="cb4"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install @themaximalist/hypertype</span></code></pre></div>
+<p>You can import an existing <code>.hypertype</code> file (a CSV
+file)</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> HyperType <span class="im">from</span> <span class="st">&quot;@themaximalist/hypertype</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> HyperType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;secret_research_project.hypertype&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<p>Or you can build up a HyperType file programatically</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>()<span class="op">;</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;Vannevar Bush&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;As We May Think&quot;</span>])<span class="op">;</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>])<span class="op">;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;As We May Think&quot;</span><span class="op">,</span> <span class="st">&quot;influenced&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>])<span class="op">;</span></span></code></pre></div>
+<p>HyperType allows you control your knowledge graphs in the following
+ways:</p>
+<p><strong>1. Control Interconnections</strong></p>
+<div class="sourceCode" id="cb7"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">ISOLATE</span><span class="op">;</span> <span class="co">// no interconnections</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">CONFLUENCE</span><span class="op">;</span> <span class="co">// shared parents</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">FUSION</span><span class="op">;</span> <span class="co">// shared start and end</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">BRIDGE</span><span class="op">;</span> <span class="co">// shared middle</span></span></code></pre></div>
+<p><strong>2. Find important symbols with PageRank</strong></p>
+<div class="sourceCode" id="cb8"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> ted <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">get</span>(<span class="st">&quot;Ted Nelson&quot;</span>)<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">// ted.pagerank has a reference of every node it touches and its weight</span></span></code></pre></div>
+<p><strong>3. Find hidden connections with Embeddings and Vector
+Search</strong></p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span>)<span class="op">;</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Green&quot;</span>)<span class="op">;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">similar</span>(<span class="st">&quot;Pink&quot;</span>)<span class="op">;</span> <span class="co">// [&quot;Red&quot;]</span></span></code></pre></div>
+<p><strong>4. Suggest new symbols and connections with AI
+Copilot</strong></p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> steve_invented <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;Steve Jobs&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span>])<span class="op">;</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> steve_invented<span class="op">.</span><span class="fu">suggest</span>()<span class="op">;</span> <span class="co">// iPhone, Macintosh, NeXT, ...</span></span></code></pre></div>
+<h2 id="the-design-of-hypertype">The Design of HyperType</h2>
+<p>A language for ideas needs a structureless structure. That’s exactly
+what Stephen Wolfram found hypergraphs to be while working on his
+Universal Theory of Physics project.</p>
+<p>Ted Nelson created Zig Zag as a “hyperstructure” kit—a way to
+represent information in HyperText systems.</p>
+<p><em>HyperType combines these ideas</em>, using the hypergraph as the
+fundamental unit in the HyperText system.</p>
+<p>This high-level connecting of ideas is more about symbolic ideas
+than</p>
+<p>HyperType is symbolic, which aims to be a higher-level
+connecting-of-ideas language.</p>
+<p>Symbolic programming is not like regular programming, instead of
+bottom-up it’s top-down. It’s high-level. It’s declarative. You say what
+you want and the computer does the work.</p>
+<p>Something magical happens with symbolic programming. Like a looking
+glass, “the program” is a reflection of the connected symbols. It’s a
+lot like language. You have legalese and then you have poetry.</p>
+<p>HyperType is not a programming language in and of itself—but this
+high-level connecting of ideas is creating a sum greater than it’s
+parts.</p>
+<h2 id="managing-complexity">Managing Complexity</h2>
+<p>Hypergraphs can get extremely complex. This is a feature though, not
+a bug—you want it to be able to handle complexity.</p>
+<p>But you want to be able to manage it—which is what HyperType helps
+with.</p>
+<p><strong>1. Everything is deeply Interwingled</strong></p>
+<p>Manage the interconnectedness of ideas by scaling up the
+“interwingle” parameter or scaling it down.</p>
+<p><strong>2. Context</strong></p>
+<p>But there are tons of ways HyperType tames the complexity of the
+hypergraph:</p>
+<ol type="1">
+<li>Limiting scope</li>
+</ol>
+<p>But making the user manage all the complexity won’t work.</p>
+<p>This is where embeddings, vector databases and LLMs come in. Together
+these tools help predict, organize, connect, update, explore, cluster
+and make sense of complex HyperType programs.</p>
+<h2 id="hypertype-programming-interface">HyperType Programming
+Interface</h2>
+<p>You can build up HyperType programatically:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> HyperType <span class="im">from</span> <span class="st">&quot;@themaximalist/hypertype.js&quot;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HtyperType</span>()<span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> steve <span class="op">=</span> <span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">create</span>(<span class="st">&quot;Steve Jobs&quot;</span>)<span class="op">;</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> invented <span class="op">=</span> <span class="cf">await</span> htypertype<span class="op">.</span><span class="fu">create</span>(<span class="st">&quot;invented&quot;</span>)<span class="op">;</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedge <span class="op">=</span> <span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">create</span>([steve<span class="op">,</span> invented])<span class="op">;</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> inventions <span class="op">=</span> <span class="cf">await</span> hyperedge<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [&quot;Apple&quot;, &quot;NeXT&quot;, &quot;Pixar&quot;, &quot;Macintosh&quot;, &quot;iPhone&quot;]</span></span></code></pre></div>
+<h2 id="projects">Projects</h2>
+<p><code>LLM.js</code> is currently used in the following projects:</p>
+<ul>
+<li><a href="https://hypertyper.com">HyperTyper</a></li>
+</ul>
+<h2 id="author">Author</h2>
+<ul>
+<li><a href="https://themaximalist.com/">The Maximalist</a></li>
+<li><a href="https://twitter.com/themaximal1st"><span class="citation"
+data-cites="themaximal1st">@themaximal1st</span></a></li>
+</ul>
+<h2 id="license">License</h2>
+<p>MIT</p>
+</body>
+</html>

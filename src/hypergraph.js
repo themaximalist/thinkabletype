@@ -6,6 +6,8 @@ import Hyperedge from "./hyperedge.js";
 
 import { calculatePageRank, pageRank } from "./pagerank.js";
 
+// TODO: Need to move interwingle parameter here....
+
 // import { suggest } from "./llm.js";
 // import VectorDB from "@themaximalist/vectordb.js"
 
