@@ -11,7 +11,7 @@ import Hyperedge from "../src/hyperedge.js";
 
 import assert from "assert";
 
-describe.only("Hypergraph", function () {
+describe("Hypergraph", function () {
   it("init empty", function () {
     const graph = new Hypergraph();
     assert(graph);

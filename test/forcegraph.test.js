@@ -4,7 +4,7 @@ import Hypergraph from "../src/hypergraph.js";
 
 describe("Force graph", function () {
 
-  it.skip("interwingle isolated", () => {
+  it.only("interwingle isolated", () => {
     const hyperedges = [
       ["A", "B", "C"],
       ["A", "1", "2"]
@@ -19,9 +19,10 @@ describe("Force graph", function () {
     assert(hypergraph.hyperedges.length === 2);
 
     assert(hypergraph.hyperedges[0].symbols.length === 3);
+    assert.deepStrictEqual(hypergraph.hyperedges[0].symbols, ["A", "B", "C"]);
+    assert.equal(hypergraph.hyperedges[0].id, "0:A->B->C");
+    assert.equal(hypergraph.hyperedges[0].nodes[0].id, "0:A");
 
-    // expect(hypergraph.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
-    // expect(hypergraph.hyperedges[0].nodes[0].id).toEqual("0:A");
     // expect(hypergraph.hyperedges[0].nodes[1].id).toEqual("0:A.B");
     // expect(hypergraph.hyperedges[1].symbols).toEqual(["A", "1", "2"]);
     // expect(hypergraph.hyperedges[1].nodes[0].id).toEqual("1:A");

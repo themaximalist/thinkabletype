@@ -9,12 +9,18 @@ import { arrayContains } from "./utils.js";
 
 export default class Hyperedge {
     constructor(nodes, hypergraph) {
+        this.index = hypergraph._hyperedges.size; // TODO: hacky
         this.nodes = nodes.map(node => Node.create(node, hypergraph));
         this.hypergraph = hypergraph;
     }
 
     get id() {
-        return Hyperedge.id(this.nodes.map(node => node.id))
+        const id = Hyperedge.id(this.nodes.map(node => node.id))
+        if (this.hypergraph.isIsolated) {
+            return `${this.index}:${id}`;
+        }
+
+        return id;
     }
 
     get symbols() {
