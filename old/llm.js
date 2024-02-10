@@ -1,3 +1,4 @@
+/*
 import "dotenv-extended/config.js"
 import debug from "debug"
 const log = debug("hypertype:test:llm");
@@ -116,3 +117,4 @@ describe.skip("Hypergraph LLM", function () {
 
 // TODO: hyperedge connect
 // TODO: graph.suggest hyperedge
+*/

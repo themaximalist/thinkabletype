@@ -1,3 +1,4 @@
+/*
 import assert from "assert";
 
 import Hypergraph from "../src/hypergraph.js";
@@ -29,6 +30,7 @@ describe("Force graph", function () {
     // expect(hypergraph.hyperedges[1].nodes[1].id).toEqual("1:A.1");
   });
 });
+*/
 
 /*
     */

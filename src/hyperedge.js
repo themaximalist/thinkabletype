@@ -1,3 +1,69 @@
+import Node from "./node";
+
+import { arrayContains } from "./utils.js";
+
+export default class Hyperedge {
+    constructor(symbols = [], hypergraph) {
+        this.symbols = symbols;
+        this.index = hypergraph._hyperedges.size;
+        this.hypergraph = hypergraph;
+        this.nodes = symbols.map(this.createNode.bind(this));
+        this.id = this.nodes.map((node) => node.symbol).join("->");
+
+        if (this.hypergraph.isIsolated) {
+            this.id = `${this.index}:${this.id}`;
+        }
+    }
+
+    createNode(symbol, index) {
+        return new Node(symbol, index, this, this.hypergraph);
+    }
+
+    nodeId(index) {
+        const id = this.symbols.slice(0, index + 1).join(".");
+        if (this.hypergraph.isIsolated) {
+            return `${this.index}:${id}`;
+        }
+
+        return id;
+    }
+
+    prevNode(index) {
+        if (index === 0) {
+            return null;
+        }
+
+        return this.nodes[index - 1];
+    }
+
+    nextNode(index) {
+        if (index === this.length - 1) {
+            return null;
+        }
+
+        return this.nodes[index + 1];
+    }
+
+    has(input) {
+        if (input instanceof Node) {
+            return this.symbols.includes(input.symbol);
+        } else if (typeof input === "string") {
+            return this.symbols.includes(input);
+        } else if (input instanceof Hyperedge) {
+            return arrayContains(this.symbols, input.symbols);
+        } else if (Array.isArray(input)) {
+            return arrayContains(this.symbols, input);
+        }
+
+        return false;
+    }
+
+    static id(symbols) {
+        return symbols.join("->");
+    }
+}
+
+/*
 import Node from "./node.js";
 // import merge from "lodash/merge.js";
 
@@ -5,7 +71,6 @@ import Node from "./node.js";
 
 // import { mergeGraphs, stringToColor } from "./utils";
 // import Node from "./Node";
-import { arrayContains } from "./utils.js";
 
 export default class Hyperedge {
     constructor(nodes, hypergraph) {
@@ -192,3 +257,4 @@ class Hyperedge1 {
         return hyperedge;
     }
 }
+*/

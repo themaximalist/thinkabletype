@@ -1,3 +1,4 @@
+/*
 import Hypergraph from "../src/hypergraph.js";
 
 import assert from "assert";
@@ -59,3 +60,4 @@ describe.skip("Hypergraph Model Deployer", function () {
         assert(symbols.includes("project xanadu"));
     });
 });
+*/
