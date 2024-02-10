@@ -4,6 +4,10 @@ import Hyperedge from "../src/hyperedge.js";
 import { expect, test } from "vitest";
 import fs from "fs";
 
+// TODO: finish integrating these tests
+// TODO: rip out graphData into separate module..then test that
+// TODO: then re-add all other tests back
+
 // TODO: edit/remove data. should also update indexes
 // TODO: activity parameter..way to expose in UI background sync is happening
 
