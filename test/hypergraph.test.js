@@ -2,37 +2,71 @@ import HyperType from "../src/index.js";
 import Hyperedge from "../src/hyperedge.js";
 
 import { expect, test } from "vitest";
-import fs from "fs";
 
 // TODO: finish integrating these tests
 // TODO: rip out graphData into separate module..then test that
 // TODO: then re-add all other tests back
+// TODO: editing...adding nodes dynamically on an edge...renaming parts of an edge
 
 // TODO: edit/remove data. should also update indexes
 // TODO: activity parameter..way to expose in UI background sync is happening
 
 test("empty hypertype", () => {
   const hypertype = new HyperType();
-  expect(hypertype.hyperedges).toEqual([]);
+  expect(hypertype.nodes.all).toEqual([]);
+  expect(hypertype.hyperedges.all).toEqual([]);
 });
 
-test("create node (but dont add to hypertype)", async function () {
+test("created node id", () => {
+  const hypertype = new HyperType();
+  const node = hypertype.create("A");
+  expect(node.id).toBe("A");
+  expect(node.index).toBe(null);
+  expect(node.hyperedge).toBe(null);
+});
+
+/*
+test("created edge id", () => {
+  const hypertype = new HyperType();
+  const edge = hypertype.create(["A", "B"]);
+  expect(edge.id).toBe("A->B");
+});
+
+test("created edge id (isolated)", () => {
+  const hypertype = new HyperType({
+    interwingle: HyperType.INTERWINGLE.ISOLATED,
+  });
+
+  const edge = hypertype.create(["A", "B"]);
+  expect(edge.id).toBe("1:A->B");
+});
+*/
+
+
+// work specifically on IDs and interwingle parameter, and creating nodes, and adding nodes, and creating ids, and adding ids
+
+/*
+test.only("create node (but dont add to hypertype)", async function () {
   const hypertype = new HyperType();
 
   const A = hypertype.create("A");
   expect(A.id).toBe("A");
 
   expect(hypertype.nodes.length).toBe(0);
-  expect(!hypertype.has("A")).toBeTruthy();
-  expect(!hypertype.has(A)).toBeTruthy();
+  expect(hypertype.hyperedges.length).toBe(0);
+  expect(hypertype.has("A")).toBeFalsy();
+  expect(hypertype.has(A)).toBeFalsy();
 });
+*/
 
+/*
 test("add node", async function () {
   const hypertype = new HyperType();
 
   const A = hypertype.add("A");
   hypertype.add("A"); // dupe
   expect(hypertype.nodes.length).toBe(1);
+  expect(hypertype.hyperedges.length).toBe(0);
   expect(hypertype.has("A")).toBeTruthy();
   expect(hypertype.has(A)).toBeTruthy();
 
@@ -86,6 +120,21 @@ test("add hyperedge", async function () {
   expect(hyperedge.has(["B"])).toBeTruthy();
   expect(hyperedge.has(["A", "B"])).toBeTruthy();
   expect(hyperedge.has(["A", "B", "C"])).toBeFalsy();
+});
+
+test.skip("create node then add", async function () {
+  const hypertype = new HyperType();
+
+  const A = hypertype.create("A");
+  const B = hypertype.create("B");
+
+  const hyperedge = hypertype.add([A, B]);
+  expect(hyperedge).toBeInstanceOf(Hyperedge);
+  expect(hypertype.nodes.length).toBe(2);
+  expect(hypertype.hyperedges.length).toBe(1);
+
+  expect(hyperedge.id).toBe("A->B");
+  // expect(A.hyperedge)
 });
 
 /*

@@ -3,8 +3,27 @@ import Node from "./node";
 import { arrayContains } from "./utils.js";
 
 export default class Hyperedge {
+    constructor(symbols = [], options = {}) {
+        this.symbols = symbols.map(symbol => symbol instanceof Node ? symbol.symbol : symbol);
+        this.index = options.index;
+        if (!options.hypergraph) {
+            throw new Error("Hyperedge requires a hypergraph");
+        }
+
+        this.hypergraph = options.hypergraph;
+    }
+
+    get id() {
+        if (this.hypergraph.isIsolated) {
+            return `${this.index}:${this.symbols.join("->")}`;
+        }
+        return this.symbols.join("->");
+    }
+
+
+    /*
     constructor(symbols = [], hypergraph) {
-        this.symbols = symbols;
+
         this.index = hypergraph._hyperedges.size;
         this.hypergraph = hypergraph;
         this.nodes = symbols.map(this.createNode.bind(this));
@@ -61,6 +80,7 @@ export default class Hyperedge {
     static id(symbols) {
         return symbols.join("->");
     }
+    */
 }
 
 /*

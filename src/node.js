@@ -1,18 +1,53 @@
 export default class Node {
-    constructor(symbol, index = null, hyperedge = null, hypergraph = null, object = null) {
+    constructor(symbol, options = {}) {
         this.symbol = symbol;
-        this.index = index;
-        this.hyperedge = hyperedge
-        this.hypergraph = hypergraph
+        this.options = options;
+
+        this.hyperedge = null;
+        this.index = null;
+
+        if (!options.hypergraph) throw new Error("Missing hypergraph");
+        this.hypergraph = options.hypergraph;
+    }
+
+    get id() {
+        if (this.hypergraph.isIsolated) {
+        }
+        return this.symbol;
+    }
+
+    /*
+    constructor(symbol, options = {}) {
+        this.symbol = symbol;
+        this.index = options.index;
+        this.hyperedge = options.hyperedge;
+        this.hypergraph = options.hypergraph;
         this.id = this.symbol;
-        this.textHeight = 8;
-        this.object = object;
+        this.textHeight = options.textHeight || 8;
+        this.object = options.object;
 
         if (this.hyperedge) {
             this.id = this.hyperedge.nodeId(this.index);
         }
     }
 
+    get isStart() {
+        if (!this.hyperedge) return false;
+        return this.index === 0;
+    }
+
+    get isEnd() {
+        if (!this.hyperedge) return false;
+        return this.index === this.hyperedge.nodes.length - 1;
+    }
+
+    get isMiddle() {
+        if (!this.hyperedge) return false;
+        return !this.isStart && !this.isEnd;
+    }
+    */
+
+    /*
     updateMasqueradeIndex() {
         if (!this.hypergraph.isFusion) return null;
         if (this.isMiddle) return null;
@@ -116,20 +151,7 @@ export default class Node {
         };
     }
 
-    get isStart() {
-        if (!this.hyperedge) return false;
-        return this.index === 0;
-    }
-
-    get isEnd() {
-        if (!this.hyperedge) return false;
-        return this.index === this.hyperedge.nodes.length - 1;
-    }
-
-    get isMiddle() {
-        if (!this.hyperedge) return false;
-        return !this.isStart && !this.isEnd;
-    }
+    */
 }
 
 /*
