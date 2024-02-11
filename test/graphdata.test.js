@@ -3,6 +3,9 @@ import HyperType from "../src/index.js";
 import { expect, test } from "vitest";
 import fs from "fs";
 
+// TODO: fusion A -> B && B -> A (identical nodes)
+
+
 test("single hyperedge (isolate)", () => {
     const hypertype = new HyperType({
         hyperedges: [["A", "B", "C"]]
@@ -54,95 +57,31 @@ test("single hyperedge (confluence)", () => {
     expect(data.links[1]._meta.hyperedgeID).toBe("A->B->C");
 });
 
-// test("two distinct hyperedges", () => {
-//     const hyperedges = [
-//         ["A", "B", "C"],
-//         ["1", "2", "3"]
-//     ];
-//     const hypertype = new HyperType();
-//     hypertype.addHyperedges(hyperedges);
-
-//     expect(hypertype.hyperedges.length).toEqual(2);
-
-//     expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
-//     expect(hypertype.hyperedges[1].symbols).toEqual(["1", "2", "3"]);
-
-//     const data = hypertype.graphData();
-//     expect(data.links.length).toBe(4);
-//     expect(data.links[0].id).toBe("A->A.B");
-//     expect(data.links[1].id).toBe("A.B->A.B.C");
-
-//     expect(data.links[2].id).toBe("1->1.2");
-//     expect(data.links[3].id).toBe("1.2->1.2.3");
-// });
-
-// TODO: edit/remove data. should also update indexes
-// TODO: activity parameter..way to expose in UI background sync is happening
-/*
-
-
-test("isolated", () => {
-    const hyperedges = [
-        ["A", "B", "C"],
-        ["A", "1", "2"]
-    ];
-
-    const hypertype = new HyperType([], { interwingle: HyperType.INTERWINGLE.ISOLATED });
-    hypertype.addHyperedges(hyperedges);
-
-    expect(hypertype.hyperedges.length).toEqual(2);
-
-    expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
-    expect(hypertype.hyperedges[0].nodes[0].id).toEqual("0:A");
-    expect(hypertype.hyperedges[0].nodes[1].id).toEqual("0:A.B");
-    expect(hypertype.hyperedges[1].symbols).toEqual(["A", "1", "2"]);
-    expect(hypertype.hyperedges[1].nodes[0].id).toEqual("1:A");
-    expect(hypertype.hyperedges[1].nodes[1].id).toEqual("1:A.1");
-
-    const data = hypertype.graphData();
-    expect(data.links.length).toBe(4);
-    expect(data.links[0].id).toBe("0:A->0:A.B");
-    expect(data.links[0].source).toBe("0:A");
-    expect(data.links[0].target).toBe("0:A.B");
-    expect(data.links[1].id).toBe("0:A.B->0:A.B.C");
-    expect(data.links[1].source).toBe("0:A.B");
-    expect(data.links[1].target).toBe("0:A.B.C");
-
-    expect(data.links[2].id).toBe("1:A->1:A.1");
-    expect(data.links[2].source).toBe("1:A");
-    expect(data.links[2].target).toBe("1:A.1");
-
-    expect(data.links[3].id).toBe("1:A.1->1:A.1.2");
-    expect(data.links[3].source).toBe("1:A.1");
-    expect(data.links[3].target).toBe("1:A.1.2");
-});
-
-test("confluence", () => {
-    const hyperedges = [
-        // A.B.C && A.1.2 with A as confluence node
-        ["A", "B", "C"],
-        ["A", "1", "2"]
-    ];
-    const hypertype = new HyperType([], {
+test("multiple hyperedge (confluence)", () => {
+    const hypertype = new HyperType({
+        hyperedges: [
+            ["A", "B", "C"],
+            ["A", "1", "2"],
+        ],
         interwingle: HyperType.INTERWINGLE.CONFLUENCE
     });
 
-    hypertype.addHyperedges(hyperedges);
-    expect(hypertype.hyperedges.length).toEqual(2);
-
-    expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
-    expect(hypertype.hyperedges[0].nodes[0].id).toEqual("A");
-    expect(hypertype.hyperedges[0].nodes[1].id).toEqual("A.B");
-    expect(hypertype.hyperedges[1].symbols).toEqual(["A", "1", "2"]);
-    expect(hypertype.hyperedges[1].nodes[0].id).toEqual("A");
-    expect(hypertype.hyperedges[1].nodes[1].id).toEqual("A.1");
+    expect(hypertype).toBeInstanceOf(HyperType);
+    expect(hypertype.symbols).toEqual(["A", "B", "C", "1", "2"]);
 
     const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(5);
     expect(data.links.length).toBe(4);
+
     expect(data.links[0].id).toBe("A->A.B");
     expect(data.links[1].id).toBe("A.B->A.B.C");
     expect(data.links[2].id).toBe("A->A.1");
     expect(data.links[3].id).toBe("A.1->A.1.2");
+
+    expect(data.links[0]._meta.hyperedgeID).toBe("A->B->C");
+    expect(data.links[1]._meta.hyperedgeID).toBe("A->B->C");
+    expect(data.links[2]._meta.hyperedgeID).toBe("A->1->2");
+    expect(data.links[3]._meta.hyperedgeID).toBe("A->1->2");
 });
 
 test("fusion start", () => {
@@ -152,42 +91,38 @@ test("fusion start", () => {
         ["C", "D", "E"]
     ];
 
-    const hypertype = new HyperType([], { interwingle: HyperType.INTERWINGLE.FUSION });
-    hypertype.addHyperedges(hyperedges);
-    expect(hypertype.hyperedges.length).toEqual(2);
+    const hypertype = new HyperType({
+        hyperedges,
+        interwingle: HyperType.INTERWINGLE.FUSION
+    });
 
-    expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
-    expect(hypertype.hyperedges[0].nodes[0].id).toEqual("A");
-    expect(hypertype.hyperedges[0].nodes[1].id).toEqual("A.B");
-    expect(hypertype.hyperedges[1].symbols).toEqual(["C", "D", "E"]);
-    expect(hypertype.hyperedges[1].nodes[0].id).toEqual("C");
-    expect(hypertype.hyperedges[1].nodes[1].id).toEqual("C.D");
+    expect(hypertype.hyperedges.length).toEqual(2);
 
     const data = hypertype.graphData();
     expect(data.nodes.length).toBe(5); // C masquerades as A.B.C
     expect(data.links.length).toBe(4);
+
     expect(data.links[0].id).toBe("A->A.B");
     expect(data.links[1].id).toBe("A.B->A.B.C");
     expect(data.links[2].id).toBe("A.B.C->C.D");
     expect(data.links[3].id).toBe("C.D->C.D.E");
-
-    expect(hypertype.masqueradeIndex.size).toBe(1);
-    // console.log(hypertype.masqueradeIndex);
 });
 
 test("fusion end", () => {
     const hyperedges = [
-        // A.B.C 1.2.C with C as fusion node
+        // A.B.C && 1.2.C with C as fusion node
         ["A", "B", "C"],
-        ["1", "2", "C"]
+        ["1", "2", "C"],
     ];
 
-    const hypertype = new HyperType([], { interwingle: HyperType.INTERWINGLE.FUSION });
-    hypertype.addHyperedges(hyperedges);
+    const hypertype = new HyperType({
+        hyperedges,
+        interwingle: HyperType.INTERWINGLE.FUSION
+    });
+
     expect(hypertype.hyperedges.length).toEqual(2);
 
     const data = hypertype.graphData();
-
     expect(data.nodes.length).toBe(5); // C masquerades as A.B.C
     expect(data.links.length).toBe(4);
 
@@ -197,6 +132,7 @@ test("fusion end", () => {
     expect(data.links[3].id).toBe("1.2->A.B.C");
 });
 
+/*
 test("bridge", () => {
     const hyperedges = [
         ["A", "vs", "B"],

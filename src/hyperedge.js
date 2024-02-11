@@ -9,6 +9,14 @@ export default class Hyperedge {
         return this.symbols.join("->");
     }
 
+    get firstSymbol() {
+        return this.symbols[0];
+    }
+
+    get lastSymbol() {
+        return this.symbols[this.symbols.length - 1];
+    }
+
     add() {
         const symbols = Array.from(arguments);
         this.symbols.push(...symbols);

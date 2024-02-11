@@ -24,6 +24,14 @@ export default class ForceLink {
         return id;
     }
 
+    get firstNode() {
+        return this.nodes[0];
+    }
+
+    get lastNode() {
+        return this.nodes[this.nodes.length - 1];
+    }
+
     nodeId(index) {
         const id = this.symbols.slice(0, index + 1).join(".");
         if (this.hypergraph.isIsolated) {
@@ -31,6 +39,10 @@ export default class ForceLink {
         }
 
         return id;
+    }
+
+    get lastNodeId() {
+        return this.lastNode.id;
     }
 
     updateGraphData(nodes, links) {
@@ -48,6 +60,9 @@ export default class ForceLink {
     }
 
     linkData(parentNode, childNode) {
+        parentNode = this.forcegraph.masqueradeNode(parentNode);
+        childNode = this.forcegraph.masqueradeNode(childNode);
+
         return {
             id: `${parentNode.id}->${childNode.id}`,
             source: parentNode.id,

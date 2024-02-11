@@ -3,17 +3,11 @@ import Hyperedge from "../src/Hyperedge.js";
 
 import { expect, test } from "vitest";
 
-// TODO: finish integrating these tests
-// TODO: rip out graphData into separate module..then test that
-// TODO: then re-add all other tests back
-// TODO: editing...adding nodes dynamically on an edge...renaming parts of an edge
-
-// TODO: edit/remove data. should also update indexes
-// TODO: activity parameter..way to expose in UI background sync is happening
-
-// TODO: should dynamic ID generation happen in graphData?
-
-// Hyperedge index cannot depend on hypergraph because it may not be on hypergraph
+// TODO: test graphData interwingle options
+// TODO: test graphData interwingle options with huge data
+// TODO: sync()
+// TODO: pagerank
+// TODO: embeddings
 
 test("empty hypertype", () => {
   const hypertype = new HyperType();
