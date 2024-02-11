@@ -13,6 +13,7 @@ export default class HyperType extends Hypergraph {
         this.vectordb = new VectorDB(options.vectordb);
 
         this.pageranks = {};
+        this.embeddings = new Map();
         this._synced = {
             pagerank: true,
             embeddings: true,
@@ -62,6 +63,12 @@ export default class HyperType extends Hypergraph {
     async syncEmbeddings() {
         if (this._synced.embeddings) return true;
 
+        for (const hyperedge of this.hyperedges) {
+            for (const symbol of hyperedge.symbols) {
+                await this.vectordb.add(symbol);
+            }
+        }
+
         this._synced.embeddings = true;
         return true;
     }
@@ -76,24 +83,36 @@ export default class HyperType extends Hypergraph {
         return new HyperType(options);
     }
 
-    // async similar(node, num = 3, threshold = 1.0) {
-    //     if (typeof node === "string") {
-    //         node = await Node.create(node, this);
-    //     }
+    async similar(symbol, num = 3, threshold = 1.0) {
+        const similarSymbols = await this.similarSymbols(symbol, num, threshold);
+        const hyperedges = new Map();
+        for (const hyperedge of this.hyperedges) {
+            for (const similarSymbol of similarSymbols) {
+                if (hyperedge.has(similarSymbol.symbol)) {
+                    if (!hyperedge.distance || hyperedge.distance < similarSymbol.distance) {
+                        hyperedge.distance = similarSymbol.distance;
+                    }
+                    hyperedges.set(hyperedge.id, hyperedge);
+                }
+            }
+        }
 
-    //     const matches = await this.vectordb.search(node.symbol, num, threshold);
-    //     const results = [];
+        return Array.from(hyperedges.values());
+    }
 
-    //     for (const { input: symbol, distance } of matches) {
-    //         if (symbol == node.symbol) continue;
-    //         const newNode = await Node.get(symbol, this);
-    //         if (newNode) results.push({ distance, node: newNode });
-    //     }
+    async similarSymbols(symbol, num = 3, threshold = 1.0) {
+        const matches = await this.vectordb.search(symbol, num, threshold);
+        const results = [];
 
-    //     results.sort((a, b) => a.distance - b.distance);
+        for (const { input, distance } of matches) {
+            if (symbol == input) continue;
+            results.push({ distance, symbol: input });
+        }
 
-    //     return results;
-    // }
+        results.sort((a, b) => a.distance - b.distance);
+
+        return results;
+    }
 
 
 

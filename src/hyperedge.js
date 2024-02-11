@@ -1,9 +1,9 @@
 import * as utils from "./utils.js";
 
 export default class Hyperedge {
-    constructor(symbols = [], hypergraph) {
+    constructor(symbols = [], hypertype) {
         this.symbols = symbols;
-        this.hypergraph = hypergraph;
+        this.hypertype = hypertype;
     }
 
     get id() {
@@ -21,18 +21,18 @@ export default class Hyperedge {
     add() {
         const symbols = Array.from(arguments);
         this.symbols.push(...symbols);
-        this.hypergraph.setUnsynced();
+        this.hypertype.setUnsynced();
     }
 
     remove(symbol_or_index) {
         if (typeof symbol_or_index === "number") {
             this.symbols.splice(symbol_or_index, 1);
-            this.hypergraph.setUnsynced();
+            this.hypertype.setUnsynced();
         } else if (typeof symbol_or_index === "string") {
             const index = this.symbols.indexOf(symbol_or_index);
             if (index !== -1) {
                 this.symbols.splice(index, 1);
-                this.hypergraph.setUnsynced();
+                this.hypertype.setUnsynced();
             }
         }
     }
@@ -43,5 +43,18 @@ export default class Hyperedge {
 
     equal(hyperedge) {
         return this.id === hyperedge.id;
+    }
+
+    async similar() {
+        const hyperedges = new Map();
+        for (const symbol of this.symbols) {
+            const edges = await this.hypertype.similar(symbol);
+            for (const edge of edges) {
+                if (edge.equal(this)) continue;
+                hyperedges.set(edge.id, edge);
+            }
+        }
+
+        return Array.from(hyperedges.values());
     }
 }

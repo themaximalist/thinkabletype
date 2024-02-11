@@ -50,5 +50,3 @@ test("unsyncs with add data on edge", async () => {
     await hypertype.sync();
     expect(hypertype.synced).toBe(true);
 });
-
-// unsyncs with edit data
