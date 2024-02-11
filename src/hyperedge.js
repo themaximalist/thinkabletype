@@ -1,4 +1,5 @@
 // import Node from "./Node";
+import * as utils from "./utils.js";
 
 export default class Hyperedge {
     constructor(symbols = []) {
@@ -23,6 +24,14 @@ export default class Hyperedge {
                 this.symbols.splice(index, 1);
             }
         }
+    }
+
+    has() {
+        return utils.arrayContains(this.symbols, arguments);
+    }
+
+    equal(hyperedge) {
+        return this.id === hyperedge.id;
     }
 }
 

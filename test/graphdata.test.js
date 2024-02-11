@@ -28,9 +28,10 @@ test("single hyperedge (isolate)", () => {
     expect(data.links[1]._meta.hyperedgeID).toBe("0:A->B->C");
 });
 
-test.skip("single hyperedge (confluence)", () => {
+test("single hyperedge (confluence)", () => {
     const hypertype = new HyperType({
-        hyperedges: [["A", "B", "C"]]
+        hyperedges: [["A", "B", "C"]],
+        interwingle: HyperType.INTERWINGLE.CONFLUENCE
     });
     expect(hypertype).toBeInstanceOf(HyperType);
     expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);

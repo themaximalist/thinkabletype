@@ -1,3 +1,5 @@
+import csv from "papaparse"
+
 import Hyperedge from "./Hyperedge";
 import * as utils from "./utils";
 import ForceGraph from "./ForceGraph";
@@ -25,6 +27,22 @@ export default class Hypergraph {
         }
     }
 
+    get symbols() {
+        const symbols = new Map();
+        for (const hyperedge of this.hyperedges) {
+            for (const symbol of hyperedge.symbols) {
+                symbols.set(symbol, symbol);
+            }
+        }
+
+        return Array.from(symbols.values());
+    }
+
+    static parse(input, options = {}) {
+        options.hyperedges = csv.parse(input, options.parse || {}).data;
+        return new Hypergraph(options);
+    }
+
     get isIsolated() {
         return this.options.interwingle === Hypergraph.INTERWINGLE.ISOLATED;
     }
@@ -40,8 +58,6 @@ export default class Hypergraph {
     get isBridge() {
         return this.options.interwingle >= Hypergraph.INTERWINGLE.BRIDGE;
     }
-
-
 
     add() {
         const symbols = Array.from(arguments);
@@ -63,6 +79,21 @@ export default class Hypergraph {
 
     graphData() {
         return this.forceGraph.graphData();
+    }
+
+    has() {
+        return this.filter.apply(this, arguments).length > 0;
+    }
+
+    filter() {
+        const hyperedges = [];
+        for (const hyperedge of this.hyperedges) {
+            if (hyperedge.has.apply(hyperedge, arguments)) {
+                hyperedges.push(hyperedge);
+            }
+        }
+
+        return hyperedges;
     }
 
     /*
