@@ -69,8 +69,7 @@ export default class ForceGraph {
     }
 
     masqueradeNode(node) {
-        let i = 0;
-        while (i++ < 10) {
+        while (true) {
             const masqueradeNode = this.fusionIndex.get(node.id);
             if (!masqueradeNode || masqueradeNode.id === node.id) {
                 return node;
@@ -103,12 +102,8 @@ export default class ForceGraph {
         const bridgeIndex = new Map();
 
         for (const link of this.forceLinks.values()) {
-            for (const node of link.middleNodes) {
-                if (!bridgeIndex.has(node.symbol)) {
-                    bridgeIndex.set(node.symbol, []);
-                }
-
-                bridgeIndex.get(node.symbol).push(node);
+            for (const node of link.nodes) {
+                utils.addIndex(bridgeIndex, node.symbol, node);
             }
         }
 

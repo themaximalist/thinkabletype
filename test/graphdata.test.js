@@ -160,42 +160,37 @@ test("single node edge", () => {
     expect(data.nodes.length).toBe(1);
 });
 
-test.only("bridge end node", () => {
+test("fusion no bridge", () => {
     const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.FUSION });
     hypertype.add("A", "B");
+    hypertype.add("B", "C");
     hypertype.add("1", "B", "2");
     hypertype.add("3", "B", "4");
 
     const data = hypertype.graphData();
-    expect(data.nodes.length).toBe(8);
-    expect(data.links.length).toBe(5);
-});
-
-test("fusion no bridge", () => {
-    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.FUSION });
-    hypertype.add("A", "B");
-    hypertype.add("1", "B");
-    hypertype.add("3", "B");
-    hypertype.add("4", "B", "5"); // is not bridged
-
-    const data = hypertype.graphData();
-    expect(data.nodes.length).toBe(7);
-    expect(data.links.length).toBe(5);
+    expect(data.nodes.length).toBe(9);
+    expect(data.links.length).toBe(6);
 });
 
 test("fusion bridge", () => {
     const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
-    hypertype.add("A", "B");
-    hypertype.add("1", "B");
-    hypertype.add("3", "B");
-    hypertype.add("4", "B", "5"); // is bridged
+    hypertype.add("B", "C");
+    hypertype.add("1", "B", "2");
 
     const data = hypertype.graphData();
-    console.log(data);
-
-    // expect(data.nodes.length).toBe(7);
-    // expect(data.links.length).toBe(5);
+    expect(data.nodes.length).toBe(6);
+    expect(data.links.length).toBe(5);
 });
+
+// TODO:
+// hypertype.add("A", "B");
+// hypertype.add("1", "B", "2");
+
+// TODO:
+// hypertype.add("A", "B");
+// hypertype.add("B", "C");
+// hypertype.add("1", "B", "2");
+// hypertype.add("3", "B", "4");
 
 test.skip("huge", () => {
     const fs = require("fs");

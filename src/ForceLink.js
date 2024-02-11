@@ -41,6 +41,10 @@ export default class ForceLink {
         return this.nodes.slice(1, this.nodes.length - 1);
     }
 
+    get lastNodes() {
+        return this.nodes.slice(1);
+    }
+
     nodeId(index) {
         const id = this.symbols.slice(0, index + 1).join(".");
         if (this.hypergraph.isIsolated) {

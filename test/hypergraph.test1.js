@@ -3,6 +3,26 @@ import Hyperedge from "../src/Hyperedge.js";
 
 import { expect, test } from "vitest";
 
+// isolated is exact hyperedges as defined by user
+
+// A -> B -> 1
+// A -> B -> 2
+// confluence is when root nodes just happen to be the same thing because they have the same context
+
+
+// A -> B -> C
+// C -> D -> E
+// E -> F -> G
+// fusion is a natural progression can be found from one edge to another because the start and end contexts are the same
+
+// Thomas Jefferson -> Freemason
+// George Washington -> Freemason -> 33rd Order
+// bridge is when multiple center nodes are connected
+
+// TODO: what happens with short fusion and bridge?
+
+
+
 // TODO: need to maybe rethink interwingle
 //         sometimes a fusion node is needed, sometimes a bridge node
 //         this is most common with two edge nodes A -> B and then 1 -> B -> D ...what should happen? should it be fusion or bridge?
