@@ -1,5 +1,4 @@
-import ForceNode from "./ForceNode";
-import ForceLink from "./ForceLink";
+import ForceLink from "./ForceLink.js";
 
 export default class ForceGraph {
     constructor(hypergraph) {

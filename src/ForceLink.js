@@ -1,4 +1,4 @@
-import ForceNode from "./ForceNode";
+import ForceNode from "./ForceNode.js";
 
 export default class ForceLink {
     constructor(hyperedge, forceGraph) {
