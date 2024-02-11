@@ -1,3 +1,4 @@
+import * as utils from "./utils.js";
 import ForceNode from "./ForceNode.js";
 
 export default class ForceLink {
@@ -10,6 +11,8 @@ export default class ForceLink {
 
         this.symbols = hyperedge.symbols;
         this.nodes = this.symbols.map((symbol, index) => new ForceNode(symbol, index, this));
+
+        this.color = utils.stringToColor(this.symbols[0]);
     }
 
     get id() {
@@ -49,6 +52,7 @@ export default class ForceLink {
             id: `${parentNode.id}->${childNode.id}`,
             source: parentNode.id,
             target: childNode.id,
+            color: this.color,
             _meta: {
                 hyperedgeID: parentNode.link.id,
             }

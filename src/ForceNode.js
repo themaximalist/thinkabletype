@@ -1,3 +1,5 @@
+import * as utils from "./utils.js";
+
 export default class ForceNode {
     constructor(symbol, index, link) {
         this.symbol = symbol;
@@ -13,6 +15,8 @@ export default class ForceNode {
         nodes.set(this.id, {
             id: this.id,
             name: this.symbol,
+            color: this.link.color,
+            textHeight: 8,
         });
     }
 }
