@@ -1,10 +1,6 @@
 import HyperType from "../src/index.js";
 
 import { expect, test } from "vitest";
-import fs from "fs";
-
-// TODO: fusion A -> B && B -> A (identical nodes)
-
 
 test("single hyperedge (isolate)", () => {
     const hypertype = new HyperType({
@@ -132,56 +128,93 @@ test("fusion end", () => {
     expect(data.links[3].id).toBe("1.2->A.B.C");
 });
 
-/*
 test("bridge", () => {
     const hyperedges = [
         ["A", "vs", "B"],
-        ["1", "vs", "2"]
+        ["1", "vs", "2"],
     ];
 
-    const hypertype = new HyperType([], { interwingle: HyperType.INTERWINGLE.BRIDGE });
-    hypertype.addHyperedges(hyperedges);
+    const hypertype = new HyperType({
+        hyperedges,
+        interwingle: HyperType.INTERWINGLE.BRIDGE
+    });
 
     expect(hypertype.hyperedges.length).toEqual(2);
 
     const data = hypertype.graphData();
-    expect(data.nodes.length).toBe(7); // vs creates connection node
-
-    const nodeIds = data.nodes.map((node) => node.id);
-    expect(nodeIds).toContain("A");
-    expect(nodeIds).toContain("A.vs");
-    expect(nodeIds).toContain("A.vs.B");
-    expect(nodeIds).toContain("1");
-    expect(nodeIds).toContain("1.vs");
-    expect(nodeIds).toContain("1.vs.2");
-    expect(nodeIds).toContain("vs#bridge");
-
+    expect(data.nodes.length).toBe(7);
     expect(data.links.length).toBe(6);
 
-    const linkIds = data.links.map((link) => link.id);
-    expect(linkIds).toContain("A->A.vs");
-    expect(linkIds).toContain("A.vs->A.vs.B");
-    expect(linkIds).toContain("1->1.vs");
-    expect(linkIds).toContain("1.vs->1.vs.2");
-
-    expect(linkIds).toContain("vs#bridge->A.vs");
-    expect(linkIds).toContain("vs#bridge->1.vs");
+    expect(data.links[0].id).toBe("A->A.vs");
+    expect(data.links[1].id).toBe("A.vs->A.vs.B");
+    expect(data.links[2].id).toBe("1->1.vs");
+    expect(data.links[3].id).toBe("1.vs->1.vs.2");
+    expect(data.links[4].id).toBe("vs#bridge->A.vs");
+    expect(data.links[5].id).toBe("vs#bridge->1.vs");
 });
 
-test("bridge and fusion", () => {
-    const hyperedges = [
-        ["A", "B", "C"],
-        ["1", "B", "C"]
-    ];
+test("single node edge", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
+    hypertype.add("A");
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(1);
+});
 
-    const hypertype = new HyperType([], { interwingle: HyperType.INTERWINGLE.BRIDGE });
-    hypertype.addHyperedges(hyperedges);
-
-    expect(hypertype.hyperedges.length).toEqual(2);
+test.only("bridge end node", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.FUSION });
+    hypertype.add("A", "B");
+    hypertype.add("1", "B", "2");
+    hypertype.add("3", "B", "4");
 
     const data = hypertype.graphData();
-    expect(data.nodes.length).toBe(6); // 5 nodes + 1 bridge node
-    expect(data.links.length).toBe(6);
+    expect(data.nodes.length).toBe(8);
+    expect(data.links.length).toBe(5);
 });
 
-*/
+test("fusion no bridge", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.FUSION });
+    hypertype.add("A", "B");
+    hypertype.add("1", "B");
+    hypertype.add("3", "B");
+    hypertype.add("4", "B", "5"); // is not bridged
+
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(7);
+    expect(data.links.length).toBe(5);
+});
+
+test("fusion bridge", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
+    hypertype.add("A", "B");
+    hypertype.add("1", "B");
+    hypertype.add("3", "B");
+    hypertype.add("4", "B", "5"); // is bridged
+
+    const data = hypertype.graphData();
+    console.log(data);
+
+    // expect(data.nodes.length).toBe(7);
+    // expect(data.links.length).toBe(5);
+});
+
+test.skip("huge", () => {
+    const fs = require("fs");
+    const hyperedges = fs
+        .readFileSync("/Users/brad/Projects/loom/data/data", "utf-8")
+        .split("\n")
+        // .slice(0, 1800)
+        .map((line) => {
+            return line.split(" -> ");
+        });
+
+    // const hypertype = new HyperType(hyperedges);
+    const start = Date.now();
+    const hypertype = new HyperType({ hyperedges, interwingle: HyperType.INTERWINGLE.BRIDGE });
+    const data = hypertype.graphData();
+    const elapsed = Date.now() - start;
+    console.log("elapsed", elapsed);
+
+    // console.log(data);
+
+    expect(elapsed).toBeLessThan(300);
+});

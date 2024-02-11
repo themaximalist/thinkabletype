@@ -1,3 +1,11 @@
+export function addIndex(index, key, val) {
+    if (!index.has(key)) {
+        index.set(key, []);
+    }
+
+    index.get(key).push(val);
+}
+
 export function arrayContains(x, y) {
     if (y.length > x.length) {
         return false;

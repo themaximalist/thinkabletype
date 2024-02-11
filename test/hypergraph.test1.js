@@ -3,8 +3,14 @@ import Hyperedge from "../src/Hyperedge.js";
 
 import { expect, test } from "vitest";
 
-// TODO: test graphData interwingle options
-// TODO: test graphData interwingle options with huge data
+// TODO: need to maybe rethink interwingle
+//         sometimes a fusion node is needed, sometimes a bridge node
+//         this is most common with two edge nodes A -> B and then 1 -> B -> D ...what should happen? should it be fusion or bridge?
+//         further fusion may want to switch to bridge if there are a lot of nodes....
+//         so maybe a new concept. bridge and fusion go to same level. then whether fusion or bridge is done is purely based on the number of nodes
+
+// TODO: filter on hyperedge & expand crawl
+
 // TODO: sync()
 // TODO: pagerank
 // TODO: embeddings
@@ -148,26 +154,4 @@ test("parses comma in hypertype", async function () {
   expect(hypertype.has("hypertype"));
   expect(hypertype.has("tagline"));
   expect(hypertype.has("Turning C,S,V,s into Hypergraphs."));
-});
-
-test.skip("huge", () => {
-  const fs = require("fs");
-  const hyperedges = fs
-    .readFileSync("/Users/brad/Projects/loom/data/data", "utf-8")
-    .split("\n")
-    .slice(0, 1000)
-    .map((line) => {
-      return line.split(" -> ");
-    });
-
-  // const hypertype = new HyperType(hyperedges);
-  const start = Date.now();
-  const hypertype = new HyperType({ hyperedges });
-  const data = hypertype.graphData();
-  const elapsed = Date.now() - start;
-  console.log("elapsed", elapsed);
-
-  console.log(data);
-
-  expect(elapsed).toBeLessThan(300);
 });
