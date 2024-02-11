@@ -237,7 +237,7 @@ test("two-edge fusion bridge", () => {
     expect(data.links.length).toBe(9);
 });
 
-test.skip("huge", () => {
+test.skip("huge", async () => {
     const fs = require("fs");
     const hyperedges = fs
         .readFileSync("/Users/brad/Projects/loom/data/data", "utf-8")
@@ -249,6 +249,7 @@ test.skip("huge", () => {
 
     const start = Date.now();
     const hypertype = new HyperType({ hyperedges, interwingle: HyperType.INTERWINGLE.BRIDGE });
+    await hypertype.sync();
     const data = hypertype.graphData();
     const elapsed = Date.now() - start;
     console.log("elapsed", elapsed);

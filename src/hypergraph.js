@@ -1,5 +1,3 @@
-import csv from "papaparse"
-
 import Hyperedge from "./Hyperedge.js";
 import * as utils from "./utils.js";
 import ForceGraph from "./ForceGraph.js";
@@ -36,11 +34,6 @@ export default class Hypergraph {
         }
 
         return Array.from(symbols.values());
-    }
-
-    static parse(input, options = {}) {
-        options.hyperedges = csv.parse(input, options.parse || {}).data;
-        return new Hypergraph(options);
     }
 
     get isIsolated() {
