@@ -172,7 +172,7 @@ test("fusion no bridge", () => {
     expect(data.links.length).toBe(6);
 });
 
-test("fusion bridge", () => {
+test("two-edge start bridge", () => {
     const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
     hypertype.add("B", "C");
     hypertype.add("1", "B", "2");
@@ -182,15 +182,60 @@ test("fusion bridge", () => {
     expect(data.links.length).toBe(5);
 });
 
-// TODO:
-// hypertype.add("A", "B");
-// hypertype.add("1", "B", "2");
+test("two-edge end bridge", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
+    hypertype.add("A", "B");
+    hypertype.add("1", "B", "2");
 
-// TODO:
-// hypertype.add("A", "B");
-// hypertype.add("B", "C");
-// hypertype.add("1", "B", "2");
-// hypertype.add("3", "B", "4");
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(6);
+    expect(data.links.length).toBe(5);
+});
+
+test("continuous fusion", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
+    hypertype.add("A", "B");
+    hypertype.add("B", "C");
+    hypertype.add("C", "D");
+    hypertype.add("D", "E");
+
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(5);
+    expect(data.links.length).toBe(4);
+});
+
+test("two-edge fusion skip bridge", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
+    hypertype.add("A", "B");
+    hypertype.add("B", "C");
+
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(3);
+    expect(data.links.length).toBe(2);
+});
+
+test("two-edge confluence skip fusion and bridge", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
+    hypertype.add("A", "B");
+    hypertype.add("B", "C");
+    hypertype.add("B", "1", "2");
+
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(5);
+    expect(data.links.length).toBe(4);
+});
+
+test("two-edge fusion bridge", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.BRIDGE });
+    hypertype.add("A", "B");
+    hypertype.add("B", "C");
+    hypertype.add("1", "B", "2");
+    hypertype.add("3", "B", "4");
+
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(10);
+    expect(data.links.length).toBe(9);
+});
 
 test.skip("huge", () => {
     const fs = require("fs");

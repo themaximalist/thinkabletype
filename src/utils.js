@@ -6,6 +6,14 @@ export function addIndex(index, key, val) {
     index.get(key).push(val);
 }
 
+export function setIndex(index, key, val) {
+    if (!index.has(key)) {
+        index.set(key, new Map());
+    }
+
+    index.get(key).set(val.id, val);
+}
+
 export function arrayContains(x, y) {
     if (y.length > x.length) {
         return false;

@@ -102,22 +102,24 @@ export default class ForceGraph {
         const bridgeIndex = new Map();
 
         for (const link of this.forceLinks.values()) {
-            for (const node of link.nodes) {
-                utils.addIndex(bridgeIndex, node.symbol, node);
+            for (let node of link.nodes) {
+                node = this.masqueradeNode(node);
+                utils.setIndex(bridgeIndex, node.symbol, node);
             }
         }
 
+
         for (const bridgeNodes of bridgeIndex.values()) {
-            if (bridgeNodes.length < 2) continue;
+            if (bridgeNodes.size < 2) continue;
 
             const bridgeNode = {
-                id: `${bridgeNodes[0].symbol}#bridge`,
+                id: `${bridgeNodes.values().next().value.symbol}#bridge`,
                 bridge: true,
             };
 
             nodes.set(bridgeNode.id, bridgeNode);
 
-            for (const node of bridgeNodes) {
+            for (const node of bridgeNodes.values()) {
                 const link = {
                     id: `${bridgeNode.id}->${node.id}`,
                     source: bridgeNode.id,
