@@ -1,9 +1,11 @@
+/*
 export default class Node {
     constructor(symbol) {
         this.symbol = symbol;
         this.id = this.symbol;
     }
 }
+*/
 
 /*
 export default class Node {

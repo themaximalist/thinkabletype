@@ -1,5 +1,5 @@
 import Hyperedge from "./Hyperedge";
-import Node from "./Node";
+import * as utils from "./utils";
 import ForceGraph from "./ForceGraph";
 
 export default class Hypergraph {
@@ -10,6 +10,62 @@ export default class Hypergraph {
         BRIDGE: 3
     };
 
+    constructor(options = {}) {
+        this.options = options;
+        if (typeof this.options.interwingle === "undefined") {
+            this.options.interwingle = Hypergraph.INTERWINGLE.ISOLATED;
+        }
+
+        this.hyperedges = [];
+        this.forceGraph = new ForceGraph(this);
+
+        const hyperedges = options.hyperedges || [];
+        for (const hyperedge of hyperedges) {
+            this.add.apply(this, hyperedge);
+        }
+    }
+
+    get isIsolated() {
+        return this.options.interwingle === Hypergraph.INTERWINGLE.ISOLATED;
+    }
+
+    get isConfluence() {
+        return this.options.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE;
+    }
+
+    get isFusion() {
+        return this.options.interwingle >= Hypergraph.INTERWINGLE.FUSION;
+    }
+
+    get isBridge() {
+        return this.options.interwingle >= Hypergraph.INTERWINGLE.BRIDGE;
+    }
+
+
+
+    add() {
+        const symbols = Array.from(arguments);
+        const hyperedge = new Hyperedge(symbols);
+        this.hyperedges.push(hyperedge);
+        return hyperedge;
+    }
+
+    get() {
+        const symbols = Array.from(arguments);
+        for (const hyperedge of this.hyperedges) {
+            if (utils.arraysEqual(hyperedge.symbols, symbols)) {
+                return hyperedge;
+            }
+        }
+
+        return null;
+    }
+
+    graphData() {
+        return this.forceGraph.graphData();
+    }
+
+    /*
     constructor(options = {}) {
         this._nodes = new Map();
         this._hyperedges = new Map();
@@ -48,6 +104,7 @@ export default class Hypergraph {
     graphData() {
         return this.forceGraph.graphData();
     }
+    */
 }
 
 /*
@@ -121,23 +178,6 @@ export default class Hypergraph {
         this.nodes = new Nodes(this);
         this.hyperedges = new Hyperedges(this);
     }
-
-    get isIsolated() {
-        return this.options.interwingle === Hypergraph.INTERWINGLE.ISOLATED;
-    }
-
-    get isConfluence() {
-        return this.options.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE;
-    }
-
-    get isFusion() {
-        return this.options.interwingle >= Hypergraph.INTERWINGLE.FUSION;
-    }
-
-    get isBridge() {
-        return this.options.interwingle >= Hypergraph.INTERWINGLE.BRIDGE;
-    }
-
 
     create() {
         if (isNode(arguments[0])) {

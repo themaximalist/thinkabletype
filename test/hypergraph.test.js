@@ -18,23 +18,48 @@ import { expect, test } from "vitest";
 
 test("empty hypertype", () => {
   const hypertype = new HyperType();
-  expect(hypertype.nodes).toEqual([]);
   expect(hypertype.hyperedges).toEqual([]);
 });
 
-test("node id", () => {
+test("build edge", () => {
   const hypertype = new HyperType();
-  const node1 = new Node("A");
-  expect(node1.symbol).toBe("A");
-  expect(node1.id).toBe("A");
+  const edge = hypertype.add("A", "B");
+  expect(edge).instanceOf(Hyperedge);
+  expect(edge.symbols).toEqual(["A", "B"]);
+  expect(edge.id).toEqual("A->B");
 
-  const node2 = new Node("A");
-  expect(node2.symbol).toBe("A");
-  expect(node2.id).toBe("A");
+  edge.add("C");
+  expect(edge.symbols).toEqual(["A", "B", "C"]);
+  expect(edge.id).toEqual("A->B->C");
 
-  expect(hypertype.nodes.length).toBe(0);
-  expect(hypertype.hyperedges.length).toBe(0);
+  const edge2 = hypertype.get("A", "B", "C");
+  expect(edge2).instanceOf(Hyperedge);
+
+  edge2.remove("C");
+  expect(edge.symbols).toEqual(["A", "B"]);
+  expect(edge.id).toEqual("A->B");
+
+  edge2.remove(0)
+  expect(edge.symbols).toEqual(["B"]);
+  expect(edge.id).toEqual("B");
 });
+
+test("edge dupes", () => {
+  const hypertype = new HyperType();
+  const edge1 = hypertype.add("A", "B");
+  const edge2 = hypertype.add("A", "B");
+  expect(edge1.id).toBe(edge2.id);
+});
+
+test("init with edges", () => {
+  const hyperedges = [
+    ["A", "B"],
+  ];
+
+  const hypertype = new HyperType({ hyperedges });
+  expect(hypertype.hyperedges.length).toBe(1);
+});
+
 
 /*
 test("edge id", () => {

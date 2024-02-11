@@ -1,10 +1,28 @@
-import Node from "./Node";
+// import Node from "./Node";
 
 export default class Hyperedge {
     constructor(symbols = []) {
-        this.symbols = symbols.map(symbol => symbol instanceof Node ? symbol.symbol : symbol);
-        this.nodes = symbols.map(symbol => new Node(symbol));
-        this.id = this.symbols.join("->");
+        this.symbols = symbols;
+    }
+
+    get id() {
+        return this.symbols.join("->");
+    }
+
+    add() {
+        const symbols = Array.from(arguments);
+        this.symbols.push(...symbols);
+    }
+
+    remove(symbol_or_index) {
+        if (typeof symbol_or_index === "number") {
+            this.symbols.splice(symbol_or_index, 1);
+        } else if (typeof symbol_or_index === "string") {
+            const index = this.symbols.indexOf(symbol_or_index);
+            if (index !== -1) {
+                this.symbols.splice(index, 1);
+            }
+        }
     }
 }
 
