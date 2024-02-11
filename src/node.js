@@ -1,4 +1,12 @@
 export default class Node {
+    constructor(symbol) {
+        this.symbol = symbol;
+        this.id = this.symbol;
+    }
+}
+
+/*
+export default class Node {
     constructor(symbol, options = {}) {
         this.symbol = symbol;
         this.options = options;
@@ -16,7 +24,6 @@ export default class Node {
         return this.symbol;
     }
 
-    /*
     constructor(symbol, options = {}) {
         this.symbol = symbol;
         this.index = options.index;
@@ -45,9 +52,7 @@ export default class Node {
         if (!this.hyperedge) return false;
         return !this.isStart && !this.isEnd;
     }
-    */
 
-    /*
     updateMasqueradeIndex() {
         if (!this.hypergraph.isFusion) return null;
         if (this.isMiddle) return null;
@@ -151,8 +156,8 @@ export default class Node {
         };
     }
 
-    */
 }
+    */
 
 /*
 // import { suggest } from "./llm.js";

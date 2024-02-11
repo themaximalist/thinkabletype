@@ -1,6 +1,56 @@
-import Hyperedge from "./hyperedge";
-import Node from "./node";
+import Hyperedge from "./Hyperedge";
+import Node from "./Node";
+import ForceGraph from "./ForceGraph";
 
+export default class Hypergraph {
+    static INTERWINGLE = {
+        ISOLATED: 0,
+        CONFLUENCE: 1,
+        FUSION: 2,
+        BRIDGE: 3
+    };
+
+    constructor(options = {}) {
+        this._nodes = new Map();
+        this._hyperedges = new Map();
+        this.forceGraph = new ForceGraph(this);
+
+        const hyperedges = options.hyperedges || [];
+        for (const hyperedge of hyperedges) {
+            this.add(hyperedge);
+        }
+    }
+
+    get nodes() {
+        return Array.from(this._nodes.values());
+    }
+
+    get hyperedges() {
+        return Array.from(this._hyperedges.values());
+    }
+
+    add(node_or_edge) {
+        if (node_or_edge instanceof Node) {
+            this._nodes.set(node_or_edge.id, node_or_edge);
+        } else if (node_or_edge instanceof Hyperedge) {
+            this._hyperedges.set(node_or_edge.id, node_or_edge);
+            for (const node of node_or_edge.nodes) {
+                this._nodes.set(node.id, node);
+            }
+        } else if (Array.isArray(node_or_edge)) {
+            const edge = new Hyperedge(node_or_edge, this);
+            this.add(edge);
+        } else {
+            throw new Error("Invalid input");
+        }
+    }
+
+    graphData() {
+        return this.forceGraph.graphData();
+    }
+}
+
+/*
 function isNode(input) {
     return input instanceof Node || typeof input === "string";
 }
@@ -99,7 +149,6 @@ export default class Hypergraph {
         throw new Error("Invalid input");
     }
 
-    /*
     get nodes() {
         return Array.from(this._nodes.values());
     }
@@ -140,9 +189,7 @@ export default class Hypergraph {
         if (Array.isArray(input)) { return new Hyperedge(input, this) }
         return new Node(input, { object });
     }
-    */
 
-    /*
     add(node_or_edge, object = null) {
         if (node_or_edge instanceof Node) {
             return this.addNode(node_or_edge);
@@ -160,9 +207,7 @@ export default class Hypergraph {
             return this.addHyperedge(edge);
         }
     }
-    */
 
-    /*
     addNode(node) {
         this._nodes.set(node.id, node);
 
@@ -186,6 +231,7 @@ export default class Hypergraph {
             this.addHyperedge(hyperedge);
         }
     }
-    */
 
 }
+
+    */

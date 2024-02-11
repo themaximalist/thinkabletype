@@ -1,5 +1,14 @@
-import Node from "./node";
+import Node from "./Node";
 
+export default class Hyperedge {
+    constructor(symbols = []) {
+        this.symbols = symbols.map(symbol => symbol instanceof Node ? symbol.symbol : symbol);
+        this.nodes = symbols.map(symbol => new Node(symbol));
+        this.id = this.symbols.join("->");
+    }
+}
+
+/*
 import { arrayContains } from "./utils.js";
 
 export default class Hyperedge {
@@ -21,7 +30,6 @@ export default class Hyperedge {
     }
 
 
-    /*
     constructor(symbols = [], hypergraph) {
 
         this.index = hypergraph._hyperedges.size;
@@ -80,8 +88,8 @@ export default class Hyperedge {
     static id(symbols) {
         return symbols.join("->");
     }
-    */
 }
+*/
 
 /*
 import Node from "./node.js";

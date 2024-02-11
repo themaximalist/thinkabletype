@@ -1,5 +1,6 @@
 import HyperType from "../src/index.js";
-import Hyperedge from "../src/hyperedge.js";
+import Hyperedge from "../src/Hyperedge.js";
+import Node from "../src/Node.js";
 
 import { expect, test } from "vitest";
 
@@ -11,11 +12,101 @@ import { expect, test } from "vitest";
 // TODO: edit/remove data. should also update indexes
 // TODO: activity parameter..way to expose in UI background sync is happening
 
+// TODO: should dynamic ID generation happen in graphData?
+
+// Hyperedge index cannot depend on hypergraph because it may not be on hypergraph
+
 test("empty hypertype", () => {
   const hypertype = new HyperType();
-  expect(hypertype.nodes.all).toEqual([]);
-  expect(hypertype.hyperedges.all).toEqual([]);
+  expect(hypertype.nodes).toEqual([]);
+  expect(hypertype.hyperedges).toEqual([]);
 });
+
+test("node id", () => {
+  const hypertype = new HyperType();
+  const node1 = new Node("A");
+  expect(node1.symbol).toBe("A");
+  expect(node1.id).toBe("A");
+
+  const node2 = new Node("A");
+  expect(node2.symbol).toBe("A");
+  expect(node2.id).toBe("A");
+
+  expect(hypertype.nodes.length).toBe(0);
+  expect(hypertype.hyperedges.length).toBe(0);
+});
+
+/*
+test("edge id", () => {
+  const hypertype = new HyperType();
+  const node1 = new Node("A");
+  expect(node1.symbol).toBe("A");
+  expect(node1.id).toBe("A");
+
+  const node2 = new Node("B");
+  expect(node2.symbol).toBe("B");
+  expect(node2.id).toBe("B");
+
+  const edge = new Hyperedge([node1, node2]);
+  expect(edge.id).toBe("A->B");
+  expect(hypertype.nodes.length).toBe(0);
+  expect(hypertype.hyperedges.length).toBe(0);
+});
+
+test("create edge and add", () => {
+  const hypertype = new HyperType();
+  const A = new Node("A");
+  const B = new Node("B");
+
+  const edge = new Hyperedge([A, B]);
+  hypertype.add(edge);
+
+  expect(hypertype.nodes.length).toBe(2);
+  expect(hypertype.hyperedges.length).toBe(1);
+});
+
+test("init with edge", () => {
+  const hypertype = new HyperType({
+    hyperedges: [
+      ["A", "B"],
+    ],
+  });
+
+  expect(hypertype.nodes.length).toBe(2);
+  expect(hypertype.hyperedges.length).toBe(1);
+});
+*/
+
+
+/*
+test("add dupe node", () => {
+  const hypertype = new HyperType();
+  const node1 = new Node("A");
+  expect(node1.symbol).toBe("A");
+  expect(node1.id).toBe("A");
+
+  hypertype.add(node1);
+  expect(hypertype.nodes.length).toBe(1);
+
+  const node2 = new Node("A");
+  expect(node2.symbol).toBe("A");
+  expect(node2.id).toBe("A");
+
+  hypertype.add(node2);
+  expect(hypertype.nodes.length).toBe(1);
+});
+
+test.only("node morphs changes ID with edge context", () => {
+  const hypertype = new HyperType();
+  const node1 = new Node("A");
+  const node2 = new Node("B");
+  const edge = new Hyperedge([node1, node2]);
+  expect(node1.id).toBe("A");
+  expect(node2.id).toBe("B");
+  // expect(edge.id).toBe("A->B");
+});
+
+
 
 test("created node id", () => {
   const hypertype = new HyperType();
@@ -25,7 +116,8 @@ test("created node id", () => {
   expect(node.hyperedge).toBe(null);
 });
 
-/*
+
+
 test("created edge id", () => {
   const hypertype = new HyperType();
   const edge = hypertype.create(["A", "B"]);
