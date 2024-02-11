@@ -1,3 +1,41 @@
+
+import HyperType from "../src/index.js";
+
+import { expect, test } from "vitest";
+
+test.skip("simple embeddings search", async () => {
+    const hypertype = HyperType.parse("Red,Green,Blue\nWhite,Black,Gray");
+    await hypertype.sync();
+
+    console.log(hypertype.embeddings);
+
+    // const similar = await hypertype.similar("Redish");
+    // console.log(similar);
+
+    // console.log(hypertype);
+
+    /*
+    expect(hypertype).toBeInstanceOf(HyperType);
+    expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
+
+    const data = hypertype.graphData();
+    expect(data.nodes.length).toBe(3);
+    expect(data.nodes[0].id).toBe("0:A");
+    expect(data.nodes[1].id).toBe("0:A.B");
+    expect(data.nodes[2].id).toBe("0:A.B.C");
+
+    expect(data.links.length).toBe(2);
+    expect(data.links[0].id).toBe("0:A->0:A.B");
+    expect(data.links[0].source).toBe("0:A");
+    expect(data.links[0].target).toBe("0:A.B");
+    expect(data.links[0]._meta.hyperedgeID).toBe("0:A->B->C");
+
+    expect(data.links[1].id).toBe("0:A.B->0:A.B.C");
+    expect(data.links[1].source).toBe("0:A.B");
+    expect(data.links[1].target).toBe("0:A.B.C");
+    expect(data.links[1]._meta.hyperedgeID).toBe("0:A->B->C");
+    */
+});
 /*
 import Hypergraph from "../src/hypergraph.js";
 

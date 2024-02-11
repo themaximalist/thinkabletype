@@ -1,8 +1,9 @@
 import * as utils from "./utils.js";
 
 export default class Hyperedge {
-    constructor(symbols = []) {
+    constructor(symbols = [], hypergraph) {
         this.symbols = symbols;
+        this.hypergraph = hypergraph;
     }
 
     get id() {
@@ -20,15 +21,18 @@ export default class Hyperedge {
     add() {
         const symbols = Array.from(arguments);
         this.symbols.push(...symbols);
+        this.hypergraph.setUnsynced();
     }
 
     remove(symbol_or_index) {
         if (typeof symbol_or_index === "number") {
             this.symbols.splice(symbol_or_index, 1);
+            this.hypergraph.setUnsynced();
         } else if (typeof symbol_or_index === "string") {
             const index = this.symbols.indexOf(symbol_or_index);
             if (index !== -1) {
                 this.symbols.splice(index, 1);
+                this.hypergraph.setUnsynced();
             }
         }
     }

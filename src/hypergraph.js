@@ -54,7 +54,7 @@ export default class Hypergraph {
 
     add() {
         const symbols = Array.from(arguments);
-        const hyperedge = new Hyperedge(symbols);
+        const hyperedge = new Hyperedge(symbols, this);
         this.hyperedges.push(hyperedge);
         return hyperedge;
     }

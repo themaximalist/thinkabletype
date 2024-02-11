@@ -3,17 +3,29 @@ import Hypergraph from "./Hypergraph.js";
 
 import { calculatePageRank, pageRank } from "./pagerank.js";
 // import { suggest } from "./llm.js";
-// import VectorDB from "@themaximalist/vectordb.js"
+import VectorDB from "@themaximalist/vectordb.js"
 
 export default class HyperType extends Hypergraph {
 
-    constructor() {
-        super(...arguments);
+    constructor(options = {}) {
+        super(options);
+
+        this.vectordb = new VectorDB(options.vectordb);
 
         this.pageranks = {};
         this._synced = {
-            pagerank: false
+            pagerank: true,
+            embeddings: true,
         };
+
+        if (this.hyperedges.length > 0) {
+            this.setUnsynced();
+        }
+    }
+
+    add() {
+        this.setUnsynced();
+        return super.add.apply(this, arguments);
     }
 
     get synced() {
@@ -23,8 +35,20 @@ export default class HyperType extends Hypergraph {
         return true;
     }
 
+    setUnsynced() {
+        const obj = Object.assign({}, this._synced);
+
+        for (const key of Object.keys(obj)) {
+            obj[key] = false;
+        }
+        this._synced = obj;
+
+        return false;
+    }
+
     async sync() {
         await this.syncPagerank();
+        await this.syncEmbeddings();
         return this.synced;
     }
 
@@ -32,6 +56,13 @@ export default class HyperType extends Hypergraph {
         if (this._synced.pagerank) return true;
         this.pageranks = await calculatePageRank(this);
         this._synced.pagerank = true;
+        return true;
+    }
+
+    async syncEmbeddings() {
+        if (this._synced.embeddings) return true;
+
+        this._synced.embeddings = true;
         return true;
     }
 
