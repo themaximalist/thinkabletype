@@ -247,7 +247,6 @@ test.skip("huge", () => {
             return line.split(" -> ");
         });
 
-    // const hypertype = new HyperType(hyperedges);
     const start = Date.now();
     const hypertype = new HyperType({ hyperedges, interwingle: HyperType.INTERWINGLE.BRIDGE });
     const data = hypertype.graphData();
