@@ -74,6 +74,10 @@ h6 {
     margin-top: 70px;
 }
 
+.badges img {
+    width: auto;
+}
+
 .badges {
     margin-top: -40px;
     text-align: center;

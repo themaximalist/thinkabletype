@@ -2,6 +2,14 @@
 
 <img src="logo.png" alt="HyperType" />
 
+<div class="badges" style="text-align: center">
+<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/hypertype">
+<img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fhypertype">
+<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/hypertype">
+<img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/hypertype">
+</div>
+
+
 > Multidimensional Mind Mapping
 >
 > Interwingled Information Language
@@ -92,7 +100,7 @@ Install HyperType from NPM:
 npm install @themaximalist/hypertype
 ```
 
-#### Load .hypertype file
+### Load .hypertype file
 
 You can import an existing `.hypertype` file (a CSV file)
 
@@ -158,27 +166,29 @@ const data = hypertype.graphData(); // { nodes, links } for Force Graph 3D
 
 In addition, an `interwingle` parameter is available to control the interconnections of the graph.
 
-#### Visualizing Interconnections
 
-HyperType supports an `interwingle` parameter that allows increasingly levels of interconnections.
-
-##### Interwingle Isolated
+#### Interwingle Isolated
 
 `Isolated` displays hyperedges exactly as they're entered, with no interconnections.
 
 ```javascript
-// hyperedges are only connected to themselves, not anything else
+// hyperedges
+//   ["Hercules", "son", "Zeus"],
+//   ["Hercules", "son", "Alcmene"]
 hypertype.interwingle = HyperType.INTERWINGLE.ISOLATED;
 const data = hypertype.graphData();
 // Hercules -> son -> Zeus
 // Hercules -> son -> Alcmene
 ```
 
-##### Interwingle Confluence
+#### Interwingle Confluence
 
 `Confluence` connects common parents.
 
 ```javascript
+// hyperedges
+//   ["Hercules", "son", "Zeus"],
+//   ["Hercules", "son", "Alcmene"]
 hypertype.interwingle = HyperType.INTERWINGLE.CONFLUENCE;
 const data = hypertype.graphData();
 //
@@ -188,7 +198,7 @@ const data = hypertype.graphData();
 //
 ```
 
-##### Interwingle Fusion
+#### Interwingle Fusion
 
 `Fusion` connects starts and ends.
 
@@ -201,7 +211,7 @@ const data = hypertype.graphData();
 // Aristotle -> student -> Plato -> student -> Socrates
 ```
 
-##### Interwingle Bridge
+#### Interwingle Bridge
 
 `Bridge` connects common symbols with a bridge.
 
