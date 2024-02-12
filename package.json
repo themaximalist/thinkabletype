@@ -13,8 +13,10 @@
         "test": "vitest test"
     },
     "keywords": [
-        "hypergraph",
-        "dsl"
+        "mind mapping",
+        "knowledge graph",
+        "hypertext",
+        "hypergraph"
     ],
     "author": "The Maximalist",
     "license": "MIT",

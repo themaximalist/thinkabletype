@@ -20,7 +20,7 @@
 >
 > A Knowledge Graph Toolkit
 
-HyperType is a way to represent concepts, ideas and information.
+`HyperType` is a way to represent concepts, ideas and information.
 
 It's great at building [knowledge graphs](https://hypertyper.com) and aims to work the way you think.
 
@@ -41,7 +41,7 @@ What matters less is the syntax, and more that there are only two things:
 * Symbols
 * Connections
 
-Together these form the building blocks of HyperType.
+Together these form the building blocks of `HyperType`.
 
 
 ## A New Kind of Knowledge Graph
@@ -50,7 +50,7 @@ Current knowledge graphs limit how we think. They don't visualize information in
 
 Mind Mapping tries to squeeze complex relationships into a 2D hierarchy—stripped of context, interconnections and intuition.
 
-HyperType is not about creating a simplified view of some information in your head—it's about getting lost in the forest, discovering deep insights, and finding your way back.
+`HyperType` is not about creating a simplified view of some information in your head—it's about getting lost in the forest, discovering deep insights, and finding your way back.
 
 Here is [HyperTyper](https://hypertyper.com), a frontend UI to HyperType.
 
@@ -58,7 +58,7 @@ Here is [HyperTyper](https://hypertyper.com), a frontend UI to HyperType.
 
 
 
-## HyperTyping
+## Creating a .hypertype file
 
 Creating a `.hypertype` file is as simple as creating a text file with one or more of these connected ideas.
 
@@ -68,78 +68,247 @@ Tim Berners-Lee -> invented -> WWW
 HyperText -> influenced -> WWW
 ```
 
-HyperType reads this file, builds the symbols and connections—and understand these ideas are interconnected.
+`HyperType` reads this file, builds the symbols and connections—and understand these ideas are interconnected.
 
-Interconnectedness is a core idea in HyperType—called **interwingle**. Interwingle means knowledge is deeply interconnected and there isn't a clean way to divide it up.
+Interconnectedness is a core idea in `HyperType`—called **interwingle**. Interwingle means knowledge is deeply interconnected and there isn't a clean way to divide it up.
 
-HyperType provides this tool and many more to work with your information.
+`HyperType` provides this tool and many more to work with your information.
 
-From PageRank, to Text Similarity, to LLMs, HyperType wants you to do the hard work of thinking—and then it will do everything it can to help you hit the high notes.
+From PageRank, to Text Similarity, to LLMs, `HyperType` wants you to do the hard work of thinking—and then it will do everything it can to help you hit the high notes.
 
 
 
-## HyperType Interface
+## HyperTyping
 
-HyperType is a lot of things. It's a DSL, it's a parser, it's a hypergraph database, it's a text similarity vector search engine, it's an AI Research Copilot.
+`HyperType` is a lot of things. It's a DSL, it's a parser, it's a hypergraph database, it's a text similarity vector search engine, it's an AI Research Copilot.
 
-But at it's core, it's just a library. You can install it from NPM like this
+But at it's core, it's just a library — and getting started is easy.
+
+### Installing HyperType
+
+Install `HyperType` from NPM:
 
 ```bash
 npm install @themaximalist/hypertype
 ```
 
+#### Load .hypertype file
+
 You can import an existing `.hypertype` file (a CSV file)
 
 ```javascript
 import HyperType from "@themaximalist/hypertype"
-const hypertype = HyperType.parse("secret_research_project.hypertype");
+const hypertype = HyperType.parse("ancient_sumerians.hypertype");
+
+// or specify a different separator
+const hypertype = HyperType.parse("secret_research_project.hypertype", {
+  parse: {
+    delimiter: " -> "
+  }
+});
 ```
+
+#### Initialize with data
+
+You can also initialize `HyperType` with an list of nodes and connections (called Hyperedges).
+
+```javascript
+const hyperedges = [
+  ["Plato", "student", "Socrates"],
+  ["Aristotle", "student", "Plato"]
+];
+
+const hypertype = new HyperType({ hyperedges });
+```
+
+#### Build programatically
 
 Or you can build up a HyperType file programatically
 
 ```javascript
 const hypertype = new HyperType();
-hypertype.add(["Vannevar Bush", "author", "As We May Think"]);
-hypertype.add(["Ted Nelson", "invented", "HyperText"]);
-hypertype.add(["As We May Think", "influenced", "HyperText"]);
+hypertype.add("Vannevar Bush", "author", "As We May Think");
+hypertype.add("Ted Nelson", "invented", "HyperText");
+hypertype.add("As We May Think", "influenced", "HyperText");
 ```
 
-HyperType allows you control your knowledge graphs in the following ways:
-
-**1. Control Interconnections**
+You can also build up a Hyperedge
 
 ```javascript
-hypertype.interwingle = HyperType.INTERWINGLE.ISOLATE; // no interconnections
-hypertype.interwingle = HyperType.INTERWINGLE.CONFLUENCE; // shared parents
-hypertype.interwingle = HyperType.INTERWINGLE.FUSION; // shared start and end
-hypertype.interwingle = HyperType.INTERWINGLE.BRIDGE; // shared middle
+const edge = hypertype.add("Vannevar Bush");
+edge.add("invented");
+edge.add("Memex");
 ```
 
-**2. Find important symbols with PageRank**
+
+
+### Visualize HyperType
+
+Connections and visualizations are a core part of `HyperType`—so [Force Graph 3D](https://vasturiano.github.io/3d-force-graph/) is supported out of the box.
 
 ```javascript
-const ted = hypertype.get("Ted Nelson");
-// ted.pagerank has a reference of every node it touches and its weight
+const hypertype = new HyperType({
+  hyperedges: [
+    ["Hercules", "son", "Zeus"],
+    ["Hercules", "son", "Alcmene"],
+  ]
+});
+const data = hypertype.graphData(); // { nodes, links } for Force Graph 3D
 ```
 
-**3. Find hidden connections with Embeddings and Vector Search**
+In addition, an `interwingle` parameter is available to control the interconnections of the graph.
+
+#### Visualizing Interconnections
+
+`HyperType` supports an `interwingle` parameter that allows increasingly levels of interconnections.
+
+##### Interwingle Isolated
+
+`Isolated` displays hyperedges exactly as they're entered, with no interconnections.
 
 ```javascript
-hypertype.add("Red");
-hypertype.add("Green");
-await hypertype.similar("Pink"); // ["Red"]
+// hyperedges are only connected to themselves, not anything else
+hypertype.interwingle = HyperType.INTERWINGLE.ISOLATED;
+const data = hypertype.graphData();
+// Hercules -> son -> Zeus
+// Hercules -> son -> Alcmene
 ```
 
-**4. Suggest new symbols and connections with AI Copilot**
+##### Interwingle Confluence
+
+`Confluence` connects common parents.
 
 ```javascript
-const steve_invented = hypertype.add(["Steve Jobs", "invented"]);
-await steve_invented.suggest(); // iPhone, Macintosh, NeXT, ...
+hypertype.interwingle = HyperType.INTERWINGLE.CONFLUENCE;
+const data = hypertype.graphData();
+//
+//                  / Zeus  
+//  Herculues -> son
+//                  \ Alcmene
+//
 ```
 
+##### Interwingle Fusion
 
+`Fusion` connects starts and ends.
 
-HyperType lets you create data in an intuitive way, and offer tools to manage and amplify it.
+```javascript
+// hyperedges
+//  ["Plato", "student", "Socrates"],
+//  ["Aristotle", "student", "Plato"]
+hypertype.interwingle = HyperType.INTERWINGLE.FUSION;
+const data = hypertype.graphData();
+// Aristotle -> student -> Plato -> student -> Socrates
+```
+
+##### Interwingle Bridge
+
+`Bridge` connects common symbols with a bridge.
+
+```javascript
+// hyperedges
+//  ["Vannevar Bush", "author", "As We May Think"],
+//  ["Ted Nelson", "author", "Computer Lib/Dream Machines"],
+//  ["Tim Berners-Lee", "author", "Weaving the Web"]
+hypertype.interwingle = HyperType.INTERWINGLE.BRIDGE;
+const data = hypertype.graphData();
+//
+//  Vannevar Bush   -> author -> As We May Think
+//                     |
+//  Ted Nelson      -> author -> Computer Lib/Dream Machines
+//                     |
+//  Tim Berners-Lee -> author -> Weaving the Web
+```
+
+These four views give you control in how to visualize your knowledge graph and control interconnections between your data.
+
+### PageRank
+
+`HyperType` helps you find the most referenced symbols and connections by running `PageRank` on your knowledge graph.
+
+```javascript
+const hypertype = HyperType.parse(`A,B,C
+A,B,D
+A,B,E
+A,C,Z`);
+
+await hypertype.sync(); // syncs pagerank
+hypertype.pageranks // { A: <num>, B: <num>, ... }
+hypertype.pagerank("Z") // { A: <num>, C: <num>, ... }
+```
+
+Note, `HyperType` aims to work with very large knowledge graphs, so we keep expensive operations like `PageRank` explicit and in the background, controlled through `await hypertype.sync()` or `await hypertype.syncPagerank().`
+
+### Embeddings and Vector Search
+
+`HyperType` can find similar symbols and hyperedges, not only by the explicit connections, but by the text similarity.
+
+Using [Embeddings.js](https://embeddingsjs.themaximalist.com) and [VectorDB.js](https://vectordbjs.themaximalist.com), `HyperType` can find hidden connections in your knowledge graph.
+
+Note, both embeddings and vector search are local by default, but you can use embeddings from `OpenAI` with a few config lines.
+
+#### Find Similar Symbols
+
+```javascript
+const hypertype = HyperType.parse("Red,Green,Blue\nWhite,Black,Gray");
+await hypertype.sync();
+
+await hypertype.similarSymbols("Redish"); // [ { symbol: "Red": distance: 0.5 } ]
+```
+
+#### Find Similar Hyperedges
+
+```javascript
+const hypertype = new HyperType();
+const edge1 = hypertype.add("Red", "Green", "Blue");
+const edge2 = hypertype.add("Red", "White", "Blue");
+const edge3 = hypertype.add("Bob", "Sally", "Bill");
+
+await hypertype.sync();
+
+await edge1.similar(); // [ Hyperedge("Red", "White", "Blue") ]
+await edge2.similar(); // [ Hyperedge("Red", "Green", "Blue") ]
+```
+
+### Searching
+
+Searching in `HyperType` is easy, you can search by symbol, hyperedge or a partial hyperedge.
+
+```javascript
+const hypertype = new HyperType({
+  hyperedges: [
+    ["Ted Nelson", "invented", "Xanadu"],
+    ["Tim Berners-Lee", "invented", "WWW"],
+    ["Tim Berners-Lee", "author", "Weaving the Web"],
+    // ...
+  ]
+});
+hypertype.filter("invented").length; // 2
+hypertype.filter("Tim Berners-Lee").length; // 2
+hypertype.filter("Tim Berners-Lee", "invented").length; // 1
+```
+
+### AI Auto Suggest
+
+`HyperType` has `suggest()` built in, which autocompletes any symbol or edge.
+
+Using [LLM.js](https://llmjs.themaximalist.com), you can use any Large Language Model—like GPT-4, Claude, or local LLMs like [Llamafile](https://github.com/Mozilla-Ocho/llamafile).
+
+```javascript
+const options = {
+    llm: {
+        service: "openai",
+        model: "gpt-4-0125-preview",
+        apikey: process.env.OPENAI_API_KEY
+    }
+};
+
+const hypertype = new HyperType(options);
+const hyperedge = hypertype.add("Steve Jobs", "inventor");
+hyperedge.suggest(); // ["iPhone", "Macintosh", "iPod", ... ]
+```
+
+This makes programatically expanding knowledge graphs with LLMs incredibly easy!
 
 
 
@@ -157,13 +326,17 @@ Something magical happens with symbolic programming. Like a looking glass, "the 
 
 HyperType is not a programming language in and of itself—but this high-level connecting of ideas is creating a sum greater than it's parts.
 
-AI lets humans be human—letting us tell the computer what we want rather than tell every little step of how to get there. HyperType is like this—it's declarative, you say what you want, and the program tries to fill in the gaps.
+And it's made to be simple. HyperType is just files.
+
+> File over app is a philosophy: if you want to create digital artifacts that last, they must be files you can control, in formats that are easy to retrieve and read. Use tools that give you this freedom.
+>
+> —[Steph Ango](https://stephango.com/file-over-app) (Obsidian Cofounder)
 
 
 
 ## Alpha
 
-HyperType is under heavy development and still subject to breaking changes. There isn't a full release yet, but the alpha code is available to try and experiment with.
+HyperType is under heavy development and still subject to breaking changes.
 
 
 
