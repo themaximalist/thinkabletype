@@ -97,8 +97,10 @@ code {
 
 blockquote {
     margin: 0px;
-    font-size: 16px;
+    font-size: 20px;
     font-style: italic;
+    border-left: 2px solid gray;
+    padding-left: 12px;
 }
 
 blockquote p {

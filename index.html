@@ -138,7 +138,7 @@ insights, and finding your way back.</p>
 UI to HyperType.</p>
 <video src="public/videos/hypertyper.mp4" autoplay muted loop>
 </video>
-<h2 id="hypertyping">HyperTyping</h2>
+<h2 id="creating-a-.hypertype-file">Creating a .hypertype file</h2>
 <p>Creating a <code>.hypertype</code> file is as simple as creating a
 text file with one or more of these connected ideas.</p>
 <div class="sourceCode" id="cb3"><pre
@@ -155,50 +155,190 @@ information.</p>
 <p>From PageRank, to Text Similarity, to LLMs, HyperType wants you to do
 the hard work of thinking—and then it will do everything it can to help
 you hit the high notes.</p>
-<h2 id="hypertype-interface">HyperType Interface</h2>
+<h2 id="hypertyping">HyperTyping</h2>
 <p>HyperType is a lot of things. It’s a DSL, it’s a parser, it’s a
 hypergraph database, it’s a text similarity vector search engine, it’s
 an AI Research Copilot.</p>
-<p>But at it’s core, it’s just a library. You can install it from NPM
-like this</p>
+<p>But at it’s core, it’s just a library — and getting started is
+easy.</p>
+<h3 id="installing-hypertype">Installing HyperType</h3>
+<p>Install HyperType from NPM:</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install @themaximalist/hypertype</span></code></pre></div>
+<h4 id="load-.hypertype-file">Load .hypertype file</h4>
 <p>You can import an existing <code>.hypertype</code> file (a CSV
 file)</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> HyperType <span class="im">from</span> <span class="st">&quot;@themaximalist/hypertype&quot;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> HyperType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;secret_research_project.hypertype&quot;</span>)<span class="op">;</span></span></code></pre></div>
-<p>Or you can build up a HyperType file programatically</p>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> HyperType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;ancient_sumerians.hypertype&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">// or specify a different separator</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> HyperType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;secret_research_project.hypertype&quot;</span><span class="op">,</span> {</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">parse</span><span class="op">:</span> {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">delimiter</span><span class="op">:</span> <span class="st">&quot; -&gt; &quot;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
+<h4 id="initialize-with-data">Initialize with data</h4>
+<p>You can also initialize HyperType with an list of nodes and
+connections (called Hyperedges).</p>
 <div class="sourceCode" id="cb6"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>()<span class="op">;</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;Vannevar Bush&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;As We May Think&quot;</span>])<span class="op">;</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>])<span class="op">;</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;As We May Think&quot;</span><span class="op">,</span> <span class="st">&quot;influenced&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>])<span class="op">;</span></span></code></pre></div>
-<p>HyperType allows you control your knowledge graphs in the following
-ways:</p>
-<p><strong>1. Control Interconnections</strong></p>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedges <span class="op">=</span> [</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  [<span class="st">&quot;Plato&quot;</span><span class="op">,</span> <span class="st">&quot;student&quot;</span><span class="op">,</span> <span class="st">&quot;Socrates&quot;</span>]<span class="op">,</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  [<span class="st">&quot;Aristotle&quot;</span><span class="op">,</span> <span class="st">&quot;student&quot;</span><span class="op">,</span> <span class="st">&quot;Plato&quot;</span>]</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>]<span class="op">;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>({ hyperedges })<span class="op">;</span></span></code></pre></div>
+<h4 id="build-programatically">Build programatically</h4>
+<p>Or you can build up a HyperType file programatically</p>
 <div class="sourceCode" id="cb7"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">ISOLATE</span><span class="op">;</span> <span class="co">// no interconnections</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">CONFLUENCE</span><span class="op">;</span> <span class="co">// shared parents</span></span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">FUSION</span><span class="op">;</span> <span class="co">// shared start and end</span></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">BRIDGE</span><span class="op">;</span> <span class="co">// shared middle</span></span></code></pre></div>
-<p><strong>2. Find important symbols with PageRank</strong></p>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>()<span class="op">;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Vannevar Bush&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;As We May Think&quot;</span>)<span class="op">;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>)<span class="op">;</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;As We May Think&quot;</span><span class="op">,</span> <span class="st">&quot;influenced&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<p>You can also build up a Hyperedge</p>
 <div class="sourceCode" id="cb8"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> ted <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">get</span>(<span class="st">&quot;Ted Nelson&quot;</span>)<span class="op">;</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">// ted.pagerank has a reference of every node it touches and its weight</span></span></code></pre></div>
-<p><strong>3. Find hidden connections with Embeddings and Vector
-Search</strong></p>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Vannevar Bush&quot;</span>)<span class="op">;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>edge<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;invented&quot;</span>)<span class="op">;</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>edge<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Memex&quot;</span>)<span class="op">;</span></span></code></pre></div>
+<h3 id="visualize-hypertype">Visualize HyperType</h3>
+<p>Connections and visualizations are a core part of HyperType—so <a
+href="https://vasturiano.github.io/3d-force-graph/">Force Graph 3D</a>
+is supported out of the box.</p>
 <div class="sourceCode" id="cb9"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span>)<span class="op">;</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Green&quot;</span>)<span class="op">;</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">similar</span>(<span class="st">&quot;Pink&quot;</span>)<span class="op">;</span> <span class="co">// [&quot;Red&quot;]</span></span></code></pre></div>
-<p><strong>4. Suggest new symbols and connections with AI
-Copilot</strong></p>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>({</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Hercules&quot;</span><span class="op">,</span> <span class="st">&quot;son&quot;</span><span class="op">,</span> <span class="st">&quot;Zeus&quot;</span>]<span class="op">,</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Hercules&quot;</span><span class="op">,</span> <span class="st">&quot;son&quot;</span><span class="op">,</span> <span class="st">&quot;Alcmene&quot;</span>]<span class="op">,</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span> <span class="co">// { nodes, links } for Force Graph 3D</span></span></code></pre></div>
+<p>In addition, an <code>interwingle</code> parameter is available to
+control the interconnections of the graph.</p>
+<h4 id="visualizing-interconnections">Visualizing Interconnections</h4>
+<p>HyperType supports an <code>interwingle</code> parameter that allows
+increasingly levels of interconnections.</p>
+<h5 id="interwingle-isolated">Interwingle Isolated</h5>
+<p><code>Isolated</code> displays hyperedges exactly as they’re entered,
+with no interconnections.</p>
 <div class="sourceCode" id="cb10"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> steve_invented <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>([<span class="st">&quot;Steve Jobs&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span>])<span class="op">;</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> steve_invented<span class="op">.</span><span class="fu">suggest</span>()<span class="op">;</span> <span class="co">// iPhone, Macintosh, NeXT, ...</span></span></code></pre></div>
-<p>HyperType lets you create data in an intuitive way, and offer tools
-to manage and amplify it.</p>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges are only connected to themselves, not anything else</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">ISOLATED</span><span class="op">;</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Zeus</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Alcmene</span></span></code></pre></div>
+<h5 id="interwingle-confluence">Interwingle Confluence</h5>
+<p><code>Confluence</code> connects common parents.</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">CONFLUENCE</span><span class="op">;</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">//                  / Zeus  </span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="co">//  Herculues -&gt; son</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">//                  \ Alcmene</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span></code></pre></div>
+<h5 id="interwingle-fusion">Interwingle Fusion</h5>
+<p><code>Fusion</code> connects starts and ends.</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Plato&quot;, &quot;student&quot;, &quot;Socrates&quot;],</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Aristotle&quot;, &quot;student&quot;, &quot;Plato&quot;]</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">FUSION</span><span class="op">;</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Aristotle -&gt; student -&gt; Plato -&gt; student -&gt; Socrates</span></span></code></pre></div>
+<h5 id="interwingle-bridge">Interwingle Bridge</h5>
+<p><code>Bridge</code> connects common symbols with a bridge.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Vannevar Bush&quot;, &quot;author&quot;, &quot;As We May Think&quot;],</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Ted Nelson&quot;, &quot;author&quot;, &quot;Computer Lib/Dream Machines&quot;],</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Tim Berners-Lee&quot;, &quot;author&quot;, &quot;Weaving the Web&quot;]</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">BRIDGE</span><span class="op">;</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">//  Vannevar Bush   -&gt; author -&gt; As We May Think</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">//  Ted Nelson      -&gt; author -&gt; Computer Lib/Dream Machines</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">//  Tim Berners-Lee -&gt; author -&gt; Weaving the Web</span></span></code></pre></div>
+<p>These four views give you control in how to visualize your knowledge
+graph and control interconnections between your data.</p>
+<h3 id="pagerank">PageRank</h3>
+<p>HyperType helps you find the most referenced symbols and connections
+by running <code>PageRank</code> on your knowledge graph.</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> HyperType<span class="op">.</span><span class="fu">parse</span>(<span class="vs">`A,B,C</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="vs">A,B,D</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="vs">A,B,E</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="vs">A,C,Z`</span>)<span class="op">;</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span> <span class="co">// syncs pagerank</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">pageranks</span> <span class="co">// { A: &lt;num&gt;, B: &lt;num&gt;, ... }</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">pagerank</span>(<span class="st">&quot;Z&quot;</span>) <span class="co">// { A: &lt;num&gt;, C: &lt;num&gt;, ... }</span></span></code></pre></div>
+<p>Note, HyperType aims to work with very large knowledge graphs, so we
+keep expensive operations like <code>PageRank</code> explicit and in the
+background, controlled through <code>await hypertype.sync()</code> or
+<code>await hypertype.syncPagerank().</code></p>
+<h3 id="embeddings-and-vector-search">Embeddings and Vector Search</h3>
+<p>HyperType can find similar symbols and hyperedges, not only by the
+explicit connections, but by the text similarity.</p>
+<p>Using <a
+href="https://embeddingsjs.themaximalist.com">Embeddings.js</a> and <a
+href="https://vectordbjs.themaximalist.com">VectorDB.js</a>, HyperType
+can find hidden connections in your knowledge graph.</p>
+<p>Note, both embeddings and vector search are local by default, but you
+can use embeddings from <code>OpenAI</code> with a few config lines.</p>
+<h4 id="find-similar-symbols">Find Similar Symbols</h4>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> HyperType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;Red,Green,Blue</span><span class="sc">\n</span><span class="st">White,Black,Gray&quot;</span>)<span class="op">;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">similarSymbols</span>(<span class="st">&quot;Redish&quot;</span>)<span class="op">;</span> <span class="co">// [ { symbol: &quot;Red&quot;: distance: 0.5 } ]</span></span></code></pre></div>
+<h4 id="find-similar-hyperedges">Find Similar Hyperedges</h4>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>()<span class="op">;</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge1 <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span><span class="op">,</span> <span class="st">&quot;Green&quot;</span><span class="op">,</span> <span class="st">&quot;Blue&quot;</span>)<span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge2 <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span><span class="op">,</span> <span class="st">&quot;White&quot;</span><span class="op">,</span> <span class="st">&quot;Blue&quot;</span>)<span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge3 <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Bob&quot;</span><span class="op">,</span> <span class="st">&quot;Sally&quot;</span><span class="op">,</span> <span class="st">&quot;Bill&quot;</span>)<span class="op">;</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> hypertype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge1<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot;) ]</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge2<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;Green&quot;, &quot;Blue&quot;) ]</span></span></code></pre></div>
+<h3 id="searching">Searching</h3>
+<p>Searching in HyperType is easy, you can search by symbol, hyperedge
+or a partial hyperedge.</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>({</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;Xanadu&quot;</span>]<span class="op">,</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;WWW&quot;</span>]<span class="op">,</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Weaving the Web&quot;</span>]<span class="op">,</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;invented&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 2</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 2</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 1</span></span></code></pre></div>
+<h3 id="ai-auto-suggest">AI Auto Suggest</h3>
+<p>HyperType has <code>suggest()</code> built in, which autocompletes
+any symbol or edge.</p>
+<p>Using <a href="https://llmjs.themaximalist.com">LLM.js</a>, you can
+use any Large Language Model—like GPT-4, Claude, or local LLMs like <a
+href="https://github.com/Mozilla-Ocho/llamafile">Llamafile</a>.</p>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> options <span class="op">=</span> {</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">llm</span><span class="op">:</span> {</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">service</span><span class="op">:</span> <span class="st">&quot;openai&quot;</span><span class="op">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;gpt-4-0125-preview&quot;</span><span class="op">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">apikey</span><span class="op">:</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">OPENAI_API_KEY</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>(options)<span class="op">;</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedge <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Steve Jobs&quot;</span><span class="op">,</span> <span class="st">&quot;inventor&quot;</span>)<span class="op">;</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>hyperedge<span class="op">.</span><span class="fu">suggest</span>()<span class="op">;</span> <span class="co">// [&quot;iPhone&quot;, &quot;Macintosh&quot;, &quot;iPod&quot;, ... ]</span></span></code></pre></div>
+<p>This makes programatically expanding knowledge graphs with LLMs
+incredibly easy!</p>
 <h2 id="the-design-of-hypertype">The Design of HyperType</h2>
 <p>A language for ideas needs a structureless structure. That’s exactly
 what Stephen Wolfram found hypergraphs to be while working on his
@@ -217,14 +357,20 @@ lot like language. You have legalese and then you have poetry.</p>
 <p>HyperType is not a programming language in and of itself—but this
 high-level connecting of ideas is creating a sum greater than it’s
 parts.</p>
-<p>AI lets humans be human—letting us tell the computer what we want
-rather than tell every little step of how to get there. HyperType is
-like this—it’s declarative, you say what you want, and the program tries
-to fill in the gaps.</p>
+<p>HyperType is open source, and the file format is incredibly
+simple—just CSV files.</p>
+<p>It’s goal is to give you control over the knowledge and information
+in your life.</p>
+<blockquote>
+<p>File over app is a philosophy: if you want to create digital
+artifacts that last, they must be files you can control, in formats that
+are easy to retrieve and read. Use tools that give you this freedom.</p>
+<p>—<a href="https://stephango.com/file-over-app">Steph Ango</a>
+(Obsidian Cofounder)</p>
+</blockquote>
 <h2 id="alpha">Alpha</h2>
 <p>HyperType is under heavy development and still subject to breaking
-changes. There isn’t a full release yet, but the alpha code is available
-to try and experiment with.</p>
+changes.</p>
 <h2 id="projects">Projects</h2>
 <p><code>LLM.js</code> is currently used in the following projects:</p>
 <ul>
