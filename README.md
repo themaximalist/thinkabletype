@@ -3,10 +3,10 @@
 <img src="logo.png" alt="HyperType" />
 
 <div class="badges" style="text-align: center">
-<img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/hypertype">
-<img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fhypertype">
-<img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/hypertype">
-<img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/hypertype">
+<a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/hypertype"></a>
+<a href="https://www.npmjs.com/package/@themaximalist/hypertype"><img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fhypertype"></a>
+<a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/hypertype"></a>
+<a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/hypertype"></a>
 </div>
 
 
@@ -62,7 +62,7 @@ HyperType is not about creating a simplified view of some information in your he
 
 Here is [HyperTyper](https://hypertyper.com), a frontend UI to HyperType.
 
-<video src="public/videos/hypertyper.mp4" autoplay muted loop></video>
+<video src="videos/hypertyper.mp4" autoplay muted loop></video>
 
 
 
