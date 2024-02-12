@@ -2,7 +2,7 @@ import csv from "papaparse"
 import Hypergraph from "./Hypergraph.js";
 
 import { calculatePageRank, pageRank } from "./pagerank.js";
-// import { suggest } from "./llm.js";
+import { suggest } from "./llm.js";
 import VectorDB from "@themaximalist/vectordb.js"
 
 export default class HyperType extends Hypergraph {
@@ -114,23 +114,9 @@ export default class HyperType extends Hypergraph {
         return results;
     }
 
-
-
-    // async suggest(options = {}) {
-
-    //     const args = await Promise.all(Array.from(arguments).map(arg => Node.create(arg, this)));
-    //     if (args.length === 0) { return [] }
-
-    //     const combined_symbol = args.map(args => args.symbol).join(" and ");
-    //     const llmOptions = merge(this.options.llm, options);
-    //     const symbols = await suggest(combined_symbol, llmOptions);
-
-    //     const nodes = await Promise.all(symbols.map(symbol => Node.create(symbol, this)));
-    //     return nodes.filter(node => {
-    //         for (const arg of args) {
-    //             if (arg.equal(node)) return false;
-    //         }
-    //         return true;
-    //     });
-    // }
+    async suggest(symbols, options = {}) {
+        const llmOptions = Object.assign({}, this.options.llm || {}, options);
+        const phrase = symbols.join(" ");
+        return await suggest(phrase, llmOptions);
+    }
 }

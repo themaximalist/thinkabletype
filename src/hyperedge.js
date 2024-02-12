@@ -57,4 +57,8 @@ export default class Hyperedge {
 
         return Array.from(hyperedges.values());
     }
+
+    async suggest(options = {}) {
+        return this.hypertype.suggest(this.symbols, options);
+    }
 }

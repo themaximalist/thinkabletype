@@ -1,7 +1,9 @@
 {
     "name": "@themaximalist/hypertype",
-    "version": "0.0.2",
-    "description": "Hypergraph Programming Language",
+    "version": "0.0.3",
+    "description": "Knowledge Graph Toolkit",
+    "homepage": "https://hypertypelang.com",
+    "repository": "themaximal1st/hypertype",
     "type": "module",
     "main": "src/index.js",
     "directories": {
@@ -14,7 +16,7 @@
         "hypergraph",
         "dsl"
     ],
-    "author": "Brad Jasper",
+    "author": "The Maximalist",
     "license": "MIT",
     "dependencies": {
         "@themaximalist/llm.js": "^0.5.1",
