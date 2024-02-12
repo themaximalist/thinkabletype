@@ -1,6 +1,6 @@
 # hypertype
 
-<img src="public/logo.png" alt="HyperType" />
+<img src="media/images/logo.png" alt="HyperType" />
 
 <div class="badges" style="text-align: center">
 <a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/hypertype"></a>
@@ -8,6 +8,8 @@
 <a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/hypertype"></a>
 <a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/hypertype"></a>
 </div>
+
+<br />
 
 
 > Multidimensional Mind Mapping
@@ -62,7 +64,7 @@ HyperType is not about creating a simplified view of some information in your he
 
 Here is [HyperTyper](https://hypertyper.com), a frontend UI to HyperType.
 
-<video src="videos/hypertyper.mp4" autoplay muted loop></video>
+<video src="media/videos/hypertyper.mp4" autoplay muted loop></video>
 
 
 
