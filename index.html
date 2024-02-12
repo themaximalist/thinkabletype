@@ -225,52 +225,102 @@ control the interconnections of the graph.</p>
 <p><code>Isolated</code> displays hyperedges exactly as they’re entered,
 with no interconnections.</p>
 <div class="sourceCode" id="cb10"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="co">//   [&quot;Hercules&quot;, &quot;son&quot;, &quot;Zeus&quot;],</span></span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co">//   [&quot;Hercules&quot;, &quot;son&quot;, &quot;Alcmene&quot;]</span></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">ISOLATED</span><span class="op">;</span></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Zeus</span></span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Alcmene</span></span></code></pre></div>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>({</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">interwingle</span><span class="op">:</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">ISOLATED</span><span class="op">,</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Hercules&quot;</span><span class="op">,</span> <span class="st">&quot;son&quot;</span><span class="op">,</span> <span class="st">&quot;Zeus&quot;</span>]<span class="op">,</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Hercules&quot;</span><span class="op">,</span> <span class="st">&quot;son&quot;</span><span class="op">,</span> <span class="st">&quot;Alcmene&quot;</span>]<span class="op">,</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges are displayed exactly as entered</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Zeus</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Alcmene</span></span></code></pre></div>
+<figure>
+<img src="media/images/hercules-interwingle-1.png"
+alt="Interwingle Isolated HyperTyper Example" />
+<figcaption aria-hidden="true">Interwingle Isolated HyperTyper
+Example</figcaption>
+</figure>
 <h4 id="interwingle-confluence">Interwingle Confluence</h4>
 <p><code>Confluence</code> connects common parents.</p>
 <div class="sourceCode" id="cb11"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="co">//   [&quot;Hercules&quot;, &quot;son&quot;, &quot;Zeus&quot;],</span></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="co">//   [&quot;Hercules&quot;, &quot;son&quot;, &quot;Alcmene&quot;]</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">CONFLUENCE</span><span class="op">;</span></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">//                  / Zeus  </span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">//  Herculues -&gt; son</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">//                  \ Alcmene</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span></code></pre></div>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>({</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">interwingle</span><span class="op">:</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">CONFLUENCE</span><span class="op">,</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Hercules&quot;</span><span class="op">,</span> <span class="st">&quot;son&quot;</span><span class="op">,</span> <span class="st">&quot;Zeus&quot;</span>]<span class="op">,</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Hercules&quot;</span><span class="op">,</span> <span class="st">&quot;son&quot;</span><span class="op">,</span> <span class="st">&quot;Alcmene&quot;</span>]<span class="op">,</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">// nodes shares common ancestors</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="co">//                  / Zeus  </span></span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="co">//  Herculues -&gt; son</span></span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">//                  \ Alcmene</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span></code></pre></div>
+<figure>
+<img src="media/images/hercules-interwingle-2.png"
+alt="Interwingle Confluence HyperTyper Example" />
+<figcaption aria-hidden="true">Interwingle Confluence HyperTyper
+Example</figcaption>
+</figure>
 <h4 id="interwingle-fusion">Interwingle Fusion</h4>
 <p><code>Fusion</code> connects starts and ends.</p>
 <div class="sourceCode" id="cb12"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Plato&quot;, &quot;student&quot;, &quot;Socrates&quot;],</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Aristotle&quot;, &quot;student&quot;, &quot;Plato&quot;]</span></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">FUSION</span><span class="op">;</span></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">// Aristotle -&gt; student -&gt; Plato -&gt; student -&gt; Socrates</span></span></code></pre></div>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>({</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">interwingle</span><span class="op">:</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">FUSION</span><span class="op">,</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Plato&quot;</span><span class="op">,</span> <span class="st">&quot;student&quot;</span><span class="op">,</span> <span class="st">&quot;Socrates&quot;</span>]<span class="op">,</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Aristotle&quot;</span><span class="op">,</span> <span class="st">&quot;student&quot;</span><span class="op">,</span> <span class="st">&quot;Plato&quot;</span>]</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">// start and end nodes are fused together</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Aristotle -&gt; student -&gt; Plato -&gt; student -&gt; Socrates</span></span></code></pre></div>
+<figure>
+<img src="media/images/aristotle-plato-socrates-interwingle-3.png"
+alt="Interwingle Fusion HyperTyper Example" />
+<figcaption aria-hidden="true">Interwingle Fusion HyperTyper
+Example</figcaption>
+</figure>
 <h4 id="interwingle-bridge">Interwingle Bridge</h4>
 <p><code>Bridge</code> connects common symbols with a bridge.</p>
 <div class="sourceCode" id="cb13"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">// hyperedges</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Vannevar Bush&quot;, &quot;author&quot;, &quot;As We May Think&quot;],</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Ted Nelson&quot;, &quot;author&quot;, &quot;Computer Lib/Dream Machines&quot;],</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">//  [&quot;Tim Berners-Lee&quot;, &quot;author&quot;, &quot;Weaving the Web&quot;]</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>hypertype<span class="op">.</span><span class="at">interwingle</span> <span class="op">=</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">BRIDGE</span><span class="op">;</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="co">//  Vannevar Bush   -&gt; author -&gt; As We May Think</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">//  Ted Nelson      -&gt; author -&gt; Computer Lib/Dream Machines</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">//  Tim Berners-Lee -&gt; author -&gt; Weaving the Web</span></span></code></pre></div>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hypertype <span class="op">=</span> <span class="kw">new</span> <span class="fu">HyperType</span>({</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="dt">interwingle</span><span class="op">:</span> HyperType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">BRIDGE</span><span class="op">,</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Vannevar Bush&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;As We May Think&quot;</span>]<span class="op">,</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Computer Lib/Dream Machines&quot;</span>]<span class="op">,</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Weaving the Web&quot;</span>]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  ]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">// common symbols are connected through a bridge</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">//  Vannevar Bush   -&gt; author -&gt; As We May Think</span></span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">//  Ted Nelson      -&gt; author -&gt; Computer Lib/Dream Machines</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">//  Tim Berners-Lee -&gt; author -&gt; Weaving the Web</span></span></code></pre></div>
+<figure>
+<img src="media/images/authors-interwingle-4.png"
+alt="Interwingle Bridge HyperTyper Example" />
+<figcaption aria-hidden="true">Interwingle Bridge HyperTyper
+Example</figcaption>
+</figure>
 <p>These four views give you control in how to visualize your knowledge
 graph and control interconnections between your data.</p>
+<p>As you scale up the <code>interwingle</code> parameter, all the
+visualization layers start to combine. Using <code>Fusion</code>
+automatically includes <code>Confluence</code>. And using
+<code>Bridge</code> automatically includes <code>Fusion</code> and
+<code>Confluence</code>. This lets you increase the complexity of the
+knowledge graph, step-by-step.</p>
 <h3 id="pagerank">PageRank</h3>
 <p>HyperType helps you find the most referenced symbols and connections
 by running <code>PageRank</code> on your knowledge graph.</p>

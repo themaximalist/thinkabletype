@@ -174,24 +174,36 @@ In addition, an `interwingle` parameter is available to control the interconnect
 `Isolated` displays hyperedges exactly as they're entered, with no interconnections.
 
 ```javascript
-// hyperedges
-//   ["Hercules", "son", "Zeus"],
-//   ["Hercules", "son", "Alcmene"]
-hypertype.interwingle = HyperType.INTERWINGLE.ISOLATED;
+const hypertype = new HyperType({
+  interwingle: HyperType.INTERWINGLE.ISOLATED,
+  hyperedges: [
+    ["Hercules", "son", "Zeus"],
+    ["Hercules", "son", "Alcmene"],
+  ]
+});
+
+// hyperedges are displayed exactly as entered
 const data = hypertype.graphData();
 // Hercules -> son -> Zeus
 // Hercules -> son -> Alcmene
 ```
+
+![Interwingle Isolated HyperTyper Example](media/images/hercules-interwingle-1.png)
 
 #### Interwingle Confluence
 
 `Confluence` connects common parents.
 
 ```javascript
-// hyperedges
-//   ["Hercules", "son", "Zeus"],
-//   ["Hercules", "son", "Alcmene"]
-hypertype.interwingle = HyperType.INTERWINGLE.CONFLUENCE;
+const hypertype = new HyperType({
+  interwingle: HyperType.INTERWINGLE.CONFLUENCE,
+  hyperedges: [
+    ["Hercules", "son", "Zeus"],
+    ["Hercules", "son", "Alcmene"],
+  ]
+});
+
+// nodes shares common ancestors
 const data = hypertype.graphData();
 //
 //                  / Zeus  
@@ -200,29 +212,43 @@ const data = hypertype.graphData();
 //
 ```
 
+![Interwingle Confluence HyperTyper Example](media/images/hercules-interwingle-2.png)
+
 #### Interwingle Fusion
 
 `Fusion` connects starts and ends.
 
 ```javascript
-// hyperedges
-//  ["Plato", "student", "Socrates"],
-//  ["Aristotle", "student", "Plato"]
-hypertype.interwingle = HyperType.INTERWINGLE.FUSION;
+const hypertype = new HyperType({
+  interwingle: HyperType.INTERWINGLE.FUSION,
+  hyperedges: [
+    ["Plato", "student", "Socrates"],
+  	["Aristotle", "student", "Plato"]
+  ]
+});
+
+// start and end nodes are fused together
 const data = hypertype.graphData();
 // Aristotle -> student -> Plato -> student -> Socrates
 ```
+
+![Interwingle Fusion HyperTyper Example](media/images/aristotle-plato-socrates-interwingle-3.png)
 
 #### Interwingle Bridge
 
 `Bridge` connects common symbols with a bridge.
 
 ```javascript
-// hyperedges
-//  ["Vannevar Bush", "author", "As We May Think"],
-//  ["Ted Nelson", "author", "Computer Lib/Dream Machines"],
-//  ["Tim Berners-Lee", "author", "Weaving the Web"]
-hypertype.interwingle = HyperType.INTERWINGLE.BRIDGE;
+const hypertype = new HyperType({
+  interwingle: HyperType.INTERWINGLE.BRIDGE,
+  hyperedges: [
+    ["Vannevar Bush", "author", "As We May Think"],
+    ["Ted Nelson", "author", "Computer Lib/Dream Machines"],
+    ["Tim Berners-Lee", "author", "Weaving the Web"]
+  ]
+});
+
+// common symbols are connected through a bridge
 const data = hypertype.graphData();
 //
 //  Vannevar Bush   -> author -> As We May Think
@@ -232,7 +258,13 @@ const data = hypertype.graphData();
 //  Tim Berners-Lee -> author -> Weaving the Web
 ```
 
+![Interwingle Bridge HyperTyper Example](media/images/authors-interwingle-4.png)
+
 These four views give you control in how to visualize your knowledge graph and control interconnections between your data.
+
+As you scale up the `interwingle` parameter, all the visualization layers start to combine. Using `Fusion` automatically includes `Confluence`. And using `Bridge` automatically includes `Fusion` and `Confluence`. This lets you increase the complexity of the knowledge graph, step-by-step.
+
+
 
 ### PageRank
 
