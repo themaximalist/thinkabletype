@@ -336,7 +336,7 @@ hypertype.filter("Tim Berners-Lee", "invented").length; // 1
 
 HyperType has `suggest()` built in, which autocompletes any symbol or edge.
 
-Using [LLM.js](https://llmjs.themaximalist.com), you can use any Large Language Model—like GPT-4, Claude, or local LLMs like [Llamafile](https://github.com/Mozilla-Ocho/llamafile).
+Using [LLM.js](https://llmjs.themaximalist.com), you can use any Large Language Model—like GPT-4, Claude, Mistral or local LLMs like [Llamafile](https://github.com/Mozilla-Ocho/llamafile).
 
 ```javascript
 const options = {
@@ -388,7 +388,7 @@ It's goal is to give you control over the knowledge and information in your life
 
 ## Projects
 
-`LLM.js` is currently used in the following projects:
+HyperType is currently used in the following projects:
 
 -   [HyperTyper](https://hypertyper.com)
 
