@@ -88,4 +88,9 @@ export default class Hypergraph {
 
         return hyperedges;
     }
+
+    reset() {
+        this.options.interwingle = Hypergraph.INTERWINGLE.ISOLATED;
+        this.hyperedges = [];
+    }
 }

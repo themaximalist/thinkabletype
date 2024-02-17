@@ -137,8 +137,8 @@ A,B,D`);
   expect(hypertype);
   expect(hypertype.symbols.length == 4);
   expect(hypertype.hyperedges.length == 2);
-  expect(hypertype.has("A", "B", "C"));
-  expect(hypertype.has("A", "B", "D"));
+  expect(hypertype.has("A", "B", "C")).toBeTruthy();
+  expect(hypertype.has("A", "B", "D")).toBeTruthy();
 });
 
 test("parses comma in hypertype", async function () {
@@ -146,7 +146,19 @@ test("parses comma in hypertype", async function () {
   expect(hypertype);
   expect(hypertype.symbols.length == 3);
   expect(hypertype.hyperedges.length == 1);
-  expect(hypertype.has("hypertype"));
-  expect(hypertype.has("tagline"));
-  expect(hypertype.has("Turning C,S,V,s into Hypergraphs."));
+  expect(hypertype.has("hypertype")).toBeTruthy();
+  expect(hypertype.has("tagline")).toBeTruthy();
+  expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeTruthy();
+});
+
+test("reset", async function () {
+  const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs.`);
+  expect(hypertype);
+  hypertype.reset();
+  expect(hypertype.symbols.length == 0);
+  expect(hypertype.hyperedges.length == 0);
+  expect(hypertype.has("hypertype")).toBeFalsy();
+  expect(hypertype.has("tagline")).toBeFalsy();
+  expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeFalsy();
+  expect(hypertype.synced).toBeTruthy();
 });

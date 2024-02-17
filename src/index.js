@@ -119,4 +119,21 @@ export default class HyperType extends Hypergraph {
         const phrase = symbols.join(" ");
         return await suggest(phrase, llmOptions);
     }
+
+    reset() {
+        super.reset();
+
+        this.vectordb = new VectorDB(this.options.vectordb);
+
+        this.pageranks = {};
+        this.embeddings = new Map();
+        this._synced = {
+            pagerank: true,
+            embeddings: true,
+        };
+
+        if (this.hyperedges.length > 0) {
+            this.setUnsynced();
+        }
+    }
 }
