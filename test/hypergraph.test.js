@@ -162,3 +162,15 @@ test("reset", async function () {
   expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeFalsy();
   expect(hypertype.synced).toBeTruthy();
 });
+
+test("remove hyperedge", async function () {
+  const hypertype = HyperType.parse(`A,B,C\n1,2,3`);
+  expect(hypertype);
+  expect(hypertype.symbols.length == 6);
+  expect(hypertype.hyperedges.length == 2);
+  expect(hypertype.has("A", "B", "C")).toBeTruthy();
+  expect(hypertype.remove("A", "B", "C")).toBeTruthy();
+  expect(hypertype.has("A", "B", "C")).toBeFalsy();
+  expect(hypertype.symbols.length == 3);
+  expect(hypertype.hyperedges.length == 1);
+});

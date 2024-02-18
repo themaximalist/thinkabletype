@@ -93,4 +93,10 @@ export default class Hypergraph {
         this.options.interwingle = Hypergraph.INTERWINGLE.ISOLATED;
         this.hyperedges = [];
     }
+
+    remove() {
+        const edge = this.get(...arguments);
+        this.hyperedges.splice(this.hyperedges.indexOf(edge), 1);
+        return true;
+    }
 }
