@@ -19,7 +19,10 @@ export default class Hypergraph {
         this.hyperedges = [];
         this.forceGraph = new ForceGraph(this);
 
-        const hyperedges = options.hyperedges || [];
+        this.addHyperedges(options.hyperedges || []);
+    }
+
+    addHyperedges(hyperedges = []) {
         for (const hyperedge of hyperedges) {
             this.add.apply(this, hyperedge);
         }

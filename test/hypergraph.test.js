@@ -4,11 +4,6 @@ import Hyperedge from "../src/Hyperedge.js";
 import { expect, test } from "vitest";
 
 // TODO: filtering down...then expanding out...how will this work?
-// TODO: adding/editing on the hypergraph (probably hypertyper work)
-
-// TODO: sync()
-// TODO: pagerank
-// TODO: embeddings
 
 test("empty hypertype", () => {
   const hypertype = new HyperType();
@@ -155,8 +150,8 @@ test("reset", async function () {
   const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs."`);
   expect(hypertype);
   hypertype.reset();
-  expect(hypertype.symbols.length == 0);
-  expect(hypertype.hyperedges.length == 0);
+  expect(hypertype.symbols.length).toBe(0);
+  expect(hypertype.hyperedges.length).toBe(0);
   expect(hypertype.has("hypertype")).toBeFalsy();
   expect(hypertype.has("tagline")).toBeFalsy();
   expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeFalsy();
@@ -164,21 +159,40 @@ test("reset", async function () {
 });
 
 test("remove hyperedge", async function () {
-  const hypertype = HyperType.parse(`A,B,C\n1,2,3`);
+  const hypertype = HyperType.parse(`A,B,C\r\n1,2,3`);
   expect(hypertype);
-  expect(hypertype.symbols.length == 6);
-  expect(hypertype.hyperedges.length == 2);
+  expect(hypertype.symbols.length).toBe(6);
+  expect(hypertype.hyperedges.length).toBe(2);
   expect(hypertype.has("A", "B", "C")).toBeTruthy();
   expect(hypertype.remove("A", "B", "C")).toBeTruthy();
   expect(hypertype.has("A", "B", "C")).toBeFalsy();
-  expect(hypertype.symbols.length == 3);
-  expect(hypertype.hyperedges.length == 1);
+  expect(hypertype.symbols.length).toBe(3);
+  expect(hypertype.hyperedges.length).toBe(1);
 });
 
 test("export", async function () {
-  const input = `hypertype,tagline,"Turning C,S,V,s into Hypergraphs.\nA,B,C,D,E,F,G"`;
+  const input = `hypertype,tagline,"Turning C,S,V,s into Hypergraphs."\r\nA,B,C,D,E,F,G`;
   const hypertype = HyperType.parse(input);
 
   const output = hypertype.export();
   expect(input).toBe(output);
+});
+
+
+test("parse on existing hypergraph", async function () {
+  const input = `hypertype,tagline,"Turning C,S,V,s into Hypergraphs."\r\nA,B,C,D,E,F,G`;
+  const hypertype = new HyperType();
+  hypertype.parse(input);
+
+  expect(hypertype.symbols.length).toBe(10);
+  expect(hypertype.hyperedges.length).toBe(2);
+  expect(hypertype.has("hypertype")).toBeTruthy();
+  expect(hypertype.has("tagline")).toBeTruthy();
+  expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeTruthy();
+
+  hypertype.parse(`A,B,C\r\n1,2,3`);
+  expect(hypertype.symbols.length).toBe(6);
+  expect(hypertype.hyperedges.length).toBe(2);
+  expect(hypertype.has("hypertype")).toBeFalsy();
+  expect(hypertype.has("1")).toBeTruthy();
 });
