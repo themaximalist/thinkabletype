@@ -142,7 +142,7 @@ A,B,D`);
 });
 
 test("parses comma in hypertype", async function () {
-  const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs.`);
+  const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs."`);
   expect(hypertype);
   expect(hypertype.symbols.length == 3);
   expect(hypertype.hyperedges.length == 1);
@@ -152,7 +152,7 @@ test("parses comma in hypertype", async function () {
 });
 
 test("reset", async function () {
-  const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs.`);
+  const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs."`);
   expect(hypertype);
   hypertype.reset();
   expect(hypertype.symbols.length == 0);
@@ -173,4 +173,12 @@ test("remove hyperedge", async function () {
   expect(hypertype.has("A", "B", "C")).toBeFalsy();
   expect(hypertype.symbols.length == 3);
   expect(hypertype.hyperedges.length == 1);
+});
+
+test("export", async function () {
+  const input = `hypertype,tagline,"Turning C,S,V,s into Hypergraphs.\nA,B,C,D,E,F,G"`;
+  const hypertype = HyperType.parse(input);
+
+  const output = hypertype.export();
+  expect(input).toBe(output);
 });

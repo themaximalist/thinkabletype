@@ -83,6 +83,13 @@ export default class HyperType extends Hypergraph {
         return new HyperType(options);
     }
 
+    export() {
+        const hyperedges = this.hyperedges.map(hyperedge => hyperedge.symbols);
+        return csv.unparse(hyperedges, {
+            header: false,
+        });
+    }
+
     async similar(symbol, num = 3, threshold = 1.0) {
         const similarSymbols = await this.similarSymbols(symbol, num, threshold);
         const hyperedges = new Map();
