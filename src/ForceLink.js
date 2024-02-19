@@ -62,6 +62,13 @@ export default class ForceLink {
 
             if (parent) {
                 const link = this.linkData(parent, node);
+
+                // a little hacky, but ensures masqurade nodes are properly linked to their hyperedges
+                const existingLink = links.get(link.id);
+                if (existingLink) {
+                    link._meta.hyperedgeIDs = link._meta.hyperedgeIDs.concat(existingLink._meta.hyperedgeIDs);
+                }
+
                 links.set(link.id, link);
             }
 
@@ -70,8 +77,14 @@ export default class ForceLink {
     }
 
     linkData(parentNode, childNode) {
+        const hyperedgeIDs = new Set();
+        hyperedgeIDs.add(parentNode.link.id);
+        hyperedgeIDs.add(childNode.link.id);
+
         parentNode = this.forcegraph.masqueradeNode(parentNode);
         childNode = this.forcegraph.masqueradeNode(childNode);
+        hyperedgeIDs.add(parentNode.link.id);
+        hyperedgeIDs.add(childNode.link.id);
 
         return {
             id: `${parentNode.id}->${childNode.id}`,
@@ -79,7 +92,7 @@ export default class ForceLink {
             target: childNode.id,
             color: this.color,
             _meta: {
-                hyperedgeID: parentNode.link.id,
+                hyperedgeIDs: Array.from(hyperedgeIDs)
             }
         };
     }

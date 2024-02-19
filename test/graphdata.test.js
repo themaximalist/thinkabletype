@@ -10,8 +10,6 @@ test("single hyperedge (isolate)", () => {
     expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
 
     const data = hypertype.graphData();
-    console.log(data);
-
     expect(data.nodes.length).toBe(3);
     expect(data.nodes[0].id).toBe("0:A");
     expect(data.nodes[1].id).toBe("0:A.B");
@@ -21,12 +19,12 @@ test("single hyperedge (isolate)", () => {
     expect(data.links[0].id).toBe("0:A->0:A.B");
     expect(data.links[0].source).toBe("0:A");
     expect(data.links[0].target).toBe("0:A.B");
-    expect(data.links[0]._meta.hyperedgeID).toBe("0:A->B->C");
+    expect(data.links[0]._meta.hyperedgeIDs).toContain("0:A->B->C");
 
     expect(data.links[1].id).toBe("0:A.B->0:A.B.C");
     expect(data.links[1].source).toBe("0:A.B");
     expect(data.links[1].target).toBe("0:A.B.C");
-    expect(data.links[1]._meta.hyperedgeID).toBe("0:A->B->C");
+    expect(data.links[1]._meta.hyperedgeIDs).toContain("0:A->B->C");
 });
 
 test("single hyperedge (confluence)", () => {
@@ -47,12 +45,12 @@ test("single hyperedge (confluence)", () => {
     expect(data.links[0].id).toBe("A->A.B");
     expect(data.links[0].source).toBe("A");
     expect(data.links[0].target).toBe("A.B");
-    expect(data.links[0]._meta.hyperedgeID).toBe("A->B->C");
+    expect(data.links[0]._meta.hyperedgeIDs).toContain("A->B->C");
 
     expect(data.links[1].id).toBe("A.B->A.B.C");
     expect(data.links[1].source).toBe("A.B");
     expect(data.links[1].target).toBe("A.B.C");
-    expect(data.links[1]._meta.hyperedgeID).toBe("A->B->C");
+    expect(data.links[1]._meta.hyperedgeIDs).toContain("A->B->C");
 });
 
 test("multiple hyperedge (confluence)", () => {
@@ -76,10 +74,10 @@ test("multiple hyperedge (confluence)", () => {
     expect(data.links[2].id).toBe("A->A.1");
     expect(data.links[3].id).toBe("A.1->A.1.2");
 
-    expect(data.links[0]._meta.hyperedgeID).toBe("A->B->C");
-    expect(data.links[1]._meta.hyperedgeID).toBe("A->B->C");
-    expect(data.links[2]._meta.hyperedgeID).toBe("A->1->2");
-    expect(data.links[3]._meta.hyperedgeID).toBe("A->1->2");
+    expect(data.links[0]._meta.hyperedgeIDs).toContain("A->B->C");
+    expect(data.links[1]._meta.hyperedgeIDs).toContain("A->B->C");
+    expect(data.links[2]._meta.hyperedgeIDs).toContain("A->1->2");
+    expect(data.links[3]._meta.hyperedgeIDs).toContain("A->1->2");
 });
 
 test("fusion start", () => {
@@ -249,10 +247,141 @@ test("closed fusion loop", () => {
     expect(data.links.length).toBe(3);
 });
 
+test("filter on isolated", () => {
+    const hypertype = new HyperType({
+        interwingling: HyperType.INTERWINGLE.ISOLATED,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["1", "2", "C"],
+        ]
+    });
+
+    const graphData = hypertype.graphData("A");
+    expect(graphData.nodes.length).toBe(3);
+    expect(graphData.links.length).toBe(2);
+});
+
+test("filter on multiple edges isolated", () => {
+    const hypertype = new HyperType({
+        interwingling: HyperType.INTERWINGLE.ISOLATED,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["1", "2", "C"],
+        ]
+    });
+
+    const graphData = hypertype.graphData([["A"], ["1"]]);
+    expect(graphData.nodes.length).toBe(6);
+    expect(graphData.links.length).toBe(4);
+});
+
+test("filter on multiple overlapping edges isolated", () => {
+    const hypertype = new HyperType({
+        interwingling: HyperType.INTERWINGLE.ISOLATED,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["1", "2", "C"],
+        ]
+    });
+
+    const graphData = hypertype.graphData("C");
+    expect(graphData.nodes.length).toBe(6);
+    expect(graphData.links.length).toBe(4);
+});
+
+test("filter edge fusion", () => {
+    const hypertype = new HyperType({
+        interwingle: HyperType.INTERWINGLE.FUSION,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["C", "D", "E"],
+        ]
+    });
+
+    const graphData = hypertype.graphData([["A", "B", "C"]]);
+    expect(graphData.nodes.length).toBe(5); // fusion grabs connected C->D->E node
+    expect(graphData.links.length).toBe(4);
+});
+
+test("filter edge confluence", () => {
+    const hypertype = new HyperType({
+        interwingle: HyperType.INTERWINGLE.CONFLUENCE,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["A", "B", "1"],
+        ]
+    });
+
+    const graphData = hypertype.graphData([["A", "B", "C"]]);
+    expect(graphData.nodes.length).toBe(4); // confluence grabs connected A->B->1 edge
+    expect(graphData.links.length).toBe(3);
+});
+
+
+test("filter edge bridge", () => {
+    const hypertype = new HyperType({
+        interwingle: HyperType.INTERWINGLE.BRIDGE,
+        hyperedges: [
+            ["1", "vs", "2"],
+            ["A", "vs", "B"],
+        ]
+    });
+
+    const graphData = hypertype.graphData([["1"]]);
+    expect(graphData.nodes.length).toBe(7); // bridge graphs connected A vs B edge
+    expect(graphData.links.length).toBe(6);
+});
+
+test("filter edge confluence regression", () => {
+    const hypertype = new HyperType({
+        interwingle: HyperType.INTERWINGLE.CONFLUENCE,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["A", "2", "1"],
+        ]
+    });
+
+    const graphData = hypertype.graphData([["A", "B", "C"]]);
+    expect(graphData.nodes.length).toBe(5); // confluence grabs connected A->B->1 edge
+    expect(graphData.links.length).toBe(4);
+});
+
+test("filter interwingle progression", () => {
+    const hypertype = new HyperType({
+        hyperedges: [
+            ["A", "B", "2", "C"],
+            ["C", "B", "1"],
+            ["A", "Y", "Z"],
+        ]
+    });
+
+    let graphData;
+
+    hypertype.interwingle = HyperType.INTERWINGLE.ISOLATED;
+    graphData = hypertype.graphData([["2"]]);
+    expect(graphData.nodes.length).toBe(4);
+    expect(graphData.links.length).toBe(3);
+
+    hypertype.interwingle = HyperType.INTERWINGLE.CONFLUENCE;
+    graphData = hypertype.graphData([["2"]]);
+    expect(graphData.nodes.length).toBe(6);
+    expect(graphData.links.length).toBe(5);
+
+    hypertype.interwingle = HyperType.INTERWINGLE.FUSION;
+    graphData = hypertype.graphData([["2"]]);
+    expect(graphData.nodes.length).toBe(8);
+    expect(graphData.links.length).toBe(7);
+
+    hypertype.interwingle = HyperType.INTERWINGLE.BRIDGE;
+    graphData = hypertype.graphData([["2"]]);
+    expect(graphData.nodes.length).toBe(9);
+    expect(graphData.links.length).toBe(9);
+});
+
 test.skip("huge", async () => {
     const fs = require("fs");
     const hyperedges = fs
-        .readFileSync("/Users/brad/Projects/loom/data/data", "utf-8")
+        .readFileSync("/Users/brad/Projects/loom/data/data.hypertype", "utf-8")
         .split("\n")
         // .slice(0, 1800)
         .map((line) => {
@@ -261,7 +390,7 @@ test.skip("huge", async () => {
 
     const start = Date.now();
     const hypertype = new HyperType({ hyperedges, interwingle: HyperType.INTERWINGLE.BRIDGE });
-    await hypertype.sync();
+    // await hypertype.sync();
     const data = hypertype.graphData();
     const elapsed = Date.now() - start;
     console.log("elapsed", elapsed);

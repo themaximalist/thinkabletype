@@ -15,7 +15,9 @@ test("simple symbol embeddings search", async () => {
 
 test("simple edge embeddings search", async () => {
     const hypertype = HyperType.parse("Red,Green,Blue\nWhite,Black,Gray");
+    expect(hypertype.synced).toBe(false);
     await hypertype.sync();
+    expect(hypertype.synced).toBe(true);
 
     const similar = await hypertype.similar("Redish");
     expect(similar.length).toBe(1);

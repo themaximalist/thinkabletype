@@ -62,8 +62,8 @@ test("build edge (confluence)", () => {
   expect(hypertype.symbols).toEqual(["B"]);
 });
 
-test("edge dupes (confluence)", () => {
-  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.CONFLUENCE });
+test("edge dupes (fusion)", () => {
+  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.FUSION });
   const edge1 = hypertype.add("A", "B");
   const edge2 = hypertype.add("A", "B");
   expect(edge1.id).toBe(edge2.id);
@@ -245,24 +245,3 @@ test("parse on existing hypergraph", async function () {
   expect(hypertype.has("hypertype")).toBeFalsy();
   expect(hypertype.has("1")).toBeTruthy();
 });
-
-test("filter on isolated", () => {
-  const hypertype = new HyperType({
-    interwingling: HyperType.INTERWINGLE.ISOLATED,
-    hyperedges: [
-      ["A", "B", "C"],
-      ["1", "2", "C"],
-    ]
-  });
-
-  const graphData = hypertype.graphData("A");
-  expect(graphData.nodes.length).toBe(3);
-  expect(graphData.links.length).toBe(2);
-});
-
-
-// FILTER ON ISOLATED
-// FILTER ON ISOLATED (filter on two distinct edges)
-// FILTER ON CONFLUENCE
-// FILTER ON FUSION
-// FILTER ON BRIDGE

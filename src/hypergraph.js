@@ -12,9 +12,7 @@ export default class Hypergraph {
 
     constructor(options = {}) {
         this.options = options;
-        if (typeof this.options.interwingle === "undefined") {
-            this.options.interwingle = Hypergraph.INTERWINGLE.ISOLATED;
-        }
+        this.interwingle = (typeof this.options.interwingle === "undefined") ? Hypergraph.INTERWINGLE.ISOLATED : this.options.interwingle;
 
         this.hyperedges = [];
         this.forceGraph = new ForceGraph(this);
@@ -40,19 +38,19 @@ export default class Hypergraph {
     }
 
     get isIsolated() {
-        return this.options.interwingle === Hypergraph.INTERWINGLE.ISOLATED;
+        return this.interwingle === Hypergraph.INTERWINGLE.ISOLATED;
     }
 
     get isConfluence() {
-        return this.options.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE;
+        return this.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE;
     }
 
     get isFusion() {
-        return this.options.interwingle >= Hypergraph.INTERWINGLE.FUSION;
+        return this.interwingle >= Hypergraph.INTERWINGLE.FUSION;
     }
 
     get isBridge() {
-        return this.options.interwingle >= Hypergraph.INTERWINGLE.BRIDGE;
+        return this.interwingle >= Hypergraph.INTERWINGLE.BRIDGE;
     }
 
     add() {
@@ -83,6 +81,8 @@ export default class Hypergraph {
     }
 
     filter() {
+        if (arguments.length === 0) return [];
+
         const hyperedges = utils.hyperedgesFromArguments(...arguments);
 
         const matches = [];

@@ -13,7 +13,6 @@ export default class HyperType extends Hypergraph {
         this.vectordb = new VectorDB(options.vectordb);
 
         this.pageranks = {};
-        this.embeddings = new Map();
         this._synced = {
             pagerank: true,
             embeddings: true,
@@ -140,7 +139,6 @@ export default class HyperType extends Hypergraph {
         this.vectordb = new VectorDB(this.options.vectordb);
 
         this.pageranks = {};
-        this.embeddings = new Map();
         this._synced = {
             pagerank: true,
             embeddings: true,

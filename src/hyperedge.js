@@ -47,6 +47,7 @@ export default class Hyperedge {
     }
 
     has(hyperedge) {
+        if (!Array.isArray(hyperedge)) hyperedge = [hyperedge];
         return utils.arrayContains(this.symbols, hyperedge);
     }
 
