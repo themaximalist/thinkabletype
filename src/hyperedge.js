@@ -46,8 +46,8 @@ export default class Hyperedge {
         }
     }
 
-    has() {
-        return utils.arrayContains(this.symbols, arguments);
+    has(hyperedge) {
+        return utils.arrayContains(this.symbols, hyperedge);
     }
 
     equal(hyperedge) {

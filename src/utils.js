@@ -78,3 +78,18 @@ export function stringToColor(str, colors = null) {
     const index = Math.abs(hash) % colors.length;
     return colors[index];
 }
+
+export function hyperedgesFromArguments() {
+    let hyperedges;
+    if (Array.isArray(arguments[0])) {
+        hyperedges = arguments[0];
+    } else {
+        hyperedges = Array.from(arguments);
+    }
+
+    if (!Array.isArray(hyperedges[0])) {
+        hyperedges = [hyperedges]
+    }
+
+    return hyperedges;
+}

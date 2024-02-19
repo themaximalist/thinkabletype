@@ -30,7 +30,6 @@ export default class ForceLink {
         return this.nodes[this.nodes.length - 1];
     }
 
-
     get middleNodes() {
         if (this.nodes.length < 3) {
             return [];

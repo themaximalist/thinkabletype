@@ -1,12 +1,13 @@
 import ForceLink from "./ForceLink.js";
 import * as utils from "./utils.js";
 
+
 export default class ForceGraph {
     constructor(hypergraph) {
         this.hypergraph = hypergraph;
     }
 
-    graphData() {
+    graphData(hyperedges = []) {
         const nodes = new Map();
         const links = new Map();
 
@@ -28,16 +29,14 @@ export default class ForceGraph {
 
         this.verify(nodes, links);
 
+        if (hyperedges.length > 0) {
+            return this.filterGraphData(hyperedges, { nodes, links });
+        }
+
         return {
             nodes: Array.from(nodes.values()),
             links: Array.from(links.values()),
         };
-    }
-
-    filterGraphData(hyperedge_ids) {
-        const graphData = this.graphData();
-        console.log(hyperedge_ids)
-        console.log(graphData.links[0]._meta)
     }
 
     verify(nodes, links) {
@@ -133,5 +132,35 @@ export default class ForceGraph {
             }
         }
     }
+
+    filterGraphData(hyperedges, graphData) {
+        const hyperedgeIDs = new Set(hyperedges.map(hyperedge => hyperedge.id));
+        const nodeIDs = new Set();
+
+        const nodes = new Map();
+        const links = new Map();
+
+        for (const link of graphData.links.values()) {
+            const hyperedgeID = link._meta.hyperedgeID;
+            if (hyperedgeIDs.has(hyperedgeID)) {
+                links.set(link.id, link);
+                nodeIDs.add(link.source);
+                nodeIDs.add(link.target);
+            }
+        }
+
+        for (const node of graphData.nodes.values()) {
+            if (nodeIDs.has(node.id)) {
+                nodes.set(node.id, node);
+            }
+        }
+
+        return {
+            nodes: Array.from(nodes.values()),
+            links: Array.from(links.values())
+        }
+    }
+
+
 }
 

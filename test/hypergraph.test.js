@@ -3,15 +3,40 @@ import Hyperedge from "../src/Hyperedge.js";
 
 import { expect, test } from "vitest";
 
-// TODO: filtering down...then expanding out...how will this work?
-
 test("empty hypertype", () => {
   const hypertype = new HyperType();
   expect(hypertype.hyperedges).toEqual([]);
 });
 
-test("build edge", () => {
+test("build edge (isolated)", () => {
   const hypertype = new HyperType();
+  const edge = hypertype.add("A", "B");
+  expect(edge).instanceOf(Hyperedge);
+  expect(edge.symbols).toEqual(["A", "B"]);
+  expect(edge.id).toEqual("0:A->B");
+  expect(hypertype.symbols).toEqual(["A", "B"]);
+
+  edge.add("C");
+  expect(edge.symbols).toEqual(["A", "B", "C"]);
+  expect(edge.id).toEqual("0:A->B->C");
+  expect(hypertype.symbols).toEqual(["A", "B", "C"]);
+
+  const edge2 = hypertype.get("A", "B", "C");
+  expect(edge2).instanceOf(Hyperedge);
+
+  edge2.remove("C");
+  expect(edge.symbols).toEqual(["A", "B"]);
+  expect(edge.id).toEqual("0:A->B");
+  expect(hypertype.symbols).toEqual(["A", "B"]);
+
+  edge2.remove(0)
+  expect(edge.symbols).toEqual(["B"]);
+  expect(edge.id).toEqual("0:B");
+  expect(hypertype.symbols).toEqual(["B"]);
+});
+
+test("build edge (confluence)", () => {
+  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.CONFLUENCE });
   const edge = hypertype.add("A", "B");
   expect(edge).instanceOf(Hyperedge);
   expect(edge.symbols).toEqual(["A", "B"]);
@@ -37,8 +62,8 @@ test("build edge", () => {
   expect(hypertype.symbols).toEqual(["B"]);
 });
 
-test("edge dupes", () => {
-  const hypertype = new HyperType();
+test("edge dupes (confluence)", () => {
+  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.CONFLUENCE });
   const edge1 = hypertype.add("A", "B");
   const edge2 = hypertype.add("A", "B");
   expect(edge1.id).toBe(edge2.id);
@@ -116,8 +141,32 @@ test("filter on partial edge", () => {
   expect(hypertype.filter("A", "B", "D").length).toBe(1);
 });
 
-test("compare hyperedge", async function () {
+test("filter on multiple edges", () => {
+  const hypertype = new HyperType({
+    hyperedges: [
+      ["A", "B", "1"],
+      ["A", "B", "2"],
+    ]
+  });
+
+  expect(hypertype.filter([["A", "B", "1"]]).length).toBe(1);
+  expect(hypertype.filter("A", "B").length).toBe(2);
+  expect(hypertype.filter("A", "B", "1").length).toBe(1);
+  expect(hypertype.filter([["A", "B", "1"], ["A", "B", "2"]]).length).toBe(2);
+});
+
+test("compare hyperedge (isolated)", async function () {
   const hypertype = new HyperType();
+  const hyperedge1 = hypertype.add("A", "B", "C");
+  const hyperedge2 = hypertype.add("A", "B", "C");
+  const hyperedge3 = hypertype.add("A", "B", "C", "D");
+
+  expect(hyperedge1.equal(hyperedge2)).toBeFalsy();
+  expect(hyperedge3.equal(hyperedge1)).toBeFalsy();
+});
+
+test("compare hyperedge (confluence)", async function () {
+  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.CONFLUENCE });
   const hyperedge1 = hypertype.add("A", "B", "C");
   const hyperedge2 = hypertype.add("A", "B", "C");
   const hyperedge3 = hypertype.add("A", "B", "C", "D");
@@ -197,7 +246,7 @@ test("parse on existing hypergraph", async function () {
   expect(hypertype.has("1")).toBeTruthy();
 });
 
-test.only("filter on isolated", () => {
+test("filter on isolated", () => {
   const hypertype = new HyperType({
     interwingling: HyperType.INTERWINGLE.ISOLATED,
     hyperedges: [
@@ -206,9 +255,9 @@ test.only("filter on isolated", () => {
     ]
   });
 
-  const filter = hypertype.filterGraphData("A");
-  expect(filter.nodes.length).toBe(3);
-  expect(filter.links.length).toBe(2);
+  const graphData = hypertype.graphData("A");
+  expect(graphData.nodes.length).toBe(3);
+  expect(graphData.links.length).toBe(2);
 });
 
 
