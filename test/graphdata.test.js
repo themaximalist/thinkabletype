@@ -2,8 +2,6 @@ import HyperType from "../src/index.js";
 
 import { expect, test } from "vitest";
 
-// TODO: An edge should be connected to itself in fusion mode. A -> B -> C -> D -> A (should be a loop....I think?)
-
 test("single hyperedge (isolate)", () => {
     const hypertype = new HyperType({
         hyperedges: [["A", "B", "C"]]
