@@ -39,14 +39,8 @@ export default class ForceGraph {
 
         for (const link of links.values()) {
             if (!nodeIDs.has(link.source)) {
-                console.log("NODES", nodes);
-                console.log("LINKS", links);
-                console.log("LINK", link);
                 throw `Missing source ${link.source}`;
             } else if (!nodeIDs.has(link.target)) {
-                console.log("NODES", nodes);
-                console.log("LINKS", links);
-                console.log("LINK", link);
                 throw `Missing target ${link.target}`;
             }
         }
@@ -86,13 +80,15 @@ export default class ForceGraph {
 
             // start fusion
             edges = this.endSymbolIndex.get(link.hyperedge.firstSymbol) || [];
-            if (edges.length > 0 && edges[0].id !== link.id) {
+            //if (edges.length > 0 && edges[0].id !== link.id) { // TODO: add if we won't want self-linking on fusion nodes
+            if (edges.length > 0) {
                 this.fusionIndex.set(link.nodeId(0), edges[0].lastNode);
             }
 
             // end fusion
             edges = this.endSymbolIndex.get(link.hyperedge.lastSymbol) || [];
-            if (edges.length > 0 && edges[0].id !== link.id) {
+            //if (edges.length > 0 && edges[0].id !== link.id) { // TODO: add if we won't want self-linking on fusion nodes
+            if (edges.length > 0) {
                 this.fusionIndex.set(link.lastNodeId, edges[0].lastNode);
             }
         }

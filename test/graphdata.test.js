@@ -2,6 +2,8 @@ import HyperType from "../src/index.js";
 
 import { expect, test } from "vitest";
 
+// TODO: An edge should be connected to itself in fusion mode. A -> B -> C -> D -> A (should be a loop....I think?)
+
 test("single hyperedge (isolate)", () => {
     const hypertype = new HyperType({
         hyperedges: [["A", "B", "C"]]
@@ -237,6 +239,16 @@ test("two-edge fusion bridge", () => {
     expect(data.links.length).toBe(9);
 });
 
+test("closed fusion loop", () => {
+    const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.FUSION });
+    hypertype.add("A", "B", "C", "A");
+
+    const data = hypertype.graphData();
+
+    expect(data.nodes.length).toBe(3);
+    expect(data.links.length).toBe(3);
+});
+
 test.skip("huge", async () => {
     const fs = require("fs");
     const hyperedges = fs
@@ -255,6 +267,4 @@ test.skip("huge", async () => {
     console.log("elapsed", elapsed);
 
     // console.log(data);
-
-    expect(elapsed).toBeLessThan(300);
 });
