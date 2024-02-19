@@ -7,7 +7,6 @@ export default class ForceLink {
         this.hypergraph = forceGraph.hypergraph;
 
         this.hyperedge = hyperedge;
-        this.index = this.hypergraph.hyperedges.indexOf(this.hyperedge);
 
         this.symbols = hyperedge.symbols;
         this.nodes = this.symbols.map((symbol, index) => new ForceNode(symbol, index, this));
@@ -16,12 +15,11 @@ export default class ForceLink {
     }
 
     get id() {
-        const id = this.hyperedge.id;
-        if (this.hypergraph.isIsolated) {
-            return `${this.index}:${id}`;
-        }
+        return this.hyperedge.id;
+    }
 
-        return id;
+    get index() {
+        return this.hyperedge.index;
     }
 
     get firstNode() {

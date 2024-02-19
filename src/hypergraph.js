@@ -2,6 +2,34 @@ import Hyperedge from "./Hyperedge.js";
 import * as utils from "./utils.js";
 import ForceGraph from "./ForceGraph.js";
 
+function crawlGraphData(hyperedges, graphData) {
+    const hyperedgeIDs = new Set(hyperedges.map(hyperedge => hyperedge.id));
+    const nodeIDs = new Set();
+
+    const nodes = new Map();
+    const links = new Map();
+
+    for (const link of graphData.links) {
+        const hyperedgeID = link._meta.hyperedgeID;
+        if (hyperedgeIDs.has(hyperedgeID)) {
+            links.set(link.id, link);
+            nodeIDs.add(link.source);
+            nodeIDs.add(link.target);
+        }
+    }
+
+    for (const node of graphData.nodes) {
+        if (nodeIDs.has(node.id)) {
+            nodes.set(node.id, node);
+        }
+    }
+
+    return {
+        nodes: Array.from(nodes.values()),
+        links: Array.from(links.values())
+    }
+}
+
 export default class Hypergraph {
     static INTERWINGLE = {
         ISOLATED: 0,
@@ -90,6 +118,13 @@ export default class Hypergraph {
         }
 
         return hyperedges;
+    }
+
+    filterGraphData() {
+        const hyperedges = this.filter.apply(this, arguments);
+        const graphData = this.graphData();
+
+        return crawlGraphData(hyperedges, graphData);
     }
 
     reset() {

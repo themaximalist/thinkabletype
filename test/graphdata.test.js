@@ -10,6 +10,8 @@ test("single hyperedge (isolate)", () => {
     expect(hypertype.hyperedges[0].symbols).toEqual(["A", "B", "C"]);
 
     const data = hypertype.graphData();
+    console.log(data);
+
     expect(data.nodes.length).toBe(3);
     expect(data.nodes[0].id).toBe("0:A");
     expect(data.nodes[1].id).toBe("0:A.B");

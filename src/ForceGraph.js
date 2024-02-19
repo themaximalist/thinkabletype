@@ -34,6 +34,12 @@ export default class ForceGraph {
         };
     }
 
+    filterGraphData(hyperedge_ids) {
+        const graphData = this.graphData();
+        console.log(hyperedge_ids)
+        console.log(graphData.links[0]._meta)
+    }
+
     verify(nodes, links) {
         const nodeIDs = new Set(nodes.keys());
 

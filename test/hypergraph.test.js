@@ -196,3 +196,24 @@ test("parse on existing hypergraph", async function () {
   expect(hypertype.has("hypertype")).toBeFalsy();
   expect(hypertype.has("1")).toBeTruthy();
 });
+
+test.only("filter on isolated", () => {
+  const hypertype = new HyperType({
+    interwingling: HyperType.INTERWINGLE.ISOLATED,
+    hyperedges: [
+      ["A", "B", "C"],
+      ["1", "2", "C"],
+    ]
+  });
+
+  const filter = hypertype.filterGraphData("A");
+  expect(filter.nodes.length).toBe(3);
+  expect(filter.links.length).toBe(2);
+});
+
+
+// FILTER ON ISOLATED
+// FILTER ON ISOLATED (filter on two distinct edges)
+// FILTER ON CONFLUENCE
+// FILTER ON FUSION
+// FILTER ON BRIDGE

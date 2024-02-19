@@ -7,7 +7,16 @@ export default class Hyperedge {
     }
 
     get id() {
-        return this.symbols.join("->");
+        const id = this.symbols.join("->");
+        if (this.hypertype.isIsolated) {
+            return `${this.index}:${id}`;
+        }
+
+        return id;
+    }
+
+    get index() {
+        return this.hypertype.hyperedges.indexOf(this);
     }
 
     get firstSymbol() {
