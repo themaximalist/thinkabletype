@@ -671,6 +671,33 @@ test("filter bridge depth missing node regression", () => {
     expect(graphData.links.length).toBe(6);
 });
 
+test("max depth bridge regression", () => {
+    const content = `
+Ted Nelson,invented,HyperText
+Tim Berners-Lee,invented,WWW
+HyperText,influenced,WWW
+Vannevar Bush,author,As We May Think
+As We May Think,influenced,HyperText
+Ted Nelson,author,Computer Lib/Dream Machines
+Tim Berners-Lee,author,Weaving the Web
+    `.trim();
+
+    const hypertype = HyperType.parse(content, { interwingle: HyperType.INTERWINGLE.BRIDGE });
+
+    let graphData;
+    hypertype.depth = 0;
+    graphData = hypertype.graphData([["Ted Nelson"], ["WWW"]]);
+    expect(graphData.maxDepth).toBe(1);
+    expect(graphData.nodes.length).toBe(9);
+    expect(graphData.links.length).toBe(8);
+
+    hypertype.depth = 1;
+    graphData = hypertype.graphData([["Ted Nelson"], ["WWW"]]);
+    expect(graphData.maxDepth).toBe(1);
+    expect(graphData.nodes.length).toBe(18);
+    expect(graphData.links.length).toBe(21);
+});
+
 
 test.skip("huge", async () => {
     const fs = require("fs");

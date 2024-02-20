@@ -151,11 +151,11 @@ export default class ForceGraph {
         const nodes = new Map();
         const links = new Map();
 
-        const updateNodesAndLinks = () => {
+        const updateNodesAndLinks = (depth = 0) => {
             for (const node of graphData.nodes.values()) {
                 const ids = node._meta.hyperedgeIDs;
                 if (ids.some(id => hyperedgeIDs.has(id))) {
-                    if (node.bridge && this.hypergraph.depth === 0) continue;
+                    if (node.bridge && (!this.hypergraph.isBridge || depth === 0)) continue;
                     nodes.set(node.id, node);
                     nodeIDs.add(node.id);
                 }
@@ -183,7 +183,7 @@ export default class ForceGraph {
             }
         }
 
-        updateNodesAndLinks();
+        updateNodesAndLinks(this.hypergraph.depth);
 
         let finalNodes = new Map(nodes);
         let finalLinks = new Map(links);
@@ -194,16 +194,22 @@ export default class ForceGraph {
             const existingLinkSize = links.size;
 
             updateHyperedges();
-            updateNodesAndLinks();
+            updateNodesAndLinks(maxDepth);
 
-            if (existingNodeSize === nodes.size && existingLinkSize === links.size) {
-                break;
-            }
-
-            if (maxDepth++ < this.hypergraph.depth) {
+            if (maxDepth < this.hypergraph.depth) {
                 finalNodes = new Map(nodes);
                 finalLinks = new Map(links);
             }
+
+            if (existingNodeSize === nodes.size && existingLinkSize === links.size) {
+                // hack workaround bug for bridge nodes
+                if (this.hypergraph.isBridge && this.hypergraph.depth === 0) {
+                    maxDepth--;
+                }
+                break;
+            }
+
+            maxDepth++;
         }
 
         this.verify(finalNodes, finalLinks);
