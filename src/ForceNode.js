@@ -14,11 +14,22 @@ export default class ForceNode {
     updateGraphData(nodes, links) {
         const node = this.forcegraph.masqueradeNode(this);
 
+        const hypergraphIDs = new Set();
+        const existingNode = nodes.get(node.id);
+        if (existingNode) {
+            hypergraphIDs.add(...existingNode._meta.hyperedgeIDs);
+        }
+
+        hypergraphIDs.add(this.link.id);
+
         nodes.set(node.id, {
             id: node.id,
             name: node.symbol,
             color: node.link.color,
             textHeight: 8,
+            _meta: {
+                hyperedgeIDs: Array.from(hypergraphIDs)
+            }
         });
     }
 }

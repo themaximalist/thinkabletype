@@ -256,7 +256,7 @@ test("filter on isolated", () => {
         ]
     });
 
-    const graphData = hypertype.graphData("A");
+    const graphData = hypertype.graphData([["A"]]);
     expect(graphData.nodes.length).toBe(3);
     expect(graphData.links.length).toBe(2);
 });
@@ -284,13 +284,14 @@ test("filter on multiple overlapping edges isolated", () => {
         ]
     });
 
-    const graphData = hypertype.graphData("C");
+    const graphData = hypertype.graphData([["C"]]);
     expect(graphData.nodes.length).toBe(6);
     expect(graphData.links.length).toBe(4);
 });
 
 test("filter edge fusion", () => {
     const hypertype = new HyperType({
+        depth: HyperType.DEPTH.DEEP,
         interwingle: HyperType.INTERWINGLE.FUSION,
         hyperedges: [
             ["A", "B", "C"],
@@ -305,6 +306,7 @@ test("filter edge fusion", () => {
 
 test("filter edge confluence", () => {
     const hypertype = new HyperType({
+        depth: HyperType.DEPTH.DEEP,
         interwingle: HyperType.INTERWINGLE.CONFLUENCE,
         hyperedges: [
             ["A", "B", "C"],
@@ -320,6 +322,7 @@ test("filter edge confluence", () => {
 
 test("filter edge bridge", () => {
     const hypertype = new HyperType({
+        depth: HyperType.DEPTH.DEEP,
         interwingle: HyperType.INTERWINGLE.BRIDGE,
         hyperedges: [
             ["1", "vs", "2"],
@@ -332,8 +335,24 @@ test("filter edge bridge", () => {
     expect(graphData.links.length).toBe(6);
 });
 
-test("filter edge confluence regression", () => {
+test("filter edge confluence shallow", () => {
     const hypertype = new HyperType({
+        depth: HyperType.DEPTH.SHALLOW,
+        interwingle: HyperType.INTERWINGLE.CONFLUENCE,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["A", "2", "1"],
+        ]
+    });
+
+    const graphData = hypertype.graphData([["A", "B", "C"]]);
+    expect(graphData.nodes.length).toBe(3);
+    expect(graphData.links.length).toBe(2);
+});
+
+test("filter edge confluence deep", () => {
+    const hypertype = new HyperType({
+        depth: HyperType.DEPTH.DEEP,
         interwingle: HyperType.INTERWINGLE.CONFLUENCE,
         hyperedges: [
             ["A", "B", "C"],
@@ -348,6 +367,7 @@ test("filter edge confluence regression", () => {
 
 test("filter interwingle progression", () => {
     const hypertype = new HyperType({
+        depth: HyperType.DEPTH.DEEP,
         hyperedges: [
             ["A", "B", "2", "C"],
             ["C", "B", "1"],
@@ -377,6 +397,72 @@ test("filter interwingle progression", () => {
     expect(graphData.nodes.length).toBe(9);
     expect(graphData.links.length).toBe(9);
 });
+
+test("filter fusion depth", () => {
+    const hypertype = new HyperType({
+        interwingle: HyperType.INTERWINGLE.FUSION,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["C", "D", "E"],
+            ["E", "F", "G"],
+            ["G", "H", "I"],
+            ["I", "J", "K"],
+            ["K", "L", "M"],
+            ["M", "N", "O"],
+            ["O", "P", "Q"],
+        ]
+    });
+
+    let graphData;
+
+    hypertype.depth = HyperType.DEPTH.SHALLOW;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(3);
+    expect(graphData.links.length).toBe(2);
+
+    hypertype.depth = 1;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(5);
+    expect(graphData.links.length).toBe(4);
+
+    hypertype.depth = 2;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(7);
+    expect(graphData.links.length).toBe(6);
+
+    hypertype.depth = 3;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(9);
+    expect(graphData.links.length).toBe(8);
+
+    hypertype.depth = 4;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(11);
+    expect(graphData.links.length).toBe(10);
+
+    hypertype.depth = 5;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(13);
+    expect(graphData.links.length).toBe(12);
+
+    hypertype.depth = 6;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(15);
+    expect(graphData.links.length).toBe(14);
+
+    hypertype.depth = 7;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(17);
+    expect(graphData.links.length).toBe(16);
+
+    hypertype.depth = HyperType.DEPTH.DEEP;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(17);
+    expect(graphData.links.length).toBe(16);
+});
+
+// depth bridge
+
 
 test.skip("huge", async () => {
     const fs = require("fs");

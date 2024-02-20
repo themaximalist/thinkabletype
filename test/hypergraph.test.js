@@ -245,3 +245,25 @@ test("parse on existing hypergraph", async function () {
   expect(hypertype.has("hypertype")).toBeFalsy();
   expect(hypertype.has("1")).toBeTruthy();
 });
+
+test("hyperedge has", () => {
+  const hypertype = new HyperType();
+  const edge = hypertype.add("A", "B", "C");
+  expect(edge.has("A")).toBeTruthy();
+  expect(edge.has(["A"])).toBeTruthy();
+
+  expect(edge.has("B")).toBeTruthy();
+  expect(edge.has(["B"])).toBeTruthy();
+
+  expect(edge.has("C")).toBeTruthy();
+  expect(edge.has(["C"])).toBeTruthy();
+
+  expect(edge.has("A", "B")).toBeTruthy();
+  expect(edge.has(["A", "B"])).toBeTruthy();
+
+  expect(edge.has("B", "C")).toBeTruthy();
+  expect(edge.has(["B", "C"])).toBeTruthy();
+
+  expect(edge.has("A", "C")).toBeTruthy();
+  expect(edge.has(["A", "C"])).toBeFalsy();
+});

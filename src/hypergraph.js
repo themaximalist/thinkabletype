@@ -10,9 +10,15 @@ export default class Hypergraph {
         BRIDGE: 3
     };
 
+    static DEPTH = {
+        SHALLOW: 0,
+        DEEP: Infinity,
+    };
+
     constructor(options = {}) {
         this.options = options;
         this.interwingle = (typeof this.options.interwingle === "undefined") ? Hypergraph.INTERWINGLE.ISOLATED : this.options.interwingle;
+        this.depth = (typeof this.options.depth === "undefined") ? Hypergraph.DEPTH.SHALLOW : this.options.depth;
 
         this.hyperedges = [];
         this.forceGraph = new ForceGraph(this);
@@ -71,8 +77,8 @@ export default class Hypergraph {
         return null;
     }
 
-    graphData() {
-        const hyperedges = this.filter(...arguments);
+    graphData(filter) {
+        const hyperedges = this.filter(filter);
         return this.forceGraph.graphData(hyperedges);
     }
 

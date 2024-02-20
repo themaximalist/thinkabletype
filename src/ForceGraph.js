@@ -27,11 +27,11 @@ export default class ForceGraph {
             this.updateBridgeData(nodes, links);
         }
 
-        this.verify(nodes, links);
-
         if (hyperedges.length > 0) {
             return this.filterGraphData(hyperedges, { nodes, links });
         }
+
+        this.verify(nodes, links);
 
         return {
             nodes: Array.from(nodes.values()),
@@ -113,14 +113,18 @@ export default class ForceGraph {
         for (const bridgeNodes of bridgeIndex.values()) {
             if (bridgeNodes.size < 2) continue;
 
+            const hyperedgeIDs = Array.from(bridgeNodes.values()).map(node => node.link.id);
+
             const bridgeNode = {
                 id: `${bridgeNodes.values().next().value.symbol}#bridge`,
                 bridge: true,
+                _meta: {
+                    hyperedgeIDs: hyperedgeIDs
+                }
             };
 
             nodes.set(bridgeNode.id, bridgeNode);
 
-            const hyperedgeIDs = Array.from(bridgeNodes.values()).map(node => node.link.id);
 
             for (const node of bridgeNodes.values()) {
                 const link = {
@@ -147,48 +151,52 @@ export default class ForceGraph {
         const nodes = new Map();
         const links = new Map();
 
-        const updateHyperedgesFromLinks = (condition = () => true) => {
-            for (const link of graphData.links.values()) {
-                if (condition(link)) {
-                    link._meta.hyperedgeIDs.forEach(id => hyperedgeIDs.add(id));
-                }
-            }
-        };
-
-        const updateHyperedges = () => {
-            updateHyperedgesFromLinks(link => link._meta.hyperedgeIDs.some(id => hyperedgeIDs.has(id)));
-        };
-
-        const updateLinksAndNodes = () => {
-            for (const link of graphData.links.values()) {
-                if (link._meta.hyperedgeIDs.some(id => hyperedgeIDs.has(id))) {
-                    links.set(link.id, link);
-                    nodeIDs.add(link.source);
-                    nodeIDs.add(link.target);
-                }
-            }
-
+        function updateNodesAndLinks() {
             for (const node of graphData.nodes.values()) {
-                if (nodeIDs.has(node.id)) {
+                const ids = node._meta.hyperedgeIDs;
+                if (ids.some(id => hyperedgeIDs.has(id))) {
                     nodes.set(node.id, node);
+                    nodeIDs.add(node.id);
                 }
             }
-        };
 
-        updateHyperedges();
+            for (const link of graphData.links.values()) {
+                if (nodeIDs.has(link.source) && nodeIDs.has(link.target)) {
+                    links.set(link.id, link);
+                }
+            }
 
-        while (true) {
-            const edgeCount = hyperedgeIDs.size;
-            const nodeCount = nodeIDs.size;
+        }
 
-            updateLinksAndNodes();
-            updateHyperedgesFromLinks(link => nodeIDs.has(link.source) !== nodeIDs.has(link.target));
-            updateLinksAndNodes();
+        function updateHyperedges() {
+            for (const node of nodes.values()) {
+                for (const id of node._meta.hyperedgeIDs) {
+                    hyperedgeIDs.add(id);
+                }
+            }
 
-            if (hyperedgeIDs.size === edgeCount && nodeIDs.size === nodeCount) {
+            for (const link of links.values()) {
+                for (const id of link._meta.hyperedgeIDs) {
+                    hyperedgeIDs.add(id);
+                }
+            }
+        }
+
+        updateNodesAndLinks();
+
+        for (let i = 0; i < this.hypergraph.depth; i++) {
+            const existingNodeSize = nodes.size;
+            const existingLinkSize = links.size;
+
+            updateHyperedges();
+            updateNodesAndLinks();
+
+            if (existingNodeSize === nodes.size && existingLinkSize === links.size) {
                 break;
             }
         }
+
+        this.verify(nodes, links);
 
         return {
             nodes: Array.from(nodes.values()),
