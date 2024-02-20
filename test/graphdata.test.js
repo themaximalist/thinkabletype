@@ -461,7 +461,28 @@ test("filter fusion depth", () => {
     expect(graphData.links.length).toBe(16);
 });
 
-// depth bridge
+test("filter bridge depth", () => {
+    const hypertype = new HyperType({
+        interwingle: HyperType.INTERWINGLE.BRIDGE,
+        hyperedges: [
+            ["A", "vs", "B"],
+            ["C", "vs", "D"],
+            ["E", "vs", "G"],
+        ]
+    });
+
+    let graphData;
+
+    hypertype.depth = HyperType.DEPTH.SHALLOW;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(4);
+    expect(graphData.links.length).toBe(3);
+
+    hypertype.depth = HyperType.DEPTH.DEEP;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(10);
+    expect(graphData.links.length).toBe(9)
+});
 
 
 test.skip("huge", async () => {
@@ -483,3 +504,6 @@ test.skip("huge", async () => {
 
     // console.log(data);
 });
+
+
+// TODO: filter + depth on a specific node
