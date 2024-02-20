@@ -151,10 +151,11 @@ export default class ForceGraph {
         const nodes = new Map();
         const links = new Map();
 
-        function updateNodesAndLinks() {
+        const updateNodesAndLinks = () => {
             for (const node of graphData.nodes.values()) {
                 const ids = node._meta.hyperedgeIDs;
                 if (ids.some(id => hyperedgeIDs.has(id))) {
+                    if (node.bridge && this.hypergraph.depth === 0) continue;
                     nodes.set(node.id, node);
                     nodeIDs.add(node.id);
                 }
@@ -184,7 +185,11 @@ export default class ForceGraph {
 
         updateNodesAndLinks();
 
-        for (let i = 0; i < this.hypergraph.depth; i++) {
+        let finalNodes = new Map(nodes);
+        let finalLinks = new Map(links);
+        let maxDepth = 0;
+
+        while (true) {
             const existingNodeSize = nodes.size;
             const existingLinkSize = links.size;
 
@@ -194,13 +199,20 @@ export default class ForceGraph {
             if (existingNodeSize === nodes.size && existingLinkSize === links.size) {
                 break;
             }
+
+            if (maxDepth++ < this.hypergraph.depth) {
+                finalNodes = new Map(nodes);
+                finalLinks = new Map(links);
+            }
         }
 
-        this.verify(nodes, links);
+        this.verify(finalNodes, finalLinks);
 
         return {
-            nodes: Array.from(nodes.values()),
-            links: Array.from(links.values())
+            nodes: Array.from(finalNodes.values()),
+            links: Array.from(finalLinks.values()),
+            depth: this.hypergraph.depth,
+            maxDepth,
         };
     }
 }

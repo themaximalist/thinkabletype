@@ -533,6 +533,66 @@ Tim Berners-Lee,author,Weaving the Web
     expect(symbols).toContain("Tim Berners-Lee");
 });
 
+test("filter fusion multiple edge depth regression", () => {
+    const content = `
+Ted Nelson,invented,HyperText
+Tim Berners-Lee,invented,WWW
+HyperText,influenced,WWW
+Vannevar Bush,author,As We May Think
+As We May Think,influenced,HyperText
+Ted Nelson,author,Computer Lib/Dream Machines
+Tim Berners-Lee,author,Weaving the Web
+    `.trim();
+
+    const hypertype = HyperType.parse(content, { interwingle: HyperType.INTERWINGLE.FUSION });
+
+    let graphData, symbols;
+    hypertype.depth = HyperType.DEPTH.SHALLOW;
+    graphData = hypertype.graphData([["Ted Nelson"], ["WWW"]]);
+    expect(graphData.nodes.length).toBe(9);
+    expect(graphData.links.length).toBe(8);
+    symbols = graphData.nodes.map(node => node.name);
+    expect(symbols).toContain("Ted Nelson");
+    expect(symbols).toContain("invented");
+    expect(symbols).toContain("HyperText");
+    expect(symbols).toContain("author");
+    expect(symbols).toContain("Computer Lib/Dream Machines");
+    expect(symbols).toContain("influenced");
+    expect(symbols).toContain("WWW");
+    expect(symbols).toContain("Tim Berners-Lee");
+
+    hypertype.depth = 1;
+    graphData = hypertype.graphData([["Ted Nelson"], ["WWW"]]);
+    expect(graphData.nodes.length).toBe(13);
+    expect(graphData.links.length).toBe(12);
+    symbols = graphData.nodes.map(node => node.name);
+    expect(symbols).toContain("Ted Nelson");
+    expect(symbols).toContain("invented");
+    expect(symbols).toContain("HyperText");
+    expect(symbols).toContain("author");
+    expect(symbols).toContain("Computer Lib/Dream Machines");
+    expect(symbols).toContain("WWW");
+    expect(symbols).toContain("influenced");
+    expect(symbols).toContain("As We May Think");
+    expect(symbols).toContain("Weaving the Web");
+
+    hypertype.depth = 2;
+    graphData = hypertype.graphData([["Ted Nelson"], ["WWW"]]);
+    expect(graphData.nodes.length).toBe(15);
+    expect(graphData.links.length).toBe(14);
+    symbols = graphData.nodes.map(node => node.name);
+    expect(symbols).toContain("Ted Nelson");
+    expect(symbols).toContain("invented");
+    expect(symbols).toContain("HyperText");
+    expect(symbols).toContain("author");
+    expect(symbols).toContain("Computer Lib/Dream Machines");
+    expect(symbols).toContain("WWW");
+    expect(symbols).toContain("influenced");
+    expect(symbols).toContain("As We May Think");
+    expect(symbols).toContain("Weaving the Web");
+    expect(symbols).toContain("Vannevar Bush");
+});
+
 test("filter bridge depth", () => {
     const hypertype = new HyperType({
         interwingle: HyperType.INTERWINGLE.BRIDGE,
@@ -547,13 +607,68 @@ test("filter bridge depth", () => {
 
     hypertype.depth = HyperType.DEPTH.SHALLOW;
     graphData = hypertype.graphData([["A"]]);
-    expect(graphData.nodes.length).toBe(4);
-    expect(graphData.links.length).toBe(3);
+    expect(graphData.nodes.length).toBe(3);
+    expect(graphData.links.length).toBe(2);
 
     hypertype.depth = HyperType.DEPTH.DEEP;
     graphData = hypertype.graphData([["A"]]);
     expect(graphData.nodes.length).toBe(10);
     expect(graphData.links.length).toBe(9)
+});
+
+test("get max depth", () => {
+    const hypertype = new HyperType({
+        depth: HyperType.DEPTH.SHALLOW,
+        interwingle: HyperType.INTERWINGLE.FUSION,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["C", "D", "E"],
+            ["E", "F", "G"],
+            ["G", "H", "I"],
+            ["I", "J", "K"],
+            ["K", "L", "M"],
+            ["M", "N", "O"],
+            ["O", "P", "Q"],
+        ]
+    });
+
+    let graphData;
+
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(3);
+    expect(graphData.links.length).toBe(2);
+    expect(graphData.depth).toBe(0);
+    expect(graphData.maxDepth).toBe(7);
+
+    hypertype.depth = 1;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(5);
+    expect(graphData.links.length).toBe(4);
+    expect(graphData.depth).toBe(1);
+    expect(graphData.maxDepth).toBe(7);
+});
+
+test("filter bridge depth missing node regression", () => {
+    const hypertype = new HyperType({
+        depth: HyperType.DEPTH.SHALLOW,
+        interwingle: HyperType.INTERWINGLE.BRIDGE,
+        hyperedges: [
+            ["A", "vs", "B"],
+            ["1", "vs", "2"],
+        ]
+    });
+
+    let graphData;
+
+    hypertype.depth = HyperType.DEPTH.SHALLOW;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(3);
+    expect(graphData.links.length).toBe(2);
+
+    hypertype.depth = 1;
+    graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(7);
+    expect(graphData.links.length).toBe(6);
 });
 
 
@@ -577,5 +692,3 @@ test.skip("huge", async () => {
     // console.log(data);
 });
 
-
-// TODO: filter + depth on a specific node
