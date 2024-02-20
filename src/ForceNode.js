@@ -13,11 +13,12 @@ export default class ForceNode {
 
     updateGraphData(nodes, links) {
         const node = this.forcegraph.masqueradeNode(this);
-
         const hypergraphIDs = new Set();
         const existingNode = nodes.get(node.id);
         if (existingNode) {
-            hypergraphIDs.add(...existingNode._meta.hyperedgeIDs);
+            for (const id of existingNode._meta.hyperedgeIDs) {
+                hypergraphIDs.add(id);
+            }
         }
 
         hypergraphIDs.add(this.link.id);

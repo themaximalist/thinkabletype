@@ -461,6 +461,78 @@ test("filter fusion depth", () => {
     expect(graphData.links.length).toBe(16);
 });
 
+
+test("fusion meta hyperedge ids regression", () => {
+    const hypertype = new HyperType({
+        interwingle: HyperType.INTERWINGLE.FUSION,
+        depth: HyperType.DEPTH.DEEP
+    });
+    hypertype.add("A", "B", "C");
+    hypertype.add("C", "D", "E");
+    hypertype.add("1", "2", "C");
+
+    const graphData = hypertype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(7);
+    expect(graphData.links.length).toBe(6);
+});
+
+test("filter fusion depth regression", () => {
+    const content = `
+Ted Nelson,invented,HyperText
+Tim Berners-Lee,invented,WWW
+HyperText,influenced,WWW
+Vannevar Bush,author,As We May Think
+As We May Think,influenced,HyperText
+Ted Nelson,author,Computer Lib/Dream Machines
+Tim Berners-Lee,author,Weaving the Web
+    `.trim();
+
+    const hypertype = HyperType.parse(content, { interwingle: HyperType.INTERWINGLE.FUSION });
+
+    let graphData, symbols;
+    hypertype.depth = HyperType.DEPTH.SHALLOW;
+    graphData = hypertype.graphData([["Ted Nelson"]]);
+    expect(graphData.nodes.length).toBe(5);
+    expect(graphData.links.length).toBe(4);
+    symbols = graphData.nodes.map(node => node.name);
+    expect(symbols).toContain("Ted Nelson");
+    expect(symbols).toContain("invented");
+    expect(symbols).toContain("HyperText");
+    expect(symbols).toContain("author");
+    expect(symbols).toContain("Computer Lib/Dream Machines");
+
+    hypertype.depth = 1;
+    graphData = hypertype.graphData([["Ted Nelson"]]);
+    expect(graphData.nodes.length).toBe(9);
+    expect(graphData.links.length).toBe(8);
+    symbols = graphData.nodes.map(node => node.name);
+    expect(symbols).toContain("Ted Nelson");
+    expect(symbols).toContain("invented");
+    expect(symbols).toContain("HyperText");
+    expect(symbols).toContain("author");
+    expect(symbols).toContain("Computer Lib/Dream Machines");
+    expect(symbols).toContain("WWW");
+    expect(symbols).toContain("influenced");
+    expect(symbols).toContain("As We May Think");
+
+    hypertype.depth = 2;
+    graphData = hypertype.graphData([["Ted Nelson"]]);
+    expect(graphData.nodes.length).toBe(13);
+    expect(graphData.links.length).toBe(12);
+    symbols = graphData.nodes.map(node => node.name);
+    expect(symbols).toContain("Ted Nelson");
+    expect(symbols).toContain("invented");
+    expect(symbols).toContain("HyperText");
+    expect(symbols).toContain("author");
+    expect(symbols).toContain("Computer Lib/Dream Machines");
+    expect(symbols).toContain("WWW");
+    expect(symbols).toContain("influenced");
+    expect(symbols).toContain("As We May Think");
+    expect(symbols).toContain("Vannevar Bush");
+    expect(symbols).toContain("author");
+    expect(symbols).toContain("Tim Berners-Lee");
+});
+
 test("filter bridge depth", () => {
     const hypertype = new HyperType({
         interwingle: HyperType.INTERWINGLE.BRIDGE,
