@@ -28,7 +28,7 @@
 >
 > Strange Loop Language
 >
-> Tangled Hierarchy Hyper Text
+> Tangled Hierarchy Hypergraph
 >
 > A Knowledge Graph Toolkit
 
