@@ -698,6 +698,30 @@ Tim Berners-Lee,author,Weaving the Web
     expect(graphData.links.length).toBe(21);
 });
 
+test("find no edges", () => {
+    const hypertype = new HyperType({
+        depth: HyperType.DEPTH.SHALLOW,
+        interwingle: HyperType.INTERWINGLE.FUSION,
+        hyperedges: [
+            ["A", "B", "C"],
+            ["C", "D", "E"],
+            ["E", "F", "G"],
+            ["G", "H", "I"],
+            ["I", "J", "K"],
+            ["K", "L", "M"],
+            ["M", "N", "O"],
+            ["O", "P", "Q"],
+        ]
+    });
+
+    let graphData;
+
+    graphData = hypertype.graphData([["A", "C"]]);
+    expect(graphData.nodes.length).toBe(0);
+    expect(graphData.links.length).toBe(0);
+});
+
+
 
 test.skip("huge", async () => {
     const fs = require("fs");

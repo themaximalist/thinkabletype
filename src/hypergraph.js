@@ -77,9 +77,13 @@ export default class Hypergraph {
         return null;
     }
 
-    graphData(filter) {
-        const hyperedges = this.filter(filter);
-        return this.forceGraph.graphData(hyperedges);
+    graphData(filter = null) {
+        if (filter) {
+            const hyperedges = this.filter(filter);
+            return this.forceGraph.graphData(hyperedges);
+        } else {
+            return this.forceGraph.graphData();
+        }
     }
 
     has() {

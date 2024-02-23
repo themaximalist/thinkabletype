@@ -88,15 +88,60 @@
   </style>
   <link rel="stylesheet" href="style.css" />
   <script defer data-domain="hypertypelang.com" src="https://s.cac.app/js/script.outbound-links.js"></script>
+  <meta property="og:url" content="https://hypertypelang.com/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="HyperType — A Knowledge Graph Toolkit">
+  <meta property="og:description" content="HyperType knowledge graph toolkit for creating hypertext systems on hypergraphs">
+  <meta property="og:image" content="https://hypertypelang.com/logo.png">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta property="twitter:domain" content="hypertypelang.com">
+  <meta property="twitter:url" content="https://hypertypelang.com/">
+  <meta name="twitter:title" content="HyperType — A Knowledge Graph Toolkit">
+  <meta name="twitter:description" content="HyperType knowledge graph toolkit for creating hypertext systems on hypergraphs">
+  <meta name="twitter:image" content="https://hypertypelang.com/logo.png">
 </head>
 <body>
 <a class="fork-me" href="https://github.com/themaximal1st/hypertype"><img decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy" data-recalc-dims="1"></a>
+<div id="content" class="gap-sm-3">
 <header id="title-block-header">
 <h1 class="title">HyperType — A Knowledge Graph Toolkit</h1>
 </header>
-<h1 id="hypertype">hypertype</h1>
-<p><img src="media/images/logo.png" alt="HyperType" /></p>
-<div class="badges" style="text-align: center">
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#hypertype" id="toc-hypertype">HyperType</a></li>
+<li><a href="#a-new-kind-of-knowledge-graph"
+id="toc-a-new-kind-of-knowledge-graph">A New Kind of Knowledge
+Graph</a></li>
+<li><a href="#creating-a-.hypertype-file"
+id="toc-creating-a-.hypertype-file">Creating a .hypertype file</a></li>
+<li><a href="#hypertyping" id="toc-hypertyping">HyperTyping</a>
+<ul>
+<li><a href="#installing-hypertype"
+id="toc-installing-hypertype">Installing HyperType</a></li>
+<li><a href="#load-.hypertype-file" id="toc-load-.hypertype-file">Load
+.hypertype file</a></li>
+<li><a href="#visualize-hypertype"
+id="toc-visualize-hypertype">Visualize HyperType</a></li>
+<li><a href="#pagerank" id="toc-pagerank">PageRank</a></li>
+<li><a href="#embeddings-and-vector-search"
+id="toc-embeddings-and-vector-search">Embeddings and Vector
+Search</a></li>
+<li><a href="#searching" id="toc-searching">Searching</a></li>
+<li><a href="#ai-auto-suggest" id="toc-ai-auto-suggest">AI Auto
+Suggest</a></li>
+</ul></li>
+<li><a href="#the-design-of-hypertype"
+id="toc-the-design-of-hypertype">The Design of HyperType</a></li>
+<li><a href="#alpha" id="toc-alpha">Alpha</a></li>
+<li><a href="#projects" id="toc-projects">Projects</a></li>
+<li><a href="#author" id="toc-author">Author</a></li>
+<li><a href="#license" id="toc-license">License</a></li>
+</ul>
+</nav>
+<h2 id="hypertype">HyperType</h2>
+<p><img src="logo.png" alt="HyperType — Simple LLM library for Node.js" class="logo" style="max-width: 500px;" /></p>
+<div class="badges" style="text-align: center; margin-top: -10px;">
 <p><a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/hypertype"></a>
 <a href="https://www.npmjs.com/package/@themaximalist/hypertype"><img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fhypertype"></a>
 <a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/hypertype"></a>
@@ -112,6 +157,8 @@
 <p>A Database for Dreamers</p>
 <p>An IDE for Imagination</p>
 <p>A DSL for Data Explorers</p>
+<p>Strange Loop Language</p>
+<p>Tangled Hierarchy Hyper Text</p>
 <p>A Knowledge Graph Toolkit</p>
 </blockquote>
 <p>HyperType is a way to represent concepts, ideas and information.</p>
@@ -143,7 +190,7 @@ in your head—it’s about getting lost in the forest, discovering deep
 insights, and finding your way back.</p>
 <p>Here is <a href="https://hypertyper.com">HyperTyper</a>, a frontend
 UI to HyperType.</p>
-<video src="media/videos/hypertyper.mp4" autoplay muted loop>
+<video src="videos/hypertyper.mp4" autoplay muted loop>
 </video>
 <h2 id="creating-a-.hypertype-file">Creating a .hypertype file</h2>
 <p>Creating a <code>.hypertype</code> file is as simple as creating a
@@ -238,7 +285,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb10
 <span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Zeus</span></span>
 <span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Hercules -&gt; son -&gt; Alcmene</span></span></code></pre></div>
 <figure>
-<img src="media/images/hercules-interwingle-1.png"
+<img src="images/hercules-interwingle-1.png"
 alt="Interwingle Isolated HyperTyper Example" />
 <figcaption aria-hidden="true">Interwingle Isolated HyperTyper
 Example</figcaption>
@@ -262,7 +309,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb11
 <span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a><span class="co">//                  \ Alcmene</span></span>
 <span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span></code></pre></div>
 <figure>
-<img src="media/images/hercules-interwingle-2.png"
+<img src="images/hercules-interwingle-2.png"
 alt="Interwingle Confluence HyperTyper Example" />
 <figcaption aria-hidden="true">Interwingle Confluence HyperTyper
 Example</figcaption>
@@ -282,7 +329,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12
 <span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> hypertype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
 <span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Aristotle -&gt; student -&gt; Plato -&gt; student -&gt; Socrates</span></span></code></pre></div>
 <figure>
-<img src="media/images/aristotle-plato-socrates-interwingle-3.png"
+<img src="images/aristotle-plato-socrates-interwingle-3.png"
 alt="Interwingle Fusion HyperTyper Example" />
 <figcaption aria-hidden="true">Interwingle Fusion HyperTyper
 Example</figcaption>
@@ -308,7 +355,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">//  Tim Berners-Lee -&gt; author -&gt; Weaving the Web</span></span></code></pre></div>
 <figure>
-<img src="media/images/authors-interwingle-4.png"
+<img src="images/authors-interwingle-4.png"
 alt="Interwingle Bridge HyperTyper Example" />
 <figcaption aria-hidden="true">Interwingle Bridge HyperTyper
 Example</figcaption>
@@ -444,5 +491,7 @@ data-cites="themaximal1st">@themaximal1st</span></a></li>
 </ul>
 <h2 id="license">License</h2>
 <p>MIT</p>
+    <script src="/app.js"></script>
+</div>
 </body>
 </html>

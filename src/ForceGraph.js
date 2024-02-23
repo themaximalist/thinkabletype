@@ -7,7 +7,7 @@ export default class ForceGraph {
         this.hypergraph = hypergraph;
     }
 
-    graphData(hyperedges = []) {
+    graphData(hyperedges = undefined) {
         const nodes = new Map();
         const links = new Map();
 
@@ -27,7 +27,7 @@ export default class ForceGraph {
             this.updateBridgeData(nodes, links);
         }
 
-        if (hyperedges.length > 0) {
+        if (Array.isArray(hyperedges)) {
             return this.filterGraphData(hyperedges, { nodes, links });
         }
 

@@ -1,16 +1,14 @@
-# hypertype
+## HyperType
 
-<img src="media/images/logo.png" alt="HyperType" />
+<img src="public/logo.png" alt="HyperType — Simple LLM library for Node.js" class="logo" style="max-width: 500px;" />
 
-<div class="badges" style="text-align: center">
+<div class="badges" style="text-align: center; margin-top: -10px;">
 <a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/hypertype"></a>
 <a href="https://www.npmjs.com/package/@themaximalist/hypertype"><img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fhypertype"></a>
 <a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/hypertype"></a>
 <a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/hypertype"></a>
 </div>
-
 <br />
-
 
 > Multidimensional Mind Mapping
 >
@@ -27,6 +25,10 @@
 > An IDE for Imagination
 >
 > A DSL for Data Explorers
+>
+> Strange Loop Language
+>
+> Tangled Hierarchy Hyper Text
 >
 > A Knowledge Graph Toolkit
 
@@ -64,7 +66,7 @@ HyperType is not about creating a simplified view of some information in your he
 
 Here is [HyperTyper](https://hypertyper.com), a frontend UI to HyperType.
 
-<video src="media/videos/hypertyper.mp4" autoplay muted loop></video>
+<video src="videos/hypertyper.mp4" autoplay muted loop></video>
 
 
 
@@ -188,7 +190,7 @@ const data = hypertype.graphData();
 // Hercules -> son -> Alcmene
 ```
 
-![Interwingle Isolated HyperTyper Example](media/images/hercules-interwingle-1.png)
+![Interwingle Isolated HyperTyper Example](images/hercules-interwingle-1.png)
 
 #### Interwingle Confluence
 
@@ -212,7 +214,7 @@ const data = hypertype.graphData();
 //
 ```
 
-![Interwingle Confluence HyperTyper Example](media/images/hercules-interwingle-2.png)
+![Interwingle Confluence HyperTyper Example](images/hercules-interwingle-2.png)
 
 #### Interwingle Fusion
 
@@ -232,7 +234,7 @@ const data = hypertype.graphData();
 // Aristotle -> student -> Plato -> student -> Socrates
 ```
 
-![Interwingle Fusion HyperTyper Example](media/images/aristotle-plato-socrates-interwingle-3.png)
+![Interwingle Fusion HyperTyper Example](images/aristotle-plato-socrates-interwingle-3.png)
 
 #### Interwingle Bridge
 
@@ -258,7 +260,7 @@ const data = hypertype.graphData();
 //  Tim Berners-Lee -> author -> Weaving the Web
 ```
 
-![Interwingle Bridge HyperTyper Example](media/images/authors-interwingle-4.png)
+![Interwingle Bridge HyperTyper Example](images/authors-interwingle-4.png)
 
 These four views give you control in how to visualize your knowledge graph and control interconnections between your data.
 
