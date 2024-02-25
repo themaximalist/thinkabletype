@@ -22,7 +22,6 @@
     "license": "MIT",
     "dependencies": {
         "@themaximalist/llm.js": "^0.5.1",
-        "@themaximalist/vectordb.js": "^0.0.9",
         "dotenv-extended": "^2.9.0",
         "lodash": "^4.17.21",
         "papaparse": "^5.4.1",

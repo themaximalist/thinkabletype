@@ -3,14 +3,14 @@ import Hypergraph from "./Hypergraph.js";
 
 import { calculatePageRank, pageRank } from "./pagerank.js";
 import { suggest } from "./llm.js";
-import VectorDB from "@themaximalist/vectordb.js"
+// import VectorDB from "@themaximalist/vectordb.js"
 
 export default class HyperType extends Hypergraph {
 
     constructor(options = {}) {
         super(options);
 
-        this.vectordb = new VectorDB(options.vectordb);
+        // this.vectordb = new VectorDB(options.vectordb);
 
         this.pageranks = {};
         this._synced = {
@@ -62,11 +62,11 @@ export default class HyperType extends Hypergraph {
     async syncEmbeddings() {
         if (this._synced.embeddings) return true;
 
-        for (const hyperedge of this.hyperedges) {
-            for (const symbol of hyperedge.symbols) {
-                await this.vectordb.add(symbol);
-            }
-        }
+        // for (const hyperedge of this.hyperedges) {
+        //     for (const symbol of hyperedge.symbols) {
+        //         await this.vectordb.add(symbol);
+        //     }
+        // }
 
         this._synced.embeddings = true;
         return true;
@@ -114,15 +114,15 @@ export default class HyperType extends Hypergraph {
     }
 
     async similarSymbols(symbol, num = 3, threshold = 1.0) {
-        const matches = await this.vectordb.search(symbol, num, threshold);
+        // const matches = await this.vectordb.search(symbol, num, threshold);
         const results = [];
 
-        for (const { input, distance } of matches) {
-            if (symbol == input) continue;
-            results.push({ distance, symbol: input });
-        }
+        // for (const { input, distance } of matches) {
+        //     if (symbol == input) continue;
+        //     results.push({ distance, symbol: input });
+        // }
 
-        results.sort((a, b) => a.distance - b.distance);
+        // results.sort((a, b) => a.distance - b.distance);
 
         return results;
     }
@@ -136,7 +136,7 @@ export default class HyperType extends Hypergraph {
     reset() {
         super.reset();
 
-        this.vectordb = new VectorDB(this.options.vectordb);
+        // this.vectordb = new VectorDB(this.options.vectordb);
 
         this.pageranks = {};
         this._synced = {
