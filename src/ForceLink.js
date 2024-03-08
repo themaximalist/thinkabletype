@@ -11,7 +11,7 @@ export default class ForceLink {
         this.symbols = hyperedge.symbols;
         this.nodes = this.symbols.map((symbol, index) => new ForceNode(symbol, index, this));
 
-        this.color = utils.stringToColor(this.symbols[0]);
+        this.color = utils.stringToColor(this.symbols[0], this.hypergraph.colors);
     }
 
     get id() {

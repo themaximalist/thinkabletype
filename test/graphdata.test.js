@@ -721,6 +721,22 @@ test("find no edges", () => {
     expect(graphData.links.length).toBe(0);
 });
 
+test("custom colors", () => {
+    const hypertype = new HyperType({
+        hyperedges: [
+            ["A", "B", "C"],
+            ["L", "M", "N"],
+            ["X", "Y", "Z"],
+        ],
+        colors: ["#000000"],
+    });
+
+    const data = hypertype.graphData();
+    for (const node of data.nodes) {
+        expect(node.color).toBe("#000000");
+    }
+});
+
 
 
 test.skip("huge", async () => {

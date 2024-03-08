@@ -1,6 +1,7 @@
 import Hyperedge from "./Hyperedge.js";
 import * as utils from "./utils.js";
 import ForceGraph from "./ForceGraph.js";
+import Colors from "./colors.js";
 
 export default class Hypergraph {
     static INTERWINGLE = {
@@ -15,10 +16,13 @@ export default class Hypergraph {
         DEEP: Infinity,
     };
 
+    static COLORS = Colors;
+
     constructor(options = {}) {
         this.options = options;
         this.interwingle = (typeof this.options.interwingle === "undefined") ? Hypergraph.INTERWINGLE.ISOLATED : this.options.interwingle;
         this.depth = (typeof this.options.depth === "undefined") ? Hypergraph.DEPTH.SHALLOW : this.options.depth;
+        this.colors = this.options.colors || Hypergraph.COLORS;
 
         this.hyperedges = [];
         this.forceGraph = new ForceGraph(this);
