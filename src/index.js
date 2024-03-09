@@ -2,7 +2,8 @@ import csv from "papaparse"
 import Hypergraph from "./Hypergraph.js";
 
 import { calculatePageRank, pageRank } from "./pagerank.js";
-import { suggest } from "./llm.js";
+import suggest from "./suggest.js";
+import generate from "./generate.js";
 // import VectorDB from "@themaximalist/vectordb.js"
 
 export default class HyperType extends Hypergraph {
@@ -131,6 +132,11 @@ export default class HyperType extends Hypergraph {
         const llmOptions = Object.assign({}, this.options.llm || {}, options);
         const phrase = symbols.join(" ");
         return await suggest(phrase, llmOptions);
+    }
+
+    async generate(prompt, options = {}) {
+        const llmOptions = Object.assign({}, this.options.llm || {}, options);
+        return await generate(prompt, llmOptions);
     }
 
     reset() {

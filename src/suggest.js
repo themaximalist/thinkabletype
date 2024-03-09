@@ -22,7 +22,7 @@ I always return in JSON format like this { items: ["words", "go", "here"]}
 I will now start, please let me know which word or words you'd like me to analyze.
 `.trim();
 
-export async function suggest(symbol, options = {}) {
+export default async function suggest(symbol, options = {}) {
     if (typeof options.service === "undefined" && typeof options.model === "undefined") {
         options.service = LLM.LLAMAFILE;
         options.model = LLM.modelForService(options.service);
