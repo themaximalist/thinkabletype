@@ -86,7 +86,7 @@ export default class HyperType extends Hypergraph {
 
     parse(input, options = {}) {
         this.reset();
-        const hyperedges = csv.parse(input, options.parse || {}).data;
+        const hyperedges = csv.parse(input.trim(), options.parse || {}).data;
         this.addHyperedges(hyperedges);
     }
 

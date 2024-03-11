@@ -20,5 +20,5 @@ const hypertype = new HyperType({
 
 const hyperedges = await hypertype.generate(search);
 for await (const hyperedge of hyperedges) {
-    console.log(hyperedge);
+    console.log(hyperedge[0].join(","));
 }

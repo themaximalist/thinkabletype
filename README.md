@@ -344,7 +344,7 @@ Using [LLM.js](https://llmjs.themaximalist.com), you can use any Large Language 
 const options = {
     llm: {
         service: "openai",
-        model: "gpt-4-0125-preview",
+        model: "gpt-4-turbo-preview"
         apikey: process.env.OPENAI_API_KEY
     }
 };
@@ -355,6 +355,48 @@ hyperedge.suggest(); // ["iPhone", "Macintosh", "iPod", ... ]
 ```
 
 This makes programatically expanding knowledge graphs with LLMs incredibly easy!
+
+### AI Generate
+
+HyperType also has `generate()` built in, which generates hyperedges based on your prompt. This is a great way to expand your knowledge graph in a particular direction.
+
+```javascript
+const options = {
+    llm: {
+        service: "openai",
+        model: "gpt-4-turbo-preview",
+        apikey: process.env.OPENAI_API_KEY
+    }
+};
+
+const hypertype = new HyperType(options);
+const hyperedges = hypertype.generate("Steve Jobs");
+// Steve Jobs,Apple Inc,CEO
+// Steve Jobs,NeXT,Founder
+// Steve Jobs,Macintosh,Personal Computers
+// Steve Jobs,iPad,Tablet Computing
+// ...
+```
+
+
+
+### CLI
+
+HyperType ships with a command-line interfaces for generating HyperType files.
+
+```bash
+> hypertype epic of gilgamesh
+epic of gilgamesh,sumerian literature,ancient civilization  
+epic of gilgamesh,gilgamesh,enkidu,immortality,friendship  
+sumerian literature,cuneiform writing,mesopotamia
+...
+```
+
+By default it writes to stdout, either copy and paste to a `.hypertype` file or redirect the out
+
+```bash
+> hypertype mesopotamia > mesopotamia.hypertype
+```
 
 
 
