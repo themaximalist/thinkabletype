@@ -882,8 +882,7 @@ ul li p {
 }
 
 p {
-  margin-top: 0.25rem;
-  margin-bottom: 0.25rem;
+  margin-top: 0.5rem;
   line-height: 2rem;
 }
 
@@ -897,6 +896,7 @@ h6 + p {
 }
 
 div.sourceCode {
+  border-radius: 0.125rem;
   --tw-bg-opacity: 1;
   background-color: rgb(249 250 251 / var(--tw-bg-opacity));
   padding: 0.5rem;
@@ -912,6 +912,11 @@ div.sourceCode {
     font-size: 1.125rem;
     line-height: 1.75rem;
   }
+}
+
+div.sourceCode .im {
+  --tw-text-opacity: 1;
+  color: rgb(239 68 68 / var(--tw-text-opacity));
 }
 
 pre {
@@ -1077,13 +1082,16 @@ figure img {
 }
 
 #TOC ul {
-  padding-left: 0.5rem;
+  padding-left: 0.75rem;
 }
 
 #TOC a {
   --tw-text-opacity: 1;
-  color: rgb(107 114 128 / var(--tw-text-opacity));
+  color: rgb(156 163 175 / var(--tw-text-opacity));
   text-decoration-line: none;
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }
 
 #TOC a:hover {
@@ -1159,11 +1167,73 @@ figure img {
 #TOC ul li {
   margin: 0px;
   list-style-type: none;
-  padding-top: 1.5px;
-  padding-bottom: 1.5px;
+  padding-top: 2px;
+  padding-bottom: 2px;
   line-height: 1.25rem;
 }
 
 #TOC > ul > li > ul {
   padding-top: 0.25rem;
+}
+
+.playfair-400 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+
+.playfair-500 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+}
+
+.playfair-600 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+}
+
+.playfair-700 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+}
+
+.playfair-800 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 800;
+}
+
+.playfair-900 {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+}
+
+.thinkable {
+  font-family: "Playfair Display", serif;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  .type {
+    font-style: italic;
+  }
+  .type {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+  }
+}
+
+.names blockquote {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  --tw-text-opacity: 1;
+  color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+figure figcaption {
+  margin-top: -2rem;
 }

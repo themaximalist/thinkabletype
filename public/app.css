@@ -1,0 +1,52 @@
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap");
+
+.playfair-400 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+}
+
+.playfair-500 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+}
+
+.playfair-600 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+}
+
+.playfair-700 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+}
+
+.playfair-800 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 800;
+}
+
+.playfair-900 {
+    font-family: "Playfair Display", serif;
+    font-optical-sizing: auto;
+    font-weight: 900;
+}
+
+.thinkable {
+    @apply playfair-600;
+    .type {
+        @apply playfair-400 italic;
+    }
+}
+
+.names blockquote {
+    @apply text-base text-gray-500 mb-2;
+}
+
+figure figcaption {
+    @apply -mt-8;
+}

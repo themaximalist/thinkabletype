@@ -103,29 +103,29 @@
 </head>
 <body>
 <a class="fork-me" href="https://github.com/themaximal1st/thinkabletype"><img decoding="async" width="149" height="149" src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149" class="attachment-full size-full" alt="Fork me on GitHub" loading="lazy" data-recalc-dims="1"></a>
-<div id="content" class="gap-sm-3">
+<div id="content" class="gap-sm-4">
 <header id="title-block-header">
 <h1 class="title">Thinkable Type — A Knowledge Graph Toolkit</h1>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#thinkable-type" id="toc-thinkable-type">Thinkable
-Type</a></li>
+<li><a href="#thinkabletype"
+id="toc-thinkabletype">ThinkableType</a></li>
 <li><a href="#a-new-kind-of-knowledge-graph"
 id="toc-a-new-kind-of-knowledge-graph">A New Kind of Knowledge
 Graph</a></li>
-<li><a href="#creating-a-thinkable-type-.tt-file"
-id="toc-creating-a-thinkable-type-.tt-file">Creating a Thinkable Type
-.tt file</a></li>
-<li><a href="#using-thinkable-type" id="toc-using-thinkable-type">Using
-Thinkable Type</a>
-<ul>
-<li><a href="#installing-thinkable-type"
-id="toc-installing-thinkable-type">Installing Thinkable Type</a></li>
-<li><a href="#load-.tt-file" id="toc-load-.tt-file">Load .tt
+<li><a href="#creating-a-thinkabletype-file"
+id="toc-creating-a-thinkabletype-file">Creating a ThinkableType
 file</a></li>
-<li><a href="#visualize-thinkable-type"
-id="toc-visualize-thinkable-type">Visualize Thinkable Type</a></li>
+<li><a href="#using-thinkabletype" id="toc-using-thinkabletype">Using
+ThinkableType</a>
+<ul>
+<li><a href="#installing-thinkabletype"
+id="toc-installing-thinkabletype">Installing ThinkableType</a></li>
+<li><a href="#load-thinkabletype-file"
+id="toc-load-thinkabletype-file">Load ThinkableType file</a></li>
+<li><a href="#visualize-thinkabletype"
+id="toc-visualize-thinkabletype">Visualize ThinkableType</a></li>
 <li><a href="#pagerank" id="toc-pagerank">PageRank</a></li>
 <li><a href="#embeddings-and-vector-search"
 id="toc-embeddings-and-vector-search">Embeddings and Vector
@@ -136,42 +136,38 @@ Suggest</a></li>
 <li><a href="#ai-generate" id="toc-ai-generate">AI Generate</a></li>
 <li><a href="#cli" id="toc-cli">CLI</a></li>
 </ul></li>
-<li><a href="#the-design-of-thinkable-type"
-id="toc-the-design-of-thinkable-type">The Design of Thinkable
-Type</a></li>
+<li><a href="#the-design-of-thinkabletype"
+id="toc-the-design-of-thinkabletype">The Design of
+ThinkableType</a></li>
 <li><a href="#alpha" id="toc-alpha">Alpha</a></li>
 <li><a href="#projects" id="toc-projects">Projects</a></li>
 <li><a href="#author" id="toc-author">Author</a></li>
 <li><a href="#license" id="toc-license">License</a></li>
 </ul>
 </nav>
-<h2 id="thinkable-type">Thinkable Type</h2>
-<p><link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet"></p>
-<p><img src="logo.png" alt="Thinkable Type — Knowledge Graph Library" class="logo" style="max-width: 500px;" /></p>
-<div class="badges" style="text-align: center; margin-top: -10px;">
+<h2 id="thinkabletype">ThinkableType</h2>
+<p><img src="logo.png" alt="ThinkableType — Knowledge Graph Library" class="logo" style="max-width: 500px;" /></p>
+<div class="badges" style="text-align: center;">
 <p><a href="https://github.com/themaximal1st/thinkabletype"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/thinkabletype"></a>
 <a href="https://www.npmjs.com/package/@themaximalist/thinkabletype"><img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fthinkabletype"></a>
 <a href="https://github.com/themaximal1st/thinkabletype"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/thinkabletype"></a>
 <a href="https://github.com/themaximal1st/thinkabletype"><img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/thinkabletype"></a></p>
 </div>
 <p><br /></p>
+<div class="names">
 <blockquote>
+<p>Hypertext on Hypergraphs</p>
 <p>Multidimensional Mind Mapping</p>
-<p>Interwingled Information Language</p>
-<p>HyperText over Hypergraphs</p>
-<p>A Language for Learning</p>
 <p>Cognitive Cartography</p>
-<p>A Database for Dreamers</p>
-<p>An IDE for Imagination</p>
-<p>A DSL for Data Explorers</p>
+<p>A DSL for Data Exploration</p>
+<p>Interwingled Information</p>
 <p>Strange Loop Language</p>
-<p>Tangled Hierarchy Hypergraph</p>
-<p>A Knowledge Graph Toolkit</p>
+<p>Knowledge Graph Toolkit</p>
 </blockquote>
-<p>Thinkable Type is a way to represent concepts, ideas and
-information.</p>
+</div>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> is a way to represent concepts, ideas
+and information.</p>
 <p>It’s great at building <a href="https://thinkmachine.com">knowledge
 graphs</a> and aims to work the way you think.</p>
 <p>It’s simple. It’s based on a hypergraph, which doesn’t sound simple,
@@ -188,62 +184,67 @@ things:</p>
 <li>Symbols</li>
 <li>Connections</li>
 </ul>
-<p>Together these form the building blocks of Thinkable Type.</p>
+<p>Together these form the building blocks of <span
+class="thinkable">Thinkable<span class="type">Type</span></span>.</p>
 <h2 id="a-new-kind-of-knowledge-graph">A New Kind of Knowledge
 Graph</h2>
 <p>Current knowledge graphs limit how we think. They don’t visualize
 information in the way it’s actually shaped.</p>
 <p>Mind Mapping tries to squeeze complex relationships into a 2D
 hierarchy—stripped of context, interconnections and intuition.</p>
-<p>Thinkable Type is not about creating a simplified view of some
-information in your head—it’s about getting lost in the forest,
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> is not about creating a simplified view
+of some information in your head—it’s about getting lost in the forest,
 discovering deep insights, and finding your way back.</p>
 <p>Here is <a href="https://thinkmachine.com">Think Machine</a>, a
-frontend UI to Thinkable Type.</p>
+frontend UI for the project.</p>
 <video src="videos/thinkmachine.mp4" autoplay muted loop>
 </video>
-<h2 id="creating-a-thinkable-type-.tt-file">Creating a Thinkable Type
-.tt file</h2>
-<p>Creating a <code>.tt</code> file is as simple as creating a text file
-with one or more of these connected ideas.</p>
+<h2 id="creating-a-thinkabletype-file">Creating a ThinkableType
+file</h2>
+<p>To create a <span class="thinkable">Thinkable<span
+class="type">Type</span></span> file, just create a CSV file with some
+connected ideas.</p>
 <div class="sourceCode" id="cb3"><pre
-class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">Ted Nelson -&gt; invented -&gt; HyperText</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">Tim Berners-Lee -&gt; invented -&gt; WWW</span></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">HyperText -&gt; influenced -&gt; WWW</span></span></code></pre></div>
-<p>Thinkable Type reads this file, builds the symbols and
-connections—and understand these ideas are interconnected.</p>
-<p>Interconnectedness is a core idea in Thinkable Type—called
-<strong>interwingle</strong>. Interwingle means knowledge is deeply
-interconnected and there isn’t a clean way to divide it up.</p>
-<p>Thinkable Type provides this tool and many more to work with your
-information.</p>
-<p>From PageRank, to Text Similarity, to LLMs, Thinkable Type wants you
-to do the hard work of thinking—and then it will do everything it can to
-help you hit the high notes.</p>
-<h2 id="using-thinkable-type">Using Thinkable Type</h2>
-<p>Thinkable Type is a lot of things. It’s a DSL, it’s a parser, it’s a
-hypergraph database, it’s a text similarity vector search engine, it’s
-an AI Research Copilot.</p>
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="at">Ted Nelson,invented,HyperText</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="at">Tim Berners-Lee,invented,WWW</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="at">HyperText,influenced,WWW</span></span></code></pre></div>
+<p>This file gets read, parsed and then a knowledge graph gets created
+with all the proper connections.</p>
+<p>Interconnections are a core idea—called <strong>interwingle</strong>.
+Interwingle means knowledge is deeply interconnected and there isn’t a
+clean way to divide it up.</p>
+<p>Connections, and other tools like PageRank, Text Similarity and LLMs,
+are all included to help you make sense of your data.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> wants you to do the hard work of
+thinking—and then it will do everything it can to help you hit the high
+notes.</p>
+<h2 id="using-thinkabletype">Using ThinkableType</h2>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> is a lot of things. It’s a DSL, it’s a
+parser, it’s a hypergraph database, it’s a text similarity vector search
+engine, it’s an AI Research Copilot.</p>
 <p>But at it’s core, it’s just a library — and getting started is
 easy.</p>
-<h3 id="installing-thinkable-type">Installing Thinkable Type</h3>
-<p>Install Thinkable Type from NPM:</p>
+<h3 id="installing-thinkabletype">Installing ThinkableType</h3>
+<p>Install from NPM:</p>
 <div class="sourceCode" id="cb4"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">npm</span> install @themaximalist/thinkabletype</span></code></pre></div>
-<h3 id="load-.tt-file">Load .tt file</h3>
-<p>You can import an existing <code>.tt</code> file (a CSV file)</p>
+<h3 id="load-thinkabletype-file">Load ThinkableType file</h3>
+<p>You can import an existing <code>.csv</code> file</p>
 <div class="sourceCode" id="cb5"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> ThinkableType <span class="im">from</span> <span class="st">&quot;@themaximalist/thinkabletype&quot;</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;ancient_sumerians.tt&quot;</span>)<span class="op">;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;ancient_sumerians.csv&quot;</span>)<span class="op">;</span></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co">// or specify a different separator</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;secret_research_project.tt&quot;</span><span class="op">,</span> {</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;secret_research_project.csv&quot;</span><span class="op">,</span> {</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">parse</span><span class="op">:</span> {</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">delimiter</span><span class="op">:</span> <span class="st">&quot; -&gt; &quot;</span></span>
 <span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  }</span>
 <span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span></code></pre></div>
 <h4 id="initialize-with-data">Initialize with data</h4>
-<p>You can also initialize Thinkable Type with an list of nodes and
+<p>You can also initialize with an existing list of nodes and
 connections (called Hyperedges).</p>
 <div class="sourceCode" id="cb6"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedges <span class="op">=</span> [</span>
@@ -253,21 +254,22 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb6-
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({ hyperedges })<span class="op">;</span></span></code></pre></div>
 <h4 id="build-programatically">Build programatically</h4>
-<p>Or you can build up a Thinkable Type file programatically</p>
+<p>Or you can build up a file programatically</p>
 <div class="sourceCode" id="cb7"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>()<span class="op">;</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Vannevar Bush&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;As We May Think&quot;</span>)<span class="op">;</span></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>)<span class="op">;</span></span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;As We May Think&quot;</span><span class="op">,</span> <span class="st">&quot;influenced&quot;</span><span class="op">,</span> <span class="st">&quot;HyperText&quot;</span>)<span class="op">;</span></span></code></pre></div>
-<p>You can also build up a Hyperedge</p>
+<p>You can also build up a Hyperedge one symbol at a time.</p>
 <div class="sourceCode" id="cb8"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Vannevar Bush&quot;</span>)<span class="op">;</span></span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>edge<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;invented&quot;</span>)<span class="op">;</span></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>edge<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Memex&quot;</span>)<span class="op">;</span></span></code></pre></div>
-<h3 id="visualize-thinkable-type">Visualize Thinkable Type</h3>
-<p>Connections and visualizations are a core part of Thinkable Type—so
-<a href="https://vasturiano.github.io/3d-force-graph/">Force Graph
-3D</a> is supported out of the box.</p>
+<h3 id="visualize-thinkabletype">Visualize ThinkableType</h3>
+<p>Connections and visualizations are a core part of <span
+class="thinkable">Thinkable<span class="type">Type</span></span>—so <a
+href="https://vasturiano.github.io/3d-force-graph/">Force Graph 3D</a>
+is supported out of the box.</p>
 <div class="sourceCode" id="cb9"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">hyperedges</span><span class="op">:</span> [</span>
@@ -366,8 +368,8 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">//  Tim Berners-Lee -&gt; author -&gt; Weaving the Web</span></span></code></pre></div>
 <figure>
 <img src="images/authors-interwingle-4.png"
-alt="Interwingle Bridge Thinkable Type Example" />
-<figcaption aria-hidden="true">Interwingle Bridge Thinkable Type
+alt="Interwingle Bridge ThinkableType Example" />
+<figcaption aria-hidden="true">Interwingle Bridge ThinkableType
 Example</figcaption>
 </figure>
 <p>These four views give you control in how to visualize your knowledge
@@ -379,9 +381,10 @@ automatically includes <code>Confluence</code>. And using
 <code>Confluence</code>. This lets you increase the complexity of the
 knowledge graph, step-by-step.</p>
 <h3 id="pagerank">PageRank</h3>
-<p>Thinkable Type helps you find the most referenced symbols and
-connections by running <code>PageRank</code> on your knowledge
-graph.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> helps you find the most referenced
+symbols and connections by running <code>PageRank</code> on your
+knowledge graph.</p>
 <div class="sourceCode" id="cb14"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="vs">`A,B,C</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="vs">A,B,D</span></span>
@@ -391,27 +394,33 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb14
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span> <span class="co">// syncs pagerank</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="at">pageranks</span> <span class="co">// { A: &lt;num&gt;, B: &lt;num&gt;, ... }</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">pagerank</span>(<span class="st">&quot;Z&quot;</span>) <span class="co">// { A: &lt;num&gt;, C: &lt;num&gt;, ... }</span></span></code></pre></div>
-<p>Note, Thinkable Type aims to work with very large knowledge graphs,
-so we keep expensive operations like <code>PageRank</code> explicit and
-in the background, controlled through
+<p>Note, <span class="thinkable">Thinkable<span
+class="type">Type</span></span> aims to work with very large knowledge
+graphs, so we keep expensive operations like <code>PageRank</code>
+explicit and in the background, controlled through
 <code>await thinkabletype.sync()</code> or
 <code>await thinkabletype.syncPagerank().</code></p>
 <h3 id="embeddings-and-vector-search">Embeddings and Vector Search</h3>
-<p>Thinkable Type can find similar symbols and hyperedges, not only by
-the explicit connections, but by the text similarity.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> can find similar symbols and hyperedges,
+not only by the explicit connections, but by the text similarity.</p>
 <p>Using <a
 href="https://embeddingsjs.themaximalist.com">Embeddings.js</a> and <a
-href="https://vectordbjs.themaximalist.com">VectorDB.js</a>, Thinkable
-Type can find hidden connections in your knowledge graph.</p>
+href="https://vectordbjs.themaximalist.com">VectorDB.js</a>, you can
+find hidden connections in your knowledge graph.</p>
 <p>Note, both embeddings and vector search are local by default, but you
 can use embeddings from <code>OpenAI</code> with a few config lines.</p>
 <h4 id="find-similar-symbols">Find Similar Symbols</h4>
+<p>Find similar symbols in the knowledge graph, on any edge.</p>
 <div class="sourceCode" id="cb15"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="st">&quot;Red,Green,Blue</span><span class="sc">\n</span><span class="st">White,Black,Gray&quot;</span>)<span class="op">;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">similarSymbols</span>(<span class="st">&quot;Redish&quot;</span>)<span class="op">;</span> <span class="co">// [ { symbol: &quot;Red&quot;: distance: 0.5 } ]</span></span></code></pre></div>
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="vs">`Red,Green,Blue</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="vs">White,Black,Gray`</span>)<span class="op">;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">similarSymbols</span>(<span class="st">&quot;Redish&quot;</span>)<span class="op">;</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">// [ { symbol: &quot;Red&quot;: distance: 0.5 } ]</span></span></code></pre></div>
 <h4 id="find-similar-hyperedges">Find Similar Hyperedges</h4>
+<p>Find similar hyperedges based on symbols.</p>
 <div class="sourceCode" id="cb16"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>()<span class="op">;</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge1 <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span><span class="op">,</span> <span class="st">&quot;Green&quot;</span><span class="op">,</span> <span class="st">&quot;Blue&quot;</span>)<span class="op">;</span></span>
@@ -423,7 +432,8 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16
 <span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge1<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot;) ]</span></span>
 <span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge2<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;Green&quot;, &quot;Blue&quot;) ]</span></span></code></pre></div>
 <h3 id="searching">Searching</h3>
-<p>Searching in Thinkable Type is easy, you can search by symbol,
+<p>Searching in <span class="thinkable">Thinkable<span
+class="type">Type</span></span> is easy, you can search by symbol,
 hyperedge or a partial hyperedge.</p>
 <div class="sourceCode" id="cb17"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({</span>
@@ -438,8 +448,9 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb17
 <span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 2</span></span>
 <span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 1</span></span></code></pre></div>
 <h3 id="ai-auto-suggest">AI Auto Suggest</h3>
-<p>Thinkable Type has <code>suggest()</code> built in, which
-autocompletes any symbol or edge.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> has <code>suggest()</code> built in,
+which autocompletes any symbol or edge.</p>
 <p>Using <a href="https://llmjs.themaximalist.com">LLM.js</a>, you can
 use any Large Language Model—like GPT-4, Claude, Mistral or local LLMs
 like <a
@@ -459,9 +470,11 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18
 <p>This makes programatically expanding knowledge graphs with LLMs
 incredibly easy!</p>
 <h3 id="ai-generate">AI Generate</h3>
-<p>Thinkable Type also has <code>generate()</code> built in, which
-generates hyperedges based on your prompt. This is a great way to expand
-your knowledge graph in a particular direction.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> also has <code>generate()</code> built
+in, which generates hyperedges based on your prompt. This is a great way
+to expand your knowledge graph in a particular direction.</p>
+<p>Just like with AI Auto Suggest, you can use any LLM.</p>
 <div class="sourceCode" id="cb19"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> options <span class="op">=</span> {</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">llm</span><span class="op">:</span> {</span>
@@ -471,7 +484,7 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb19
 <span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
 <span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
 <span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype<span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>(options)<span class="op">;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>(options)<span class="op">;</span></span>
 <span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedges <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">generate</span>(<span class="st">&quot;Steve Jobs&quot;</span>)<span class="op">;</span></span>
 <span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,Apple Inc,CEO</span></span>
 <span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,NeXT,Founder</span></span>
@@ -479,8 +492,9 @@ class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb19
 <span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,iPad,Tablet Computing</span></span>
 <span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span></code></pre></div>
 <h3 id="cli">CLI</h3>
-<p>Thinkable Type ships with a command-line interfaces for generating
-Thinkable Type files.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> ships with a command-line interfaces for
+searching and generating files.</p>
 <div class="sourceCode" id="cb20"><pre
 class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> thinkabletype <span class="ex">epic</span> of gilgamesh</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">epic</span> of gilgamesh,sumerian literature,ancient civilization  </span>
@@ -488,29 +502,33 @@ class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href=
 <span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sumerian</span> literature,cuneiform writing,mesopotamia</span>
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span></code></pre></div>
 <p>By default it writes to stdout, either copy and paste to a
-<code>.tt</code> file or redirect the out</p>
+<code>.csv</code> file or redirect the out</p>
 <div class="sourceCode" id="cb21"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> thinkabletype <span class="ex">mesopotamia</span> <span class="op">&gt;</span> mesopotamia.tt</span></code></pre></div>
-<h2 id="the-design-of-thinkable-type">The Design of Thinkable Type</h2>
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> thinkabletype <span class="ex">mesopotamia</span> <span class="op">&gt;</span> mesopotamia.csv</span></code></pre></div>
+<h2 id="the-design-of-thinkabletype">The Design of ThinkableType</h2>
 <p>A language for ideas needs a structureless structure. That’s exactly
 what Stephen Wolfram found hypergraphs to be while working on his
 Universal Theory of Physics project.</p>
 <p>Ted Nelson created Zig Zag as a “hyperstructure” kit—a way to
 represent information in HyperText systems.</p>
-<p><em>Thinkable Type combines these ideas</em>, using the hypergraph as
-the fundamental unit in the HyperText system.</p>
-<p>Thinkable Type is a lot closer to symbolic programming than iterative
-programming. In iterative programming, you describe every little step.
-In symbolic programming, you describe the high-level concepts. It’s
-top-down rather than bottom-up.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> combines these ideas, using the
+hypergraph as the fundamental unit in the HyperText system.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> is a lot closer to symbolic programming
+than iterative programming. In iterative programming, you describe every
+little step. In symbolic programming, you describe the high-level
+concepts. It’s top-down rather than bottom-up.</p>
 <p>Something magical happens with symbolic programming. Like a looking
 glass, “the program” is a reflection of the connected symbols. It’s a
 lot like language. You have legalese and then you have poetry.</p>
-<p>Thinkable Type is not a programming language in and of itself—but
-this high-level connecting of ideas is creating a sum greater than it’s
-parts.</p>
-<p>Thinkable Type is open source, and the file format is incredibly
-simple—just CSV files.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> is not a programming language in and of
+itself—but this high-level connecting of ideas is creating a sum greater
+than it’s parts.</p>
+<p><span class="thinkable">Thinkable<span
+class="type">Type</span></span> is open source, and the file format is
+incredibly simple—just CSV files.</p>
 <p>It’s goal is to give you control over the knowledge and information
 in your life.</p>
 <blockquote>
@@ -521,11 +539,11 @@ are easy to retrieve and read. Use tools that give you this freedom.</p>
 (Obsidian Cofounder)</p>
 </blockquote>
 <h2 id="alpha">Alpha</h2>
-<p><a href="https://github.com/themaximal1st/thinkabletype">Thinkable
-Type</a> is under heavy development and still subject to breaking
-changes.</p>
+<p><a href="https://github.com/themaximal1st/thinkabletype"><span
+class="thinkable">Thinkable<span class="type">Type</span></span></a> is
+under heavy development and still subject to breaking changes.</p>
 <h2 id="projects">Projects</h2>
-<p>Thinkable Type is currently used in the following projects:</p>
+<p>ThinkableType is currently used in the following projects:</p>
 <ul>
 <li><a href="https://thinkmachine.com">Think Machine</a></li>
 </ul>
