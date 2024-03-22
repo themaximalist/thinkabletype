@@ -1,12 +1,16 @@
-## HyperType
+## Thinkable Type 
 
-<img src="public/logo.png" alt="HyperType — Simple LLM library for Node.js" class="logo" style="max-width: 500px;" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap" rel="stylesheet">
+
+<img src="public/logo.png" alt="Thinkable Type — Knowledge Graph Library" class="logo" style="max-width: 500px;" />
 
 <div class="badges" style="text-align: center; margin-top: -10px;">
-<a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/hypertype"></a>
-<a href="https://www.npmjs.com/package/@themaximalist/hypertype"><img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fhypertype"></a>
-<a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/hypertype"></a>
-<a href="https://github.com/themaximal1st/hypertype"><img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/hypertype"></a>
+<a href="https://github.com/themaximal1st/thinkabletype"><img alt="GitHub Repo stars" src="https://img.shields.io/github/stars/themaximal1st/thinkabletype"></a>
+<a href="https://www.npmjs.com/package/@themaximalist/thinkabletype"><img alt="NPM Downloads" src="https://img.shields.io/npm/dt/%40themaximalist%2Fthinkabletype"></a>
+<a href="https://github.com/themaximal1st/thinkabletype"><img alt="GitHub code size in bytes" src="https://img.shields.io/github/languages/code-size/themaximal1st/thinkabletype"></a>
+<a href="https://github.com/themaximal1st/thinkabletype"><img alt="GitHub License" src="https://img.shields.io/github/license/themaximal1st/thinkabletype"></a>
 </div>
 <br />
 
@@ -32,9 +36,9 @@
 >
 > A Knowledge Graph Toolkit
 
-HyperType is a way to represent concepts, ideas and information.
+Thinkable Type is a way to represent concepts, ideas and information.
 
-It's great at building [knowledge graphs](https://hypertyper.com) and aims to work the way you think.
+It's great at building [knowledge graphs](https://thinkmachine.com) and aims to work the way you think.
 
 It's simple. It's based on a hypergraph, which doesn't sound simple, but it is:
 
@@ -53,7 +57,7 @@ What matters less is the syntax, and more that there are only two things:
 * Symbols
 * Connections
 
-Together these form the building blocks of HyperType.
+Together these form the building blocks of Thinkable Type.
 
 
 ## A New Kind of Knowledge Graph
@@ -62,17 +66,17 @@ Current knowledge graphs limit how we think. They don't visualize information in
 
 Mind Mapping tries to squeeze complex relationships into a 2D hierarchy—stripped of context, interconnections and intuition.
 
-HyperType is not about creating a simplified view of some information in your head—it's about getting lost in the forest, discovering deep insights, and finding your way back.
+Thinkable Type is not about creating a simplified view of some information in your head—it's about getting lost in the forest, discovering deep insights, and finding your way back.
 
-Here is [HyperTyper](https://hypertyper.com), a frontend UI to HyperType.
+Here is [Think Machine](https://thinkmachine.com), a frontend UI to Thinkable Type.
 
-<video src="videos/hypertyper.mp4" autoplay muted loop></video>
+<video src="videos/thinkmachine.mp4" autoplay muted loop></video>
 
 
 
-## Creating a .hypertype file
+## Creating a Thinkable Type .tt file
 
-Creating a `.hypertype` file is as simple as creating a text file with one or more of these connected ideas.
+Creating a `.tt` file is as simple as creating a text file with one or more of these connected ideas.
 
 ```yaml
 Ted Nelson -> invented -> HyperText
@@ -80,40 +84,40 @@ Tim Berners-Lee -> invented -> WWW
 HyperText -> influenced -> WWW
 ```
 
-HyperType reads this file, builds the symbols and connections—and understand these ideas are interconnected.
+Thinkable Type reads this file, builds the symbols and connections—and understand these ideas are interconnected.
 
-Interconnectedness is a core idea in HyperType—called **interwingle**. Interwingle means knowledge is deeply interconnected and there isn't a clean way to divide it up.
+Interconnectedness is a core idea in Thinkable Type—called **interwingle**. Interwingle means knowledge is deeply interconnected and there isn't a clean way to divide it up.
 
-HyperType provides this tool and many more to work with your information.
+Thinkable Type provides this tool and many more to work with your information.
 
-From PageRank, to Text Similarity, to LLMs, HyperType wants you to do the hard work of thinking—and then it will do everything it can to help you hit the high notes.
+From PageRank, to Text Similarity, to LLMs, Thinkable Type wants you to do the hard work of thinking—and then it will do everything it can to help you hit the high notes.
 
 
 
-## HyperTyping
+## Using Thinkable Type
 
-HyperType is a lot of things. It's a DSL, it's a parser, it's a hypergraph database, it's a text similarity vector search engine, it's an AI Research Copilot.
+Thinkable Type is a lot of things. It's a DSL, it's a parser, it's a hypergraph database, it's a text similarity vector search engine, it's an AI Research Copilot.
 
 But at it's core, it's just a library — and getting started is easy.
 
-### Installing HyperType
+### Installing Thinkable Type 
 
-Install HyperType from NPM:
+Install Thinkable Type from NPM:
 
 ```bash
-npm install @themaximalist/hypertype
+npm install @themaximalist/thinkabletype
 ```
 
-### Load .hypertype file
+### Load .tt file
 
-You can import an existing `.hypertype` file (a CSV file)
+You can import an existing `.tt` file (a CSV file)
 
 ```javascript
-import HyperType from "@themaximalist/hypertype"
-const hypertype = HyperType.parse("ancient_sumerians.hypertype");
+import ThinkableType from "@themaximalist/thinkabletype"
+const thinkabletype = ThinkableType.parse("ancient_sumerians.tt");
 
 // or specify a different separator
-const hypertype = HyperType.parse("secret_research_project.hypertype", {
+const thinkabletype = ThinkableType.parse("secret_research_project.tt", {
   parse: {
     delimiter: " -> "
   }
@@ -122,7 +126,7 @@ const hypertype = HyperType.parse("secret_research_project.hypertype", {
 
 #### Initialize with data
 
-You can also initialize HyperType with an list of nodes and connections (called Hyperedges).
+You can also initialize Thinkable Type with an list of nodes and connections (called Hyperedges).
 
 ```javascript
 const hyperedges = [
@@ -130,40 +134,40 @@ const hyperedges = [
   ["Aristotle", "student", "Plato"]
 ];
 
-const hypertype = new HyperType({ hyperedges });
+const thinkabletype = new ThinkableType({ hyperedges });
 ```
 
 #### Build programatically
 
-Or you can build up a HyperType file programatically
+Or you can build up a Thinkable Type file programatically
 
 ```javascript
-const hypertype = new ThinkableType();
-hypertype.add("Vannevar Bush", "author", "As We May Think");
-hypertype.add("Ted Nelson", "invented", "HyperText");
-hypertype.add("As We May Think", "influenced", "HyperText");
+const thinkabletype = new ThinkableType();
+thinkabletype.add("Vannevar Bush", "author", "As We May Think");
+thinkabletype.add("Ted Nelson", "invented", "HyperText");
+thinkabletype.add("As We May Think", "influenced", "HyperText");
 ```
 
 You can also build up a Hyperedge
 
 ```javascript
-const edge = hypertype.add("Vannevar Bush");
+const edge = thinkabletype.add("Vannevar Bush");
 edge.add("invented");
 edge.add("Memex");
 ```
 
-### Visualize HyperType
+### Visualize Thinkable Type
 
-Connections and visualizations are a core part of HyperType—so [Force Graph 3D](https://vasturiano.github.io/3d-force-graph/) is supported out of the box.
+Connections and visualizations are a core part of Thinkable Type—so [Force Graph 3D](https://vasturiano.github.io/3d-force-graph/) is supported out of the box.
 
 ```javascript
-const hypertype = new ThinkableType({
+const thinkabletype = new ThinkableType({
     hyperedges: [
         ["Hercules", "son", "Zeus"],
         ["Hercules", "son", "Alcmene"],
     ],
 });
-const data = hypertype.graphData(); // { nodes, links } for Force Graph 3D
+const data = thinkabletype.graphData(); // { nodes, links } for Force Graph 3D
 ```
 
 In addition, an `interwingle` parameter is available to control the interconnections of the graph.
@@ -174,7 +178,7 @@ In addition, an `interwingle` parameter is available to control the interconnect
 `Isolated` displays hyperedges exactly as they're entered, with no interconnections.
 
 ```javascript
-const hypertype = new ThinkableType({
+const thinkabletype = new ThinkableType({
     interwingle: ThinkableType.INTERWINGLE.ISOLATED,
     hyperedges: [
         ["Hercules", "son", "Zeus"],
@@ -183,7 +187,7 @@ const hypertype = new ThinkableType({
 });
 
 // hyperedges are displayed exactly as entered
-const data = hypertype.graphData();
+const data = thinkabletype.graphData();
 // Hercules -> son -> Zeus
 // Hercules -> son -> Alcmene
 ```
@@ -195,7 +199,7 @@ const data = hypertype.graphData();
 `Confluence` connects common parents.
 
 ```javascript
-const hypertype = new ThinkableType({
+const thinkabletype = new ThinkableType({
     interwingle: ThinkableType.INTERWINGLE.CONFLUENCE,
     hyperedges: [
         ["Hercules", "son", "Zeus"],
@@ -204,7 +208,7 @@ const hypertype = new ThinkableType({
 });
 
 // nodes shares common ancestors
-const data = hypertype.graphData();
+const data = thinkabletype.graphData();
 //
 //                  / Zeus
 //  Herculues -> son
@@ -219,7 +223,7 @@ const data = hypertype.graphData();
 `Fusion` connects starts and ends.
 
 ```javascript
-const hypertype = new ThinkableType({
+const thinkabletype = new ThinkableType({
     interwingle: ThinkableType.INTERWINGLE.FUSION,
     hyperedges: [
         ["Plato", "student", "Socrates"],
@@ -228,7 +232,7 @@ const hypertype = new ThinkableType({
 });
 
 // start and end nodes are fused together
-const data = hypertype.graphData();
+const data = thinkabletype.graphData();
 // Aristotle -> student -> Plato -> student -> Socrates
 ```
 
@@ -239,7 +243,7 @@ const data = hypertype.graphData();
 `Bridge` connects common symbols with a bridge.
 
 ```javascript
-const hypertype = new ThinkableType({
+const thinkabletype = new ThinkableType({
     interwingle: ThinkableType.INTERWINGLE.BRIDGE,
     hyperedges: [
         ["Vannevar Bush", "author", "As We May Think"],
@@ -249,7 +253,7 @@ const hypertype = new ThinkableType({
 });
 
 // common symbols are connected through a bridge
-const data = hypertype.graphData();
+const data = thinkabletype.graphData();
 //
 //  Vannevar Bush   -> author -> As We May Think
 //                     |
@@ -258,7 +262,7 @@ const data = hypertype.graphData();
 //  Tim Berners-Lee -> author -> Weaving the Web
 ```
 
-![Interwingle Bridge HyperTyper Example](images/authors-interwingle-4.png)
+![Interwingle Bridge Thinkable Type Example](images/authors-interwingle-4.png)
 
 These four views give you control in how to visualize your knowledge graph and control interconnections between your data.
 
@@ -268,47 +272,47 @@ As you scale up the `interwingle` parameter, all the visualization layers start 
 
 ### PageRank
 
-HyperType helps you find the most referenced symbols and connections by running `PageRank` on your knowledge graph.
+Thinkable Type helps you find the most referenced symbols and connections by running `PageRank` on your knowledge graph.
 
 ```javascript
-const hypertype = HyperType.parse(`A,B,C
+const thinkabletype = ThinkableType.parse(`A,B,C
 A,B,D
 A,B,E
 A,C,Z`);
 
-await hypertype.sync(); // syncs pagerank
-hypertype.pageranks // { A: <num>, B: <num>, ... }
-hypertype.pagerank("Z") // { A: <num>, C: <num>, ... }
+await thinkabletype.sync(); // syncs pagerank
+thinkabletype.pageranks // { A: <num>, B: <num>, ... }
+thinkabletype.pagerank("Z") // { A: <num>, C: <num>, ... }
 ```
 
-Note, HyperType aims to work with very large knowledge graphs, so we keep expensive operations like `PageRank` explicit and in the background, controlled through `await hypertype.sync()` or `await hypertype.syncPagerank().`
+Note, Thinkable Type aims to work with very large knowledge graphs, so we keep expensive operations like `PageRank` explicit and in the background, controlled through `await thinkabletype.sync()` or `await thinkabletype.syncPagerank().`
 
 ### Embeddings and Vector Search
 
-HyperType can find similar symbols and hyperedges, not only by the explicit connections, but by the text similarity.
+Thinkable Type can find similar symbols and hyperedges, not only by the explicit connections, but by the text similarity.
 
-Using [Embeddings.js](https://embeddingsjs.themaximalist.com) and [VectorDB.js](https://vectordbjs.themaximalist.com), HyperType can find hidden connections in your knowledge graph.
+Using [Embeddings.js](https://embeddingsjs.themaximalist.com) and [VectorDB.js](https://vectordbjs.themaximalist.com), Thinkable Type can find hidden connections in your knowledge graph.
 
 Note, both embeddings and vector search are local by default, but you can use embeddings from `OpenAI` with a few config lines.
 
 #### Find Similar Symbols
 
 ```javascript
-const hypertype = HyperType.parse("Red,Green,Blue\nWhite,Black,Gray");
-await hypertype.sync();
+const thinkabletype = ThinkableType.parse("Red,Green,Blue\nWhite,Black,Gray");
+await thinkabletype.sync();
 
-await hypertype.similarSymbols("Redish"); // [ { symbol: "Red": distance: 0.5 } ]
+await thinkabletype.similarSymbols("Redish"); // [ { symbol: "Red": distance: 0.5 } ]
 ```
 
 #### Find Similar Hyperedges
 
 ```javascript
-const hypertype = new ThinkableType();
-const edge1 = hypertype.add("Red", "Green", "Blue");
-const edge2 = hypertype.add("Red", "White", "Blue");
-const edge3 = hypertype.add("Bob", "Sally", "Bill");
+const thinkabletype = new ThinkableType();
+const edge1 = thinkabletype.add("Red", "Green", "Blue");
+const edge2 = thinkabletype.add("Red", "White", "Blue");
+const edge3 = thinkabletype.add("Bob", "Sally", "Bill");
 
-await hypertype.sync();
+await thinkabletype.sync();
 
 await edge1.similar(); // [ Hyperedge("Red", "White", "Blue") ]
 await edge2.similar(); // [ Hyperedge("Red", "Green", "Blue") ]
@@ -316,11 +320,11 @@ await edge2.similar(); // [ Hyperedge("Red", "Green", "Blue") ]
 
 ### Searching
 
-Searching in HyperType is easy, you can search by symbol, hyperedge or a partial
+Searching in Thinkable Type is easy, you can search by symbol, hyperedge or a partial
 hyperedge.
 
 ```javascript
-const hypertype = new ThinkableType({
+const thinkabletype = new ThinkableType({
     hyperedges: [
         ["Ted Nelson", "invented", "Xanadu"],
         ["Tim Berners-Lee", "invented", "WWW"],
@@ -328,14 +332,14 @@ const hypertype = new ThinkableType({
         // ...
     ],
 });
-hypertype.filter("invented").length; // 2
-hypertype.filter("Tim Berners-Lee").length; // 2
-hypertype.filter("Tim Berners-Lee", "invented").length; // 1
+thinkabletype.filter("invented").length; // 2
+thinkabletype.filter("Tim Berners-Lee").length; // 2
+thinkabletype.filter("Tim Berners-Lee", "invented").length; // 1
 ```
 
 ### AI Auto Suggest
 
-HyperType has `suggest()` built in, which autocompletes any symbol or edge.
+Thinkable Type has `suggest()` built in, which autocompletes any symbol or edge.
 
 Using [LLM.js](https://llmjs.themaximalist.com), you can use any Large Language Model—like GPT-4, Claude, Mistral or local LLMs like [Llamafile](https://github.com/Mozilla-Ocho/llamafile).
 
@@ -348,16 +352,16 @@ const options = {
     }
 };
 
-const hypertype = new ThinkableType(options);
-const hyperedge = hypertype.add("Steve Jobs", "inventor");
-hyperedge.suggest(); // ["iPhone", "Macintosh", "iPod", ... ]
+const thinkabletype = new ThinkableType(options);
+const hyperedge = thinkabletype.add("Steve Jobs", "inventor");
+thinkabletype.suggest(); // ["iPhone", "Macintosh", "iPod", ... ]
 ```
 
 This makes programatically expanding knowledge graphs with LLMs incredibly easy!
 
 ### AI Generate
 
-HyperType also has `generate()` built in, which generates hyperedges based on
+Thinkable Type also has `generate()` built in, which generates hyperedges based on
 your prompt. This is a great way to expand your knowledge graph in a particular
 direction.
 
@@ -370,8 +374,8 @@ const options = {
     },
 };
 
-const hypertype = new ThinkableType(options);
-const hyperedges = hypertype.generate("Steve Jobs");
+const thinkabletype= new ThinkableType(options);
+const hyperedges = thinkabletype.generate("Steve Jobs");
 // Steve Jobs,Apple Inc,CEO
 // Steve Jobs,NeXT,Founder
 // Steve Jobs,Macintosh,Personal Computers
@@ -383,39 +387,39 @@ const hyperedges = hypertype.generate("Steve Jobs");
 
 ### CLI
 
-HyperType ships with a command-line interfaces for generating HyperType files.
+Thinkable Type ships with a command-line interfaces for generating Thinkable Type files.
 
 ```bash
-> hypertype epic of gilgamesh
+> thinkabletype epic of gilgamesh
 epic of gilgamesh,sumerian literature,ancient civilization  
 epic of gilgamesh,gilgamesh,enkidu,immortality,friendship  
 sumerian literature,cuneiform writing,mesopotamia
 ...
 ```
 
-By default it writes to stdout, either copy and paste to a `.hypertype` file or redirect the out
+By default it writes to stdout, either copy and paste to a `.tt` file or redirect the out
 
 ```bash
-> hypertype mesopotamia > mesopotamia.hypertype
+> thinkabletype mesopotamia > mesopotamia.tt
 ```
 
 
 
-## The Design of HyperType
+## The Design of Thinkable Type
 
 A language for ideas needs a structureless structure. That's exactly what Stephen Wolfram found hypergraphs to be while working on his Universal Theory of Physics project.
 
 Ted Nelson created Zig Zag as a "hyperstructure" kit—a way to represent information in HyperText systems.
 
-*HyperType combines these ideas*, using the hypergraph as the fundamental unit in the HyperText system.
+*Thinkable Type combines these ideas*, using the hypergraph as the fundamental unit in the HyperText system.
 
-HyperType is a lot closer to symbolic programming than iterative programming. In iterative programming, you describe every little step. In symbolic programming, you describe the high-level concepts. It's top-down rather than bottom-up.
+Thinkable Type is a lot closer to symbolic programming than iterative programming. In iterative programming, you describe every little step. In symbolic programming, you describe the high-level concepts. It's top-down rather than bottom-up.
 
 Something magical happens with symbolic programming. Like a looking glass, "the program" is a reflection of the connected symbols. It's a lot like language. You have legalese and then you have poetry.
 
-HyperType is not a programming language in and of itself—but this high-level connecting of ideas is creating a sum greater than it's parts.
+Thinkable Type is not a programming language in and of itself—but this high-level connecting of ideas is creating a sum greater than it's parts.
 
-HyperType is open source, and the file format is incredibly simple—just CSV files.
+Thinkable Type is open source, and the file format is incredibly simple—just CSV files.
 
 It's goal is to give you control over the knowledge and information in your life.
 
@@ -427,15 +431,15 @@ It's goal is to give you control over the knowledge and information in your life
 
 ## Alpha
 
-[HyperType](https://github.com/themaximal1st/hypertype) is under heavy development and still subject to breaking changes.
+[Thinkable Type](https://github.com/themaximal1st/thinkabletype) is under heavy development and still subject to breaking changes.
 
 
 
 ## Projects
 
-HyperType is currently used in the following projects:
+Thinkable Type is currently used in the following projects:
 
--   [HyperTyper](https://hypertyper.com)
+-   [Think Machine](https://thinkmachine.com)
 
 
 
