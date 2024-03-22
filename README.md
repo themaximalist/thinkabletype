@@ -138,7 +138,7 @@ const hypertype = new HyperType({ hyperedges });
 Or you can build up a HyperType file programatically
 
 ```javascript
-const hypertype = new HyperType();
+const hypertype = new ThinkableType();
 hypertype.add("Vannevar Bush", "author", "As We May Think");
 hypertype.add("Ted Nelson", "invented", "HyperText");
 hypertype.add("As We May Think", "influenced", "HyperText");
@@ -152,18 +152,16 @@ edge.add("invented");
 edge.add("Memex");
 ```
 
-
-
 ### Visualize HyperType
 
 Connections and visualizations are a core part of HyperType—so [Force Graph 3D](https://vasturiano.github.io/3d-force-graph/) is supported out of the box.
 
 ```javascript
-const hypertype = new HyperType({
-  hyperedges: [
-    ["Hercules", "son", "Zeus"],
-    ["Hercules", "son", "Alcmene"],
-  ]
+const hypertype = new ThinkableType({
+    hyperedges: [
+        ["Hercules", "son", "Zeus"],
+        ["Hercules", "son", "Alcmene"],
+    ],
 });
 const data = hypertype.graphData(); // { nodes, links } for Force Graph 3D
 ```
@@ -176,12 +174,12 @@ In addition, an `interwingle` parameter is available to control the interconnect
 `Isolated` displays hyperedges exactly as they're entered, with no interconnections.
 
 ```javascript
-const hypertype = new HyperType({
-  interwingle: HyperType.INTERWINGLE.ISOLATED,
-  hyperedges: [
-    ["Hercules", "son", "Zeus"],
-    ["Hercules", "son", "Alcmene"],
-  ]
+const hypertype = new ThinkableType({
+    interwingle: ThinkableType.INTERWINGLE.ISOLATED,
+    hyperedges: [
+        ["Hercules", "son", "Zeus"],
+        ["Hercules", "son", "Alcmene"],
+    ],
 });
 
 // hyperedges are displayed exactly as entered
@@ -190,43 +188,43 @@ const data = hypertype.graphData();
 // Hercules -> son -> Alcmene
 ```
 
-![Interwingle Isolated HyperTyper Example](images/hercules-interwingle-1.png)
+![Interwingle Isolated Think Machine Example](images/hercules-interwingle-1.png)
 
 #### Interwingle Confluence
 
 `Confluence` connects common parents.
 
 ```javascript
-const hypertype = new HyperType({
-  interwingle: HyperType.INTERWINGLE.CONFLUENCE,
-  hyperedges: [
-    ["Hercules", "son", "Zeus"],
-    ["Hercules", "son", "Alcmene"],
-  ]
+const hypertype = new ThinkableType({
+    interwingle: ThinkableType.INTERWINGLE.CONFLUENCE,
+    hyperedges: [
+        ["Hercules", "son", "Zeus"],
+        ["Hercules", "son", "Alcmene"],
+    ],
 });
 
 // nodes shares common ancestors
 const data = hypertype.graphData();
 //
-//                  / Zeus  
+//                  / Zeus
 //  Herculues -> son
 //                  \ Alcmene
 //
 ```
 
-![Interwingle Confluence HyperTyper Example](images/hercules-interwingle-2.png)
+![Interwingle Confluence Think Machine Example](images/hercules-interwingle-2.png)
 
 #### Interwingle Fusion
 
 `Fusion` connects starts and ends.
 
 ```javascript
-const hypertype = new HyperType({
-  interwingle: HyperType.INTERWINGLE.FUSION,
-  hyperedges: [
-    ["Plato", "student", "Socrates"],
-  	["Aristotle", "student", "Plato"]
-  ]
+const hypertype = new ThinkableType({
+    interwingle: ThinkableType.INTERWINGLE.FUSION,
+    hyperedges: [
+        ["Plato", "student", "Socrates"],
+        ["Aristotle", "student", "Plato"],
+    ],
 });
 
 // start and end nodes are fused together
@@ -234,20 +232,20 @@ const data = hypertype.graphData();
 // Aristotle -> student -> Plato -> student -> Socrates
 ```
 
-![Interwingle Fusion HyperTyper Example](images/aristotle-plato-socrates-interwingle-3.png)
+![Interwingle Fusion Think Machine Example](images/aristotle-plato-socrates-interwingle-3.png)
 
 #### Interwingle Bridge
 
 `Bridge` connects common symbols with a bridge.
 
 ```javascript
-const hypertype = new HyperType({
-  interwingle: HyperType.INTERWINGLE.BRIDGE,
-  hyperedges: [
-    ["Vannevar Bush", "author", "As We May Think"],
-    ["Ted Nelson", "author", "Computer Lib/Dream Machines"],
-    ["Tim Berners-Lee", "author", "Weaving the Web"]
-  ]
+const hypertype = new ThinkableType({
+    interwingle: ThinkableType.INTERWINGLE.BRIDGE,
+    hyperedges: [
+        ["Vannevar Bush", "author", "As We May Think"],
+        ["Ted Nelson", "author", "Computer Lib/Dream Machines"],
+        ["Tim Berners-Lee", "author", "Weaving the Web"],
+    ],
 });
 
 // common symbols are connected through a bridge
@@ -305,7 +303,7 @@ await hypertype.similarSymbols("Redish"); // [ { symbol: "Red": distance: 0.5 } 
 #### Find Similar Hyperedges
 
 ```javascript
-const hypertype = new HyperType();
+const hypertype = new ThinkableType();
 const edge1 = hypertype.add("Red", "Green", "Blue");
 const edge2 = hypertype.add("Red", "White", "Blue");
 const edge3 = hypertype.add("Bob", "Sally", "Bill");
@@ -318,16 +316,17 @@ await edge2.similar(); // [ Hyperedge("Red", "Green", "Blue") ]
 
 ### Searching
 
-Searching in HyperType is easy, you can search by symbol, hyperedge or a partial hyperedge.
+Searching in HyperType is easy, you can search by symbol, hyperedge or a partial
+hyperedge.
 
 ```javascript
-const hypertype = new HyperType({
-  hyperedges: [
-    ["Ted Nelson", "invented", "Xanadu"],
-    ["Tim Berners-Lee", "invented", "WWW"],
-    ["Tim Berners-Lee", "author", "Weaving the Web"],
-    // ...
-  ]
+const hypertype = new ThinkableType({
+    hyperedges: [
+        ["Ted Nelson", "invented", "Xanadu"],
+        ["Tim Berners-Lee", "invented", "WWW"],
+        ["Tim Berners-Lee", "author", "Weaving the Web"],
+        // ...
+    ],
 });
 hypertype.filter("invented").length; // 2
 hypertype.filter("Tim Berners-Lee").length; // 2
@@ -349,7 +348,7 @@ const options = {
     }
 };
 
-const hypertype = new HyperType(options);
+const hypertype = new ThinkableType(options);
 const hyperedge = hypertype.add("Steve Jobs", "inventor");
 hyperedge.suggest(); // ["iPhone", "Macintosh", "iPod", ... ]
 ```
@@ -358,18 +357,20 @@ This makes programatically expanding knowledge graphs with LLMs incredibly easy!
 
 ### AI Generate
 
-HyperType also has `generate()` built in, which generates hyperedges based on your prompt. This is a great way to expand your knowledge graph in a particular direction.
+HyperType also has `generate()` built in, which generates hyperedges based on
+your prompt. This is a great way to expand your knowledge graph in a particular
+direction.
 
 ```javascript
 const options = {
     llm: {
         service: "openai",
         model: "gpt-4-turbo-preview",
-        apikey: process.env.OPENAI_API_KEY
-    }
+        apikey: process.env.OPENAI_API_KEY,
+    },
 };
 
-const hypertype = new HyperType(options);
+const hypertype = new ThinkableType(options);
 const hyperedges = hypertype.generate("Steve Jobs");
 // Steve Jobs,Apple Inc,CEO
 // Steve Jobs,NeXT,Founder

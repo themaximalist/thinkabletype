@@ -1,9 +1,9 @@
 {
-    "name": "@themaximalist/hypertype",
+    "name": "@themaximalist/thinkabletype",
     "version": "0.1.4",
     "description": "Knowledge Graph Toolkit",
-    "homepage": "https://hypertypelang.com",
-    "repository": "themaximal1st/hypertype",
+    "homepage": "https://thinkabletype.com",
+    "repository": "themaximal1st/thinkabletype",
     "type": "module",
     "main": "src/index.js",
     "directories": {
@@ -13,7 +13,7 @@
         "test": "vitest test"
     },
     "bin": {
-        "hypertype": "src/cli.js"
+        "thinkabletype": "src/cli.js"
     },
     "keywords": [
         "mind mapping",

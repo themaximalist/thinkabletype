@@ -2,7 +2,7 @@
 import dotenv from "dotenv-extended";
 dotenv.load();
 
-import HyperType from "./index.js";
+import ThinkableType from "./index.js";
 
 const search = process.argv.slice(2).join(" ");
 if (!search || search.trim().length === 0) {
@@ -10,7 +10,7 @@ if (!search || search.trim().length === 0) {
     process.exit(1);
 }
 
-const hypertype = new HyperType({
+const thinkabletype = new ThinkableType({
     llm: {
         service: "openai",
         model: "gpt-4-turbo-preview",
@@ -18,7 +18,7 @@ const hypertype = new HyperType({
     }
 });
 
-const hyperedges = await hypertype.generate(search);
+const hyperedges = await thinkabletype.generate(search);
 for await (const hyperedge of hyperedges) {
     console.log(hyperedge[0].join(","));
 }

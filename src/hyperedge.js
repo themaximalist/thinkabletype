@@ -1,14 +1,14 @@
 import * as utils from "./utils.js";
 
 export default class Hyperedge {
-    constructor(symbols = [], hypertype) {
+    constructor(symbols = [], thinkabletype) {
         this.symbols = symbols;
-        this.hypertype = hypertype;
+        this.thinkabletype = thinkabletype;
     }
 
     get id() {
         const id = this.symbols.join("->");
-        if (this.hypertype.isIsolated) {
+        if (this.thinkabletype.isIsolated) {
             return `${this.index}:${id}`;
         }
 
@@ -16,7 +16,7 @@ export default class Hyperedge {
     }
 
     get index() {
-        return this.hypertype.hyperedges.indexOf(this);
+        return this.thinkabletype.hyperedges.indexOf(this);
     }
 
     get firstSymbol() {
@@ -30,18 +30,18 @@ export default class Hyperedge {
     add() {
         const symbols = Array.from(arguments);
         this.symbols.push(...symbols);
-        this.hypertype.setUnsynced();
+        this.thinkabletype.setUnsynced();
     }
 
     remove(symbol_or_index) {
         if (typeof symbol_or_index === "number") {
             this.symbols.splice(symbol_or_index, 1);
-            this.hypertype.setUnsynced();
+            this.thinkabletype.setUnsynced();
         } else if (typeof symbol_or_index === "string") {
             const index = this.symbols.indexOf(symbol_or_index);
             if (index !== -1) {
                 this.symbols.splice(index, 1);
-                this.hypertype.setUnsynced();
+                this.thinkabletype.setUnsynced();
             }
         }
     }
@@ -58,7 +58,7 @@ export default class Hyperedge {
     async similar() {
         const hyperedges = new Map();
         for (const symbol of this.symbols) {
-            const edges = await this.hypertype.similar(symbol);
+            const edges = await this.thinkabletype.similar(symbol);
             for (const edge of edges) {
                 if (edge.equal(this)) continue;
                 hyperedges.set(edge.id, edge);
@@ -69,6 +69,6 @@ export default class Hyperedge {
     }
 
     async suggest(options = {}) {
-        return this.hypertype.suggest(this.symbols, options);
+        return this.thinkabletype.suggest(this.symbols, options);
     }
 }

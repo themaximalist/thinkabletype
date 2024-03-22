@@ -6,7 +6,7 @@ import suggest from "./suggest.js";
 import generate from "./generate.js";
 // import VectorDB from "@themaximalist/vectordb.js"
 
-export default class HyperType extends Hypergraph {
+export default class ThinkableType extends Hypergraph {
 
     constructor(options = {}) {
         super(options);
@@ -79,9 +79,9 @@ export default class HyperType extends Hypergraph {
 
 
     static parse(input, options = {}) {
-        const hypertype = new HyperType(options);
-        hypertype.parse(input, options);
-        return hypertype;
+        const thinkabletype = new ThinkableType(options);
+        thinkabletype.parse(input, options);
+        return thinkabletype;
     }
 
     parse(input, options = {}) {

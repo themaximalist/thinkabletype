@@ -1,6 +1,6 @@
 import "dotenv-extended/config.js"
 
-import HyperType from "../src/index.js";
+import ThinkableType from "../src/index.js";
 
 import { expect, test } from "vitest";
 
@@ -17,8 +17,8 @@ const options = {
 
 test.only("generate", async () => {
 
-    const hypertype = new HyperType(options);
+    const thinkabletype = new ThinkableType(options);
     const prompt = `Ancient Sumerians`;
-    const hyperedges = await hypertype.generate(prompt);
+    const hyperedges = await thinkabletype.generate(prompt);
     console.log(hyperedges)
 }, 20000);

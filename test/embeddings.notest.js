@@ -1,25 +1,25 @@
-import HyperType from "../src/index.js";
+import ThinkableType from "../src/index.js";
 import Hyperedge from "../src/Hyperedge.js";
 
 import { expect, test } from "vitest";
 
 test("simple symbol embeddings search", async () => {
-    const hypertype = HyperType.parse("Red,Green,Blue\nWhite,Black,Gray");
-    await hypertype.sync();
+    const thinkabletype = ThinkableType.parse("Red,Green,Blue\nWhite,Black,Gray");
+    await thinkabletype.sync();
 
-    const similar = await hypertype.similarSymbols("Redish");
+    const similar = await thinkabletype.similarSymbols("Redish");
     expect(similar.length).toBe(1);
     expect(similar[0].symbol).toBe("Red");
     expect(similar[0].distance).toBeGreaterThan(0);
 });
 
 test("simple edge embeddings search", async () => {
-    const hypertype = HyperType.parse("Red,Green,Blue\nWhite,Black,Gray");
-    expect(hypertype.synced).toBe(false);
-    await hypertype.sync();
-    expect(hypertype.synced).toBe(true);
+    const thinkabletype = ThinkableType.parse("Red,Green,Blue\nWhite,Black,Gray");
+    expect(thinkabletype.synced).toBe(false);
+    await thinkabletype.sync();
+    expect(thinkabletype.synced).toBe(true);
 
-    const similar = await hypertype.similar("Redish");
+    const similar = await thinkabletype.similar("Redish");
     expect(similar.length).toBe(1);
     const edge = similar[0];
     expect(edge).toBeInstanceOf(Hyperedge);
@@ -28,12 +28,12 @@ test("simple edge embeddings search", async () => {
 });
 
 test("skips dupes", async () => {
-    const hypertype = new HyperType();
-    hypertype.add("Red");
-    hypertype.add("Red");
-    await hypertype.sync();
+    const thinkabletype = new ThinkableType();
+    thinkabletype.add("Red");
+    thinkabletype.add("Red");
+    await thinkabletype.sync();
 
-    const similar = await hypertype.similarSymbols("Redish");
+    const similar = await thinkabletype.similarSymbols("Redish");
 
     expect(similar.length).toBe(1);
     expect(similar[0].symbol).toBe("Red");
@@ -41,12 +41,12 @@ test("skips dupes", async () => {
 });
 
 test("edge similar", async () => {
-    const hypertype = new HyperType();
-    const edge1 = hypertype.add("Red", "Green", "Blue");
-    const edge2 = hypertype.add("Red", "White", "Blue");
-    const edge3 = hypertype.add("Bob", "Sally", "Bill");
+    const thinkabletype = new ThinkableType();
+    const edge1 = thinkabletype.add("Red", "Green", "Blue");
+    const edge2 = thinkabletype.add("Red", "White", "Blue");
+    const edge3 = thinkabletype.add("Bob", "Sally", "Bill");
 
-    await hypertype.sync();
+    await thinkabletype.sync();
 
     const similar1 = await edge1.similar();
     expect(similar1.length).toBe(1);

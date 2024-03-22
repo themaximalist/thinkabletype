@@ -1,71 +1,71 @@
-import HyperType from "../src/index.js";
+import ThinkableType from "../src/index.js";
 import Hyperedge from "../src/Hyperedge.js";
 
 import { expect, test } from "vitest";
 
-test("empty hypertype", () => {
-  const hypertype = new HyperType();
-  expect(hypertype.hyperedges).toEqual([]);
+test("empty thinkabletype", () => {
+  const thinkabletype = new ThinkableType();
+  expect(thinkabletype.hyperedges).toEqual([]);
 });
 
 test("build edge (isolated)", () => {
-  const hypertype = new HyperType();
-  const edge = hypertype.add("A", "B");
+  const thinkabletype = new ThinkableType();
+  const edge = thinkabletype.add("A", "B");
   expect(edge).instanceOf(Hyperedge);
   expect(edge.symbols).toEqual(["A", "B"]);
   expect(edge.id).toEqual("0:A->B");
-  expect(hypertype.symbols).toEqual(["A", "B"]);
+  expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge.add("C");
   expect(edge.symbols).toEqual(["A", "B", "C"]);
   expect(edge.id).toEqual("0:A->B->C");
-  expect(hypertype.symbols).toEqual(["A", "B", "C"]);
+  expect(thinkabletype.symbols).toEqual(["A", "B", "C"]);
 
-  const edge2 = hypertype.get("A", "B", "C");
+  const edge2 = thinkabletype.get("A", "B", "C");
   expect(edge2).instanceOf(Hyperedge);
 
   edge2.remove("C");
   expect(edge.symbols).toEqual(["A", "B"]);
   expect(edge.id).toEqual("0:A->B");
-  expect(hypertype.symbols).toEqual(["A", "B"]);
+  expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge2.remove(0)
   expect(edge.symbols).toEqual(["B"]);
   expect(edge.id).toEqual("0:B");
-  expect(hypertype.symbols).toEqual(["B"]);
+  expect(thinkabletype.symbols).toEqual(["B"]);
 });
 
 test("build edge (confluence)", () => {
-  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.CONFLUENCE });
-  const edge = hypertype.add("A", "B");
+  const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.CONFLUENCE });
+  const edge = thinkabletype.add("A", "B");
   expect(edge).instanceOf(Hyperedge);
   expect(edge.symbols).toEqual(["A", "B"]);
   expect(edge.id).toEqual("A->B");
-  expect(hypertype.symbols).toEqual(["A", "B"]);
+  expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge.add("C");
   expect(edge.symbols).toEqual(["A", "B", "C"]);
   expect(edge.id).toEqual("A->B->C");
-  expect(hypertype.symbols).toEqual(["A", "B", "C"]);
+  expect(thinkabletype.symbols).toEqual(["A", "B", "C"]);
 
-  const edge2 = hypertype.get("A", "B", "C");
+  const edge2 = thinkabletype.get("A", "B", "C");
   expect(edge2).instanceOf(Hyperedge);
 
   edge2.remove("C");
   expect(edge.symbols).toEqual(["A", "B"]);
   expect(edge.id).toEqual("A->B");
-  expect(hypertype.symbols).toEqual(["A", "B"]);
+  expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge2.remove(0)
   expect(edge.symbols).toEqual(["B"]);
   expect(edge.id).toEqual("B");
-  expect(hypertype.symbols).toEqual(["B"]);
+  expect(thinkabletype.symbols).toEqual(["B"]);
 });
 
 test("edge dupes (fusion)", () => {
-  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.FUSION });
-  const edge1 = hypertype.add("A", "B");
-  const edge2 = hypertype.add("A", "B");
+  const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
+  const edge1 = thinkabletype.add("A", "B");
+  const edge2 = thinkabletype.add("A", "B");
   expect(edge1.id).toBe(edge2.id);
 });
 
@@ -74,181 +74,181 @@ test("init with edges", () => {
     ["A", "B"],
   ];
 
-  const hypertype = new HyperType({ hyperedges });
-  expect(hypertype.hyperedges.length).toBe(1);
+  const thinkabletype = new ThinkableType({ hyperedges });
+  expect(thinkabletype.hyperedges.length).toBe(1);
 });
 
 test("has node", () => {
-  const hypertype = new HyperType({
+  const thinkabletype = new ThinkableType({
     hyperedges: [
       ["A", "B"],
     ]
   });
 
-  expect(hypertype.has("A")).toBeTruthy();
-  expect(hypertype.has("B")).toBeTruthy();
-  expect(hypertype.has("C")).toBeFalsy();
+  expect(thinkabletype.has("A")).toBeTruthy();
+  expect(thinkabletype.has("B")).toBeTruthy();
+  expect(thinkabletype.has("C")).toBeFalsy();
 });
 
 test("has partial edge", () => {
-  const hypertype = new HyperType({
+  const thinkabletype = new ThinkableType({
     hyperedges: [
       ["A", "B", "C"],
     ]
   });
 
-  expect(hypertype.has("A", "B")).toBeTruthy();
-  expect(hypertype.has("B", "C")).toBeTruthy();
-  expect(hypertype.has("A", "B", "C")).toBeTruthy();
-  expect(hypertype.has("A", "C")).toBeFalsy();
-  expect(hypertype.has("A", "B", "C", "D")).toBeFalsy();
+  expect(thinkabletype.has("A", "B")).toBeTruthy();
+  expect(thinkabletype.has("B", "C")).toBeTruthy();
+  expect(thinkabletype.has("A", "B", "C")).toBeTruthy();
+  expect(thinkabletype.has("A", "C")).toBeFalsy();
+  expect(thinkabletype.has("A", "B", "C", "D")).toBeFalsy();
 });
 
 test("regression hyperedge id() collision", async function () {
-  const hypertype = new HyperType();
-  const edge = hypertype.add("HELLO", "WORLD");
+  const thinkabletype = new ThinkableType();
+  const edge = thinkabletype.add("HELLO", "WORLD");
 
-  expect(hypertype.has("H")).toBeFalsy();
+  expect(thinkabletype.has("H")).toBeFalsy();
   expect(edge.has("H")).toBeFalsy();
   expect(edge.has("O", "W")).toBeFalsy(); // regression
 });
 
 test("filter on symbol", () => {
-  const hypertype = new HyperType({
+  const thinkabletype = new ThinkableType({
     hyperedges: [
       ["A", "B", "C"],
       ["1", "2", "C"],
     ]
   });
 
-  expect(hypertype.filter("A").length).toBe(1);
-  expect(hypertype.filter("B").length).toBe(1);
-  expect(hypertype.filter("1").length).toBe(1);
-  expect(hypertype.filter("2").length).toBe(1);
-  expect(hypertype.filter("C").length).toBe(2);
+  expect(thinkabletype.filter("A").length).toBe(1);
+  expect(thinkabletype.filter("B").length).toBe(1);
+  expect(thinkabletype.filter("1").length).toBe(1);
+  expect(thinkabletype.filter("2").length).toBe(1);
+  expect(thinkabletype.filter("C").length).toBe(2);
 });
 
 test("filter on partial edge", () => {
-  const hypertype = new HyperType({
+  const thinkabletype = new ThinkableType({
     hyperedges: [
       ["A", "B", "C"],
       ["A", "B", "D"],
     ]
   });
 
-  expect(hypertype.filter("A", "B").length).toBe(2);
-  expect(hypertype.filter("A", "B", "C").length).toBe(1);
-  expect(hypertype.filter("A", "B", "D").length).toBe(1);
+  expect(thinkabletype.filter("A", "B").length).toBe(2);
+  expect(thinkabletype.filter("A", "B", "C").length).toBe(1);
+  expect(thinkabletype.filter("A", "B", "D").length).toBe(1);
 });
 
 test("filter on multiple edges", () => {
-  const hypertype = new HyperType({
+  const thinkabletype = new ThinkableType({
     hyperedges: [
       ["A", "B", "1"],
       ["A", "B", "2"],
     ]
   });
 
-  expect(hypertype.filter([["A", "B", "1"]]).length).toBe(1);
-  expect(hypertype.filter("A", "B").length).toBe(2);
-  expect(hypertype.filter("A", "B", "1").length).toBe(1);
-  expect(hypertype.filter([["A", "B", "1"], ["A", "B", "2"]]).length).toBe(2);
+  expect(thinkabletype.filter([["A", "B", "1"]]).length).toBe(1);
+  expect(thinkabletype.filter("A", "B").length).toBe(2);
+  expect(thinkabletype.filter("A", "B", "1").length).toBe(1);
+  expect(thinkabletype.filter([["A", "B", "1"], ["A", "B", "2"]]).length).toBe(2);
 });
 
 test("compare hyperedge (isolated)", async function () {
-  const hypertype = new HyperType();
-  const hyperedge1 = hypertype.add("A", "B", "C");
-  const hyperedge2 = hypertype.add("A", "B", "C");
-  const hyperedge3 = hypertype.add("A", "B", "C", "D");
+  const thinkabletype = new ThinkableType();
+  const hyperedge1 = thinkabletype.add("A", "B", "C");
+  const hyperedge2 = thinkabletype.add("A", "B", "C");
+  const hyperedge3 = thinkabletype.add("A", "B", "C", "D");
 
   expect(hyperedge1.equal(hyperedge2)).toBeFalsy();
   expect(hyperedge3.equal(hyperedge1)).toBeFalsy();
 });
 
 test("compare hyperedge (confluence)", async function () {
-  const hypertype = new HyperType({ interwingle: HyperType.INTERWINGLE.CONFLUENCE });
-  const hyperedge1 = hypertype.add("A", "B", "C");
-  const hyperedge2 = hypertype.add("A", "B", "C");
-  const hyperedge3 = hypertype.add("A", "B", "C", "D");
+  const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.CONFLUENCE });
+  const hyperedge1 = thinkabletype.add("A", "B", "C");
+  const hyperedge2 = thinkabletype.add("A", "B", "C");
+  const hyperedge3 = thinkabletype.add("A", "B", "C", "D");
 
   expect(hyperedge1.equal(hyperedge2)).toBeTruthy();
   expect(hyperedge3.equal(hyperedge1)).toBeFalsy();
 });
 
-test("parses hypertype", async function () {
-  const hypertype = HyperType.parse(`A,B,C
+test("parses thinkabletype", async function () {
+  const thinkabletype = ThinkableType.parse(`A,B,C
 A,B,D`);
-  expect(hypertype);
-  expect(hypertype.symbols.length == 4);
-  expect(hypertype.hyperedges.length == 2);
-  expect(hypertype.has("A", "B", "C")).toBeTruthy();
-  expect(hypertype.has("A", "B", "D")).toBeTruthy();
+  expect(thinkabletype);
+  expect(thinkabletype.symbols.length == 4);
+  expect(thinkabletype.hyperedges.length == 2);
+  expect(thinkabletype.has("A", "B", "C")).toBeTruthy();
+  expect(thinkabletype.has("A", "B", "D")).toBeTruthy();
 });
 
-test("parses comma in hypertype", async function () {
-  const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs."`);
-  expect(hypertype);
-  expect(hypertype.symbols.length == 3);
-  expect(hypertype.hyperedges.length == 1);
-  expect(hypertype.has("hypertype")).toBeTruthy();
-  expect(hypertype.has("tagline")).toBeTruthy();
-  expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeTruthy();
+test("parses comma in thinkabletype", async function () {
+  const thinkabletype = ThinkableType.parse(`thinkabletype,tagline,"Turning C,S,V,s into Hypergraphs."`);
+  expect(thinkabletype);
+  expect(thinkabletype.symbols.length == 3);
+  expect(thinkabletype.hyperedges.length == 1);
+  expect(thinkabletype.has("thinkabletype")).toBeTruthy();
+  expect(thinkabletype.has("tagline")).toBeTruthy();
+  expect(thinkabletype.has("Turning C,S,V,s into Hypergraphs.")).toBeTruthy();
 });
 
 test("reset", async function () {
-  const hypertype = HyperType.parse(`hypertype,tagline,"Turning C,S,V,s into Hypergraphs."`);
-  expect(hypertype);
-  hypertype.reset();
-  expect(hypertype.symbols.length).toBe(0);
-  expect(hypertype.hyperedges.length).toBe(0);
-  expect(hypertype.has("hypertype")).toBeFalsy();
-  expect(hypertype.has("tagline")).toBeFalsy();
-  expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeFalsy();
-  expect(hypertype.synced).toBeTruthy();
+  const thinkabletype = ThinkableType.parse(`thinkabletype,tagline,"Turning C,S,V,s into Hypergraphs."`);
+  expect(thinkabletype);
+  thinkabletype.reset();
+  expect(thinkabletype.symbols.length).toBe(0);
+  expect(thinkabletype.hyperedges.length).toBe(0);
+  expect(thinkabletype.has("thinkabletype")).toBeFalsy();
+  expect(thinkabletype.has("tagline")).toBeFalsy();
+  expect(thinkabletype.has("Turning C,S,V,s into Hypergraphs.")).toBeFalsy();
+  expect(thinkabletype.synced).toBeTruthy();
 });
 
 test("remove hyperedge", async function () {
-  const hypertype = HyperType.parse(`A,B,C\r\n1,2,3`);
-  expect(hypertype);
-  expect(hypertype.symbols.length).toBe(6);
-  expect(hypertype.hyperedges.length).toBe(2);
-  expect(hypertype.has("A", "B", "C")).toBeTruthy();
-  expect(hypertype.remove("A", "B", "C")).toBeTruthy();
-  expect(hypertype.has("A", "B", "C")).toBeFalsy();
-  expect(hypertype.symbols.length).toBe(3);
-  expect(hypertype.hyperedges.length).toBe(1);
+  const thinkabletype = ThinkableType.parse(`A,B,C\r\n1,2,3`);
+  expect(thinkabletype);
+  expect(thinkabletype.symbols.length).toBe(6);
+  expect(thinkabletype.hyperedges.length).toBe(2);
+  expect(thinkabletype.has("A", "B", "C")).toBeTruthy();
+  expect(thinkabletype.remove("A", "B", "C")).toBeTruthy();
+  expect(thinkabletype.has("A", "B", "C")).toBeFalsy();
+  expect(thinkabletype.symbols.length).toBe(3);
+  expect(thinkabletype.hyperedges.length).toBe(1);
 });
 
 test("export", async function () {
-  const input = `hypertype,tagline,"Turning C,S,V,s into Hypergraphs."\r\nA,B,C,D,E,F,G`;
-  const hypertype = HyperType.parse(input);
+  const input = `thinkabletype,tagline,"Turning C,S,V,s into Hypergraphs."\r\nA,B,C,D,E,F,G`;
+  const thinkabletype = ThinkableType.parse(input);
 
-  const output = hypertype.export();
+  const output = thinkabletype.export();
   expect(input).toBe(output);
 });
 
 
 test("parse on existing hypergraph", async function () {
-  const input = `hypertype,tagline,"Turning C,S,V,s into Hypergraphs."\r\nA,B,C,D,E,F,G`;
-  const hypertype = new HyperType();
-  hypertype.parse(input);
+  const input = `thinkabletype,tagline,"Turning C,S,V,s into Hypergraphs."\r\nA,B,C,D,E,F,G`;
+  const thinkabletype = new ThinkableType();
+  thinkabletype.parse(input);
 
-  expect(hypertype.symbols.length).toBe(10);
-  expect(hypertype.hyperedges.length).toBe(2);
-  expect(hypertype.has("hypertype")).toBeTruthy();
-  expect(hypertype.has("tagline")).toBeTruthy();
-  expect(hypertype.has("Turning C,S,V,s into Hypergraphs.")).toBeTruthy();
+  expect(thinkabletype.symbols.length).toBe(10);
+  expect(thinkabletype.hyperedges.length).toBe(2);
+  expect(thinkabletype.has("thinkabletype")).toBeTruthy();
+  expect(thinkabletype.has("tagline")).toBeTruthy();
+  expect(thinkabletype.has("Turning C,S,V,s into Hypergraphs.")).toBeTruthy();
 
-  hypertype.parse(`A,B,C\r\n1,2,3`);
-  expect(hypertype.symbols.length).toBe(6);
-  expect(hypertype.hyperedges.length).toBe(2);
-  expect(hypertype.has("hypertype")).toBeFalsy();
-  expect(hypertype.has("1")).toBeTruthy();
+  thinkabletype.parse(`A,B,C\r\n1,2,3`);
+  expect(thinkabletype.symbols.length).toBe(6);
+  expect(thinkabletype.hyperedges.length).toBe(2);
+  expect(thinkabletype.has("thinkabletype")).toBeFalsy();
+  expect(thinkabletype.has("1")).toBeTruthy();
 });
 
 test("hyperedge has", () => {
-  const hypertype = new HyperType();
-  const edge = hypertype.add("A", "B", "C");
+  const thinkabletype = new ThinkableType();
+  const edge = thinkabletype.add("A", "B", "C");
   expect(edge.has("A")).toBeTruthy();
   expect(edge.has(["A"])).toBeTruthy();
 
