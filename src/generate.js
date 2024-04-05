@@ -3,6 +3,7 @@ import LLM from "@themaximalist/llm.js"
 
 const TEMPERATURE = 1;
 
+// AI generator for ThinkableType
 export default async function* generate(user_prompt, options = {}) {
     if (typeof options.service === "undefined" && typeof options.model === "undefined") {
         options.service = LLM.LLAMAFILE;

@@ -1,3 +1,4 @@
+// ForceNode class for rendering a Hypergraph node
 export default class ForceNode {
 
     constructor(symbol, index, link) {
@@ -11,6 +12,7 @@ export default class ForceNode {
         return this.link.nodeId(this.index);
     }
 
+    // nodes know how to update their graph data, connecting to masquerade nodes if necessary
     updateGraphData(nodes, links) {
         const node = this.forcegraph.masqueradeNode(this);
         const hypergraphIDs = new Set();

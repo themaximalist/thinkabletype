@@ -687,11 +687,18 @@ Tim Berners-Lee,author,Weaving the Web
     let graphData;
     thinkabletype.depth = 0;
     graphData = thinkabletype.graphData([["Ted Nelson"], ["WWW"]]);
-    expect(graphData.maxDepth).toBe(1);
+    expect(graphData.depth).toBe(0);
+    expect(graphData.maxDepth).toBe(2);
     expect(graphData.nodes.length).toBe(9);
     expect(graphData.links.length).toBe(8);
 
     thinkabletype.depth = 1;
+    graphData = thinkabletype.graphData([["Ted Nelson"], ["WWW"]]);
+    expect(graphData.maxDepth).toBe(1);
+    expect(graphData.nodes.length).toBe(18);
+    expect(graphData.links.length).toBe(21);
+
+    thinkabletype.depth = 2;
     graphData = thinkabletype.graphData([["Ted Nelson"], ["WWW"]]);
     expect(graphData.maxDepth).toBe(1);
     expect(graphData.nodes.length).toBe(18);
@@ -735,6 +742,46 @@ test("custom colors", () => {
     for (const node of data.nodes) {
         expect(node.color).toBe("#000000");
     }
+});
+
+test("filter maxDepth regression", () => {
+    const thinkabletype = new ThinkableType({
+        interwingle: ThinkableType.INTERWINGLE.BRIDGE,
+        hyperedges: [
+            ["1", "2", "3"],
+            ["A", "B", "1"]
+        ]
+    });
+
+    let graphData;
+
+    thinkabletype.depth = ThinkableType.DEPTH.SHALLOW;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(3);
+    expect(graphData.links.length).toBe(2);
+    expect(graphData.depth).toBe(0);
+    expect(graphData.maxDepth).toBe(1);
+
+    thinkabletype.depth = 1;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(5);
+    expect(graphData.links.length).toBe(4);
+    expect(graphData.depth).toBe(1);
+    expect(graphData.maxDepth).toBe(1);
+
+    thinkabletype.depth = 2;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(5);
+    expect(graphData.links.length).toBe(4);
+    expect(graphData.depth).toBe(1);
+    expect(graphData.maxDepth).toBe(1);
+
+    thinkabletype.depth = ThinkableType.DEPTH.DEEP;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(5);
+    expect(graphData.links.length).toBe(4);
+    expect(graphData.depth).toBe(1);
+    expect(graphData.maxDepth).toBe(1);
 });
 
 

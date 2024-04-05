@@ -4,8 +4,11 @@ import Hypergraph from "./Hypergraph.js";
 import { calculatePageRank, pageRank } from "./pagerank.js";
 import suggest from "./suggest.js";
 import generate from "./generate.js";
+
+// VectorDB currently has an issue with embedding because of native HNSW library...will be refactored to pure JS version
 // import VectorDB from "@themaximalist/vectordb.js"
 
+// ThinkableType class wraps the HyperGraph, adding additional functionality on top
 export default class ThinkableType extends Hypergraph {
 
     constructor(options = {}) {
@@ -97,6 +100,7 @@ export default class ThinkableType extends Hypergraph {
         });
     }
 
+    // find similar hyperedges based on a symbol embedding
     async similar(symbol, num = 3, threshold = 1.0) {
         const similarSymbols = await this.similarSymbols(symbol, num, threshold);
         const hyperedges = new Map();
@@ -114,6 +118,7 @@ export default class ThinkableType extends Hypergraph {
         return Array.from(hyperedges.values());
     }
 
+    // find similar symbols based on a symbol embedding
     async similarSymbols(symbol, num = 3, threshold = 1.0) {
         // const matches = await this.vectordb.search(symbol, num, threshold);
         const results = [];
@@ -128,12 +133,14 @@ export default class ThinkableType extends Hypergraph {
         return results;
     }
 
+    // autocomplete hyperedge
     async suggest(symbols, options = {}) {
         const llmOptions = Object.assign({}, this.options.llm || {}, options);
         const phrase = symbols.join(" ");
         return await suggest(phrase, llmOptions);
     }
 
+    // generate hyperedges based on a prompt
     async generate(prompt, options = {}) {
         const llmOptions = Object.assign({}, this.options.llm || {}, options);
         return await generate(prompt, llmOptions);

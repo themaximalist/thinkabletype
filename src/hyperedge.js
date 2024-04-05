@@ -1,5 +1,6 @@
 import * as utils from "./utils.js";
 
+// Hyperedge is made up of symbols
 export default class Hyperedge {
     constructor(symbols = [], thinkabletype) {
         this.symbols = symbols;

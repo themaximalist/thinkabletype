@@ -1,6 +1,7 @@
 import * as utils from "./utils.js";
 import ForceNode from "./ForceNode.js";
 
+// ForceLink class for rendering a Hypergraph hyperedge
 export default class ForceLink {
     constructor(hyperedge, forceGraph) {
         this.forcegraph = forceGraph;
@@ -55,6 +56,8 @@ export default class ForceLink {
         return this.lastNode.id;
     }
 
+    // links update their graph data by having their nodes update their graph data
+    // then updating the links between the nodes and meta data
     updateGraphData(nodes, links) {
         let parent = null;
         for (const node of this.nodes) {
@@ -76,6 +79,7 @@ export default class ForceLink {
         }
     }
 
+    // link two nodes together, taking into account they both may be masquerading as other nodes
     linkData(parentNode, childNode) {
         const hyperedgeIDs = new Set();
         hyperedgeIDs.add(parentNode.link.id);

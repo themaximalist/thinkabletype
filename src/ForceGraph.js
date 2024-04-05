@@ -2,6 +2,9 @@ import ForceLink from "./ForceLink.js";
 import * as utils from "./utils.js";
 
 
+// ForceGraph is about taking the hypergraph, and converting it into a "react-force-graph" compatible format
+// Because connections in ThinkableType can change dynamically, we build the graph data on the fly
+// In many cases, we grab an explicit subset of hyperedges, and crawl out the graph based on options
 export default class ForceGraph {
     constructor(hypergraph) {
         this.hypergraph = hypergraph;
@@ -39,6 +42,7 @@ export default class ForceGraph {
         };
     }
 
+    // verify that all links have valid source and target nodes
     verify(nodes, links) {
         const nodeIDs = new Set(nodes.keys());
 
@@ -51,6 +55,10 @@ export default class ForceGraph {
         }
     }
 
+    // indexes are shortcuts to keeping track of hyperedge connections
+    // startSymbolIndex connects symbols at the start
+    // endSymbolIndex: connects symbols at the end
+    // fusionIndex: connects symbols in the middle
     updateIndexes() {
         this.startSymbolIndex = new Map();
         this.endSymbolIndex = new Map();
@@ -67,6 +75,8 @@ export default class ForceGraph {
         }
     }
 
+    // Masquerade nodes are nodes that can pretend to be other nodes
+    // This is useful for fusion nodes, where we want to connect nodes with the same symbol
     masqueradeNode(node) {
         while (true) {
             const masqueradeNode = this.fusionIndex.get(node.id);
@@ -78,7 +88,7 @@ export default class ForceGraph {
         }
     }
 
-
+    // build up fusion indexes based on the start and end symbols
     updateFusionIndexes() {
         for (const link of this.forceLinks.values()) {
             let edges;
@@ -99,6 +109,10 @@ export default class ForceGraph {
         }
     }
 
+    // bridges are nodes that connect multiple hyperedges
+    // A -> B -> C
+    // 1 -> B -> 2
+    // When interwingle is bridge, both hyperedges will be connected through the "B" bridge node
     updateBridgeData(nodes, links) {
         const bridgeIndex = new Map();
 
@@ -151,6 +165,8 @@ export default class ForceGraph {
         const nodes = new Map();
         const links = new Map();
 
+        let depth = this.hypergraph.depth;
+
         const updateNodesAndLinks = (depth = 0) => {
             for (const node of graphData.nodes.values()) {
                 const ids = node._meta.hyperedgeIDs;
@@ -183,7 +199,7 @@ export default class ForceGraph {
             }
         }
 
-        updateNodesAndLinks(this.hypergraph.depth);
+        updateNodesAndLinks(depth);
 
         let finalNodes = new Map(nodes);
         let finalLinks = new Map(links);
@@ -196,28 +212,28 @@ export default class ForceGraph {
             updateHyperedges();
             updateNodesAndLinks(maxDepth);
 
-            if (maxDepth < this.hypergraph.depth) {
+            if (maxDepth < depth) {
                 finalNodes = new Map(nodes);
                 finalLinks = new Map(links);
             }
 
             if (existingNodeSize === nodes.size && existingLinkSize === links.size) {
-                // hack workaround bug for bridge nodes
-                if (this.hypergraph.isBridge && this.hypergraph.depth === 0) {
-                    maxDepth--;
-                }
                 break;
             }
 
             maxDepth++;
         }
 
+
         this.verify(finalNodes, finalLinks);
+
+        if (maxDepth < 0) { maxDepth = 0 }
+        if (depth > maxDepth) { depth = maxDepth }
 
         return {
             nodes: Array.from(finalNodes.values()),
             links: Array.from(finalLinks.values()),
-            depth: this.hypergraph.depth,
+            depth,
             maxDepth,
         };
     }

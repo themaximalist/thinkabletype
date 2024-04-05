@@ -1,6 +1,6 @@
 {
     "name": "@themaximalist/thinkabletype",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "description": "Knowledge Graph Toolkit",
     "homepage": "https://thinkabletype.com",
     "repository": "themaximal1st/thinkabletype",
@@ -28,6 +28,7 @@
         "dotenv-extended": "^2.9.0",
         "lodash": "^4.17.21",
         "papaparse": "^5.4.1",
+        "slugify": "^1.6.6",
         "uuid": "^9.0.1"
     },
     "devDependencies": {

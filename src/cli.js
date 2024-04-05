@@ -2,6 +2,9 @@
 import dotenv from "dotenv-extended";
 dotenv.load();
 
+// Thinkable Type CLI
+// ./thinkabletype "search term"
+
 import ThinkableType from "./index.js";
 
 const search = process.argv.slice(2).join(" ");

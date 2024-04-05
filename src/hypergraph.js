@@ -3,17 +3,20 @@ import * as utils from "./utils.js";
 import ForceGraph from "./ForceGraph.js";
 import Colors from "./colors.js";
 
+// Hypergraph is made up of Hyperedges
 export default class Hypergraph {
+
     static INTERWINGLE = {
-        ISOLATED: 0,
-        CONFLUENCE: 1,
-        FUSION: 2,
-        BRIDGE: 3
+        ISOLATED: 0,        // only explicit connections you've added
+        CONFLUENCE: 1,      // shared parents
+        FUSION: 2,          // shared children
+        BRIDGE: 3           // shared symbols
     };
 
     static DEPTH = {
-        SHALLOW: 0,
-        DEEP: Infinity,
+        SHALLOW: 0,         // don't connect
+        // any number between 1 and Infinity is valid, up to maxDepth
+        DEEP: Infinity,     // infinitely connect
     };
 
     static COLORS = Colors;
