@@ -1,5 +1,5 @@
 import csv from "papaparse"
-import Hypergraph from "./Hypergraph.js";
+import Hypergraph from "./hypergraph.js";
 
 import { calculatePageRank, pageRank } from "./pagerank.js";
 import suggest from "./suggest.js";

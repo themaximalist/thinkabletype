@@ -1,4 +1,4 @@
-import Hyperedge from "./Hyperedge.js";
+import Hyperedge from "./hyperedge.js";
 import * as utils from "./utils.js";
 import ForceGraph from "./ForceGraph.js";
 import Colors from "./colors.js";
