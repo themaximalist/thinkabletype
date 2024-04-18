@@ -52,6 +52,20 @@ export default class ForceLink {
         return id;
     }
 
+    nodeForSymbol(symbol) {
+        const index = this.indexOfSymbol(symbol);
+        return this.nodes[index];
+
+    }
+
+    indexOfSymbol(symbol) {
+        return this.symbols.indexOf(symbol);
+    }
+
+    get firstNodeId() {
+        return this.firstNode.id;
+    }
+
     get lastNodeId() {
         return this.lastNode.id;
     }

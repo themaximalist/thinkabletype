@@ -12,7 +12,7 @@ const options = {
     }
 };
 
-test("thinkabletype suggest", async () => {
+test.skip("thinkabletype suggest", async () => {
     const thinkabletype = new ThinkableType(options);
     const suggestions = await thinkabletype.suggest(["Steve Jobs", "inventor"]);
     expect(suggestions.includes("iPhone")).toBe(true);
@@ -20,7 +20,7 @@ test("thinkabletype suggest", async () => {
 }, 10000);
 
 
-test("hyperedge suggest", async () => {
+test.skip("hyperedge suggest", async () => {
     const thinkabletype = new ThinkableType(options);
     const hyperedge = thinkabletype.add("Steve Jobs", "inventor");
     const suggestions = await hyperedge.suggest();

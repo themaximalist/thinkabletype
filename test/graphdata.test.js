@@ -193,7 +193,7 @@ test("two-edge end bridge", () => {
 });
 
 test("continuous fusion", () => {
-    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
     thinkabletype.add("A", "B");
     thinkabletype.add("B", "C");
     thinkabletype.add("C", "D");
@@ -203,6 +203,27 @@ test("continuous fusion", () => {
     expect(data.nodes.length).toBe(5);
     expect(data.links.length).toBe(4);
 });
+
+// allow 
+// they can't be bridge nodes, because we don't want to have to delete them after
+// they have to be a fusion node
+test("direct connect fusion", () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "C"],
+            ["1", "2", "3"],
+            ["B", "2"],
+        ],
+        interwingle: ThinkableType.INTERWINGLE.FUSION
+    });
+
+    const graphData = thinkabletype.graphData();
+    expect(graphData.nodes.length).toBe(6);
+    expect(graphData.links.length).toBe(5);
+});
+
+// TODO: multi connectors? lots of direct connect fusions...merge to bridge?
+
 
 test("two-edge fusion skip bridge", () => {
     const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
@@ -783,6 +804,12 @@ test("filter maxDepth regression", () => {
     expect(graphData.depth).toBe(1);
     expect(graphData.maxDepth).toBe(1);
 });
+
+
+
+// one way A -> B (works on any part?)
+// two way A <-> B (works on any part?)
+// todo: make sure doesn't break bridge mode
 
 
 

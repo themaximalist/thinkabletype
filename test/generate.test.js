@@ -14,7 +14,7 @@ const options = {
 
 // TODO: autogen prompt
 
-test("generate", async () => {
+test.skip("generate", async () => {
     const thinkabletype = new ThinkableType(options);
     const prompt = `Ancient Sumerians`;
     const response = await thinkabletype.generate(prompt);

@@ -1,7 +1,6 @@
 import ForceLink from "./ForceLink.js";
 import * as utils from "./utils.js";
 
-
 // ForceGraph is about taking the hypergraph, and converting it into a "react-force-graph" compatible format
 // Because connections in ThinkableType can change dynamically, we build the graph data on the fly
 // In many cases, we grab an explicit subset of hyperedges, and crawl out the graph based on options
@@ -56,16 +55,22 @@ export default class ForceGraph {
     }
 
     // indexes are shortcuts to keeping track of hyperedge connections
+    // symbolIndex: all symbols
     // startSymbolIndex connects symbols at the start
     // endSymbolIndex: connects symbols at the end
     // fusionIndex: connects symbols in the middle
     updateIndexes() {
+        this.symbolIndex = new Map();
         this.startSymbolIndex = new Map();
         this.endSymbolIndex = new Map();
 
         this.fusionIndex = new Map();
 
         for (const link of this.forceLinks.values()) {
+            for (const symbol of link.hyperedge.symbols) {
+                utils.addIndex(this.symbolIndex, symbol, link);
+            }
+
             utils.addIndex(this.startSymbolIndex, link.hyperedge.firstSymbol, link);
             utils.addIndex(this.endSymbolIndex, link.hyperedge.lastSymbol, link);
         }
@@ -77,8 +82,18 @@ export default class ForceGraph {
 
     // Masquerade nodes are nodes that can pretend to be other nodes
     // This is useful for fusion nodes, where we want to connect nodes with the same symbol
-    masqueradeNode(node) {
+    isMasqueradeNode(node) {
+        return this.masqueradeNode(node) !== node;
+    }
+
+    masqueradeNode(node, max = 1000) {
+        let i = 0;
+
         while (true) {
+            if (i++ > max) {
+                throw new Error("Infinite loop");
+            }
+
             const masqueradeNode = this.fusionIndex.get(node.id);
             if (!masqueradeNode || masqueradeNode.id === node.id) {
                 return node;
@@ -88,8 +103,25 @@ export default class ForceGraph {
         }
     }
 
+    linksForSymbol(symbol, linkId) {
+        const links = this.symbolIndex.get(symbol) || [];
+        return links.filter(link => {
+            return link.id !== linkId;
+        })
+    }
+
+    fusionLinks(node) {
+        const links = this.symbolIndex.get(node.symbol) || [];
+        return links.filter(link => {
+            return link.id !== node.link.id;
+        });
+    }
+
+
     // build up fusion indexes based on the start and end symbols
     updateFusionIndexes() {
+        const seenIndex = new Map();
+
         for (const link of this.forceLinks.values()) {
             let edges;
 
@@ -106,6 +138,30 @@ export default class ForceGraph {
             if (edges.length > 0) {
                 this.fusionIndex.set(link.lastNodeId, edges[0].lastNode);
             }
+
+            if (link.symbols.length === 2) {
+                if (!this.isMasqueradeNode(link.firstNode)) {
+                    const edges = this.fusionLinks(link.firstNode);
+                    for (const edge of edges) {
+                        if (seenIndex.get(edge.id)) {
+                            this.fusionIndex.set(link.firstNodeId, edges[0].nodeForSymbol(link.firstNode.symbol));
+                            break;
+                        }
+                    }
+                }
+
+                if (!this.isMasqueradeNode(link.lastNode)) {
+                    const edges = this.fusionLinks(link.lastNode);
+                    for (const edge of edges) {
+                        if (seenIndex.get(edge.id)) {
+                            this.fusionIndex.set(link.lastNodeId, edges[0].nodeForSymbol(link.lastNode.symbol));
+                            break;
+                        }
+                    }
+                }
+            }
+
+            seenIndex.set(link.id, true);
         }
     }
 
@@ -116,6 +172,7 @@ export default class ForceGraph {
     updateBridgeData(nodes, links) {
         const bridgeIndex = new Map();
 
+        // Build up index of nodes
         for (const link of this.forceLinks.values()) {
             for (let node of link.nodes) {
                 node = this.masqueradeNode(node);
@@ -124,6 +181,8 @@ export default class ForceGraph {
         }
 
 
+        // Iterate through index, check which nodes have multiple connections
+        // If found, create a bridgeNode and connect them all
         for (const bridgeNodes of bridgeIndex.values()) {
             if (bridgeNodes.size < 2) continue;
 
