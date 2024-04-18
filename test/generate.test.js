@@ -13,12 +13,17 @@ const options = {
 };
 
 // TODO: autogen prompt
-// TODO: autogen prompt
 
-test.only("generate", async () => {
-
+test("generate", async () => {
     const thinkabletype = new ThinkableType(options);
     const prompt = `Ancient Sumerians`;
-    const hyperedges = await thinkabletype.generate(prompt);
-    console.log(hyperedges)
+    const response = await thinkabletype.generate(prompt);
+    let found = false;
+    for await (const data of response) {
+        expect(data.length).toBeGreaterThan(0)
+        found = true;
+        break;
+    }
+
+    expect(found).toBe(true);
 }, 20000);
