@@ -142,19 +142,27 @@ export default class ForceGraph {
             if (link.symbols.length === 2) {
                 if (!this.isMasqueradeNode(link.firstNode)) {
                     const edges = this.fusionLinks(link.firstNode);
+                    console.log("FIRST EDGES", edges);
                     for (const edge of edges) {
+                        this.fusionIndex.set(
+                            link.firstNodeId,
+                            edge.nodeForSymbol(link.firstNode.symbol),
+                        );
+                        /*
                         if (seenIndex.get(edge.id)) {
-                            this.fusionIndex.set(link.firstNodeId, edges[0].nodeForSymbol(link.firstNode.symbol));
+                            this.fusionIndex.set(link.firstNodeId, edge.nodeForSymbol(link.firstNode.symbol));
                             break;
                         }
+                        */
                     }
                 }
 
                 if (!this.isMasqueradeNode(link.lastNode)) {
                     const edges = this.fusionLinks(link.lastNode);
+                    console.log("LAST EDGES", edges);
                     for (const edge of edges) {
                         if (seenIndex.get(edge.id)) {
-                            this.fusionIndex.set(link.lastNodeId, edges[0].nodeForSymbol(link.lastNode.symbol));
+                            this.fusionIndex.set(link.lastNodeId, edge.nodeForSymbol(link.lastNode.symbol));
                             break;
                         }
                     }

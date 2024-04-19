@@ -222,7 +222,49 @@ test("direct connect fusion", () => {
     expect(graphData.links.length).toBe(5);
 });
 
-// TODO: multi connectors? lots of direct connect fusions...merge to bridge?
+test.only("direct connect bridge", () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "C"],
+            ["1", "2", "3"],
+            ["B", "2"],
+        ],
+        interwingle: ThinkableType.INTERWINGLE.BRIDGE
+    });
+
+    const graphData = thinkabletype.graphData();
+    console.log(graphData);
+    expect(graphData.nodes.length).toBe(6);
+    expect(graphData.links.length).toBe(5);
+});
+
+// TODO: a,b,c
+// TODO: c,a
+// TODO: Should we think about 2-way fusion connections as just links?
+//         not do masquerade...just add extra links everywhere at the end?
+
+
+
+test.skip("direct connect multiple fusion", () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "C"],
+            ["X", "B", "Z"],
+            ["1", "2", "3"],
+            ["B", "2"],
+        ],
+        interwingle: ThinkableType.INTERWINGLE.FUSION
+    });
+
+    const graphData = thinkabletype.graphData();
+    console.log(graphData);
+    expect(graphData.nodes.length).toBe(9);
+    // expect(graphData.links.length).toBe(8);
+});
+
+
+
+// TODO: what happens in bridge mode? with lots of connections? do we lose fusion?
 
 
 test("two-edge fusion skip bridge", () => {
