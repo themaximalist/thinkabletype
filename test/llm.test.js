@@ -7,7 +7,7 @@ import { expect, test } from "vitest";
 const options = {
     llm: {
         service: "openai",
-        model: "gpt-4-0125-preview",
+        model: "gpt-4-turbo-preview",
         apikey: process.env.OPENAI_API_KEY
     }
 };
@@ -15,6 +15,7 @@ const options = {
 test.skip("thinkabletype suggest", async () => {
     const thinkabletype = new ThinkableType(options);
     const suggestions = await thinkabletype.suggest(["Steve Jobs", "inventor"]);
+
     expect(suggestions.includes("iPhone")).toBe(true);
     expect(suggestions.includes("Macintosh")).toBe(true);
 }, 10000);
