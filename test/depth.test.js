@@ -402,6 +402,60 @@ test("complex filter bridge max depth regression", () => {
     expect(graphData.maxDepth).toBe(1);
 });
 
+test("max depth collapse regression", () => {
+    const thinkabletype = new ThinkableType({
+        depth: ThinkableType.DEPTH.SHALLOW,
+        interwingle: ThinkableType.INTERWINGLE.BRIDGE,
+        hyperedges: [
+            ["A", "vs", "B"],
+            ["X", "vs", "Y"],
+            ["Y", "2", "3"],
+            ["3", "4", "5"],
+            ["10", "4", "R"],
+            ["Z", "T", "R"],
+        ]
+    });
 
-// TODO: Default to SHALLOW instead of DEEP in UI
-// TODO: Fix issue where maxDepth collapses once you hit it
+    let graphData;
+
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(4);
+    expect(graphData.links.length).toBe(3);
+    expect(graphData.depth).toBe(0);
+    expect(graphData.maxDepth).toBe(5);
+
+    thinkabletype.depth = 1;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(7);
+    expect(graphData.links.length).toBe(6);
+    expect(graphData.depth).toBe(1);
+    expect(graphData.maxDepth).toBe(5);
+
+    thinkabletype.depth = 2;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(9);
+    expect(graphData.links.length).toBe(8);
+    expect(graphData.depth).toBe(2);
+    expect(graphData.maxDepth).toBe(5);
+
+    thinkabletype.depth = 3;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(12);
+    expect(graphData.links.length).toBe(11);
+    expect(graphData.depth).toBe(3);
+    expect(graphData.maxDepth).toBe(5);
+
+    thinkabletype.depth = 4;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(15);
+    expect(graphData.links.length).toBe(14);
+    expect(graphData.depth).toBe(4);
+    expect(graphData.maxDepth).toBe(5);
+
+    thinkabletype.depth = 5;
+    graphData = thinkabletype.graphData([["A"]]);
+    expect(graphData.nodes.length).toBe(17);
+    expect(graphData.links.length).toBe(16);
+    expect(graphData.depth).toBe(5);
+    expect(graphData.maxDepth).toBe(5);
+});
