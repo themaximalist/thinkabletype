@@ -9,12 +9,15 @@ export default class ForceGraph {
         this.hypergraph = hypergraph;
     }
 
-    graphData(hyperedges = undefined) {
+    graphData(filter = undefined) {
         const nodes = new Map();
         const links = new Map();
 
         this.forceLinks = new Map();
-        for (const hyperedge of this.hypergraph.hyperedges) {
+        const hyperedges = [...this.hypergraph.hyperedges];
+        hyperedges.sort((a, b) => b.symbols.length - a.symbols.length);
+
+        for (const hyperedge of hyperedges) {
             const forceLink = new ForceLink(hyperedge, this);
             this.forceLinks.set(hyperedge.id, forceLink);
         }
@@ -32,8 +35,8 @@ export default class ForceGraph {
             this.updateBridgeData(nodes, links);
         }
 
-        if (Array.isArray(hyperedges)) {
-            return this.filterGraphData(hyperedges, { nodes, links });
+        if (Array.isArray(filter)) {
+            return this.filterGraphData(filter, { nodes, links });
         }
 
         this.verify(nodes, links);
@@ -157,45 +160,38 @@ export default class ForceGraph {
             }
 
             if (this.hypergraph.isFusion) {
-
-                console.log("LINK", link);
-
                 let fromNodes = this.fusionNodes(link.firstNode);
                 let toNodes = this.fusionNodes(link.lastNode);
-
-                console.log("FROM NODES", fromNodes);
-                console.log("TO NODES", toNodes);
 
                 const firstSeen = seenIndex.get(link.firstNode.symbol);
                 const lastSeen = seenIndex.get(link.lastNode.symbol);
                 const seen = firstSeen || lastSeen;
-                console.log("SEEN", firstSeen, lastSeen, seen);
-                console.log(seenIndex);
                 if (!seen) {
                     link.updateGraphData(nodes, links);
                 }
 
                 if (fromNodes.length === 0) {
                     for (const node of link.nodes.slice(0, -1)) {
-                        console.log("ADDING");
                         node.updateGraphData(nodes, links);
                     }
 
-                    toNodes.push(link.firstNode);
+                    fromNodes.push(link.firstNode);
                 }
 
                 if (toNodes.length === 0) {
-                    console.log("TO NODES EMPTY");
                     for (const node of link.nodes.slice(1)) {
-                        console.log("ADDING1", node);
                         node.updateGraphData(nodes, links);
                     }
 
                     toNodes.push(link.lastNode);
                 }
 
-                for (const fromNode of fromNodes) {
-                    for (const toNode of toNodes) {
+                for (let fromNode of fromNodes) {
+                    fromNode = this.masqueradeNode(fromNode);
+
+                    for (let toNode of toNodes) {
+                        toNode = this.masqueradeNode(toNode);
+
                         if (!nodes.has(fromNode.id)) {
                             fromNode.updateGraphData(nodes, links);
                         }
@@ -204,8 +200,8 @@ export default class ForceGraph {
                             toNode.updateGraphData(nodes, links);
                         }
 
-                        const linkData = fromNode.link.linkData(fromNode, toNode);
-                        links.set(link.id, linkData);
+                        const linkData = link.linkData(fromNode, toNode);
+                        links.set(linkData.id, linkData);
                     }
                 }
 
@@ -218,10 +214,6 @@ export default class ForceGraph {
             }
 
         }
-
-        console.log(nodes);
-        console.log(links);
-
     }
 
     // bridges are nodes that connect multiple hyperedges
@@ -233,6 +225,7 @@ export default class ForceGraph {
 
         // Build up index of nodes
         for (const link of this.forceLinks.values()) {
+            if (link.nodes.length === 2) continue;
             for (let node of link.nodes) {
                 node = this.masqueradeNode(node);
                 utils.setIndex(bridgeIndex, node.symbol, node);

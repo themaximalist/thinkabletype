@@ -169,27 +169,49 @@ test("fusion no bridge", () => {
 
     const data = thinkabletype.graphData();
     expect(data.nodes.length).toBe(9);
-    expect(data.links.length).toBe(6);
+    expect(data.links.length).toBe(10);
 });
 
-test.skip("two-edge start bridge", () => {
+test("two-edge start bridge", () => {
     const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
     thinkabletype.add("1", "B", "2");
     thinkabletype.add("B", "C");
 
     const data = thinkabletype.graphData();
-    expect(data.nodes.length).toBe(6);
-    // expect(data.links.length).toBe(5);
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
 });
 
-test("two-edge end bridge", () => {
+test("two-edge start fusion incoming", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
+    thinkabletype.add("1", "B", "2");
+    thinkabletype.add("A", "B");
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
+});
+
+
+
+test("two-edge end bridge incoming", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    thinkabletype.add("1", "B", "2");
+    thinkabletype.add("A", "B");
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
+});
+
+test("two-edge end bridge reverse order", () => {
     const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
     thinkabletype.add("A", "B");
     thinkabletype.add("1", "B", "2");
 
     const data = thinkabletype.graphData();
-    expect(data.nodes.length).toBe(6);
-    expect(data.links.length).toBe(5);
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
 });
 
 test("continuous fusion", () => {
@@ -293,7 +315,7 @@ test("two edge multiple middle connections", () => {
 
     const graphData = thinkabletype.graphData();
     expect(graphData.nodes.length).toBe(9);
-    expect(graphData.links.length).toBe(7); // bug?  should it be 8?
+    expect(graphData.links.length).toBe(8);
 });
 
 test("two edge multiple end connections", () => {
@@ -358,7 +380,7 @@ test("two-edge fusion bridge", () => {
 
     const data = thinkabletype.graphData();
     expect(data.nodes.length).toBe(10);
-    expect(data.links.length).toBe(9);
+    expect(data.links.length).toBe(12);
 });
 
 test("closed fusion loop", () => {
@@ -907,12 +929,15 @@ test("filter maxDepth regression", () => {
     expect(graphData.maxDepth).toBe(1);
 });
 
+test("two two-edge connections", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
+    thinkabletype.add("A", "B", "C");
+    thinkabletype.add("D", "A");
 
-
-// one way A -> B (works on any part?)
-// two way A <-> B (works on any part?)
-// todo: make sure doesn't break bridge mode
-
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
+});
 
 
 test.skip("huge", async () => {
@@ -934,6 +959,3 @@ test.skip("huge", async () => {
 
     // console.log(data);
 });
-
-
-// TODO: Should we think about 2-way fusion connections as just links?
