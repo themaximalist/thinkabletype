@@ -33,6 +33,9 @@ We're trying to get a deep understanding of the search term, and the high-level 
 
 Hyperedges can be as short as a single term, or as long as you want. Typically 3 is the sweet spot. 2 is ok in some cases. 4 is ok in some cases. 5 is probably too many.
 
+You don't need to return a greeting or any other text.
+Just return the hyperedges.
+
 You will now start. Here is the search term you should analyze: ${user_prompt}
     `.trim();
 
@@ -47,7 +50,7 @@ You will now start. Here is the search term you should analyze: ${user_prompt}
             const lines = buffer.split("\n");
             buffer = lines.pop();
             for (const line of lines) {
-                yield csv.parse(line).data;
+                yield csv.parse(line.trim()).data;
             }
         }
     }
