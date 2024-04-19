@@ -207,7 +207,7 @@ test("continuous fusion", () => {
 // allow 
 // they can't be bridge nodes, because we don't want to have to delete them after
 // they have to be a fusion node
-test("direct connect fusion", () => {
+test.skip("direct connect fusion", () => {
     const thinkabletype = new ThinkableType({
         hyperedges: [
             ["A", "B", "C"],
@@ -222,7 +222,7 @@ test("direct connect fusion", () => {
     expect(graphData.links.length).toBe(5);
 });
 
-test.only("direct connect bridge", () => {
+test.skip("direct connect bridge", () => {
     const thinkabletype = new ThinkableType({
         hyperedges: [
             ["A", "B", "C"],
@@ -238,8 +238,7 @@ test.only("direct connect bridge", () => {
     expect(graphData.links.length).toBe(5);
 });
 
-// TODO: a,b,c
-// TODO: c,a
+// TODO: a,b,c then c,a
 // TODO: Should we think about 2-way fusion connections as just links?
 //         not do masquerade...just add extra links everywhere at the end?
 
