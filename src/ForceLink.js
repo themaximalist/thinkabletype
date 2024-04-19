@@ -74,6 +74,7 @@ export default class ForceLink {
     // then updating the links between the nodes and meta data
     updateGraphData(nodes, links) {
         let parent = null;
+
         for (const node of this.nodes) {
             node.updateGraphData(nodes, links);
 

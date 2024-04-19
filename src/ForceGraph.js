@@ -22,8 +22,11 @@ export default class ForceGraph {
         this.updateIndexes();
 
         for (const link of this.forceLinks.values()) {
+            if (link.nodes.length === 2) continue;
             link.updateGraphData(nodes, links);
         }
+
+        this.updateFusionData(nodes, links);
 
         if (this.hypergraph.isBridge) {
             this.updateBridgeData(nodes, links);
@@ -89,8 +92,11 @@ export default class ForceGraph {
     masqueradeNode(node, max = 1000) {
         let i = 0;
 
+
+        // console.log(this.fusionIndex);
         while (true) {
             if (i++ > max) {
+                console.log("Infinite loop for", node.id)
                 throw new Error("Infinite loop");
             }
 
@@ -103,11 +109,24 @@ export default class ForceGraph {
         }
     }
 
-    linksForSymbol(symbol, linkId) {
-        const links = this.symbolIndex.get(symbol) || [];
-        return links.filter(link => {
-            return link.id !== linkId;
-        })
+
+    // build up fusion indexes based on the start and end symbols
+    updateFusionIndexes() {
+        for (const link of this.forceLinks.values()) {
+            let edges;
+
+            // start fusion
+            edges = this.endSymbolIndex.get(link.hyperedge.firstSymbol) || [];
+            if (edges.length > 0) {
+                this.fusionIndex.set(link.nodeId(0), edges[0].lastNode);
+            }
+
+            // end fusion
+            edges = this.endSymbolIndex.get(link.hyperedge.lastSymbol) || [];
+            if (edges.length > 0) {
+                this.fusionIndex.set(link.lastNodeId, edges[0].lastNode);
+            }
+        }
     }
 
     fusionLinks(node) {
@@ -117,60 +136,92 @@ export default class ForceGraph {
         });
     }
 
+    fusionNodes(node) {
+        return this.fusionLinks(node).map(link => {
+            return link.nodeForSymbol(node.symbol);
+        });
+    }
 
-    // build up fusion indexes based on the start and end symbols
-    updateFusionIndexes() {
+    // update fusion data for 2-edge nodes
+    // these are treated special in ThinkableType, basically as a bridge but in fusion mode
+    updateFusionData(nodes, links) {
         const seenIndex = new Map();
 
         for (const link of this.forceLinks.values()) {
-            let edges;
 
-            // start fusion
-            edges = this.endSymbolIndex.get(link.hyperedge.firstSymbol) || [];
-            //if (edges.length > 0 && edges[0].id !== link.id) { // TODO: add if we won't want self-linking on fusion nodes
-            if (edges.length > 0) {
-                this.fusionIndex.set(link.nodeId(0), edges[0].lastNode);
+            if (link.nodes.length !== 2) {
+                for (const node of link.nodes) {
+                    seenIndex.set(node.symbol, true);
+                }
+                continue;
             }
 
-            // end fusion
-            edges = this.endSymbolIndex.get(link.hyperedge.lastSymbol) || [];
-            //if (edges.length > 0 && edges[0].id !== link.id) { // TODO: add if we won't want self-linking on fusion nodes
-            if (edges.length > 0) {
-                this.fusionIndex.set(link.lastNodeId, edges[0].lastNode);
-            }
+            if (this.hypergraph.isFusion) {
 
-            /*
-            if (link.symbols.length === 2) {
-                if (!this.isMasqueradeNode(link.firstNode)) {
-                    const edges = this.fusionLinks(link.firstNode);
-                    console.log("FIRST EDGES", edges);
-                    for (const edge of edges) {
-                        this.fusionIndex.set(
-                            link.firstNodeId,
-                            edge.nodeForSymbol(link.firstNode.symbol),
-                        );
-                        // if (seenIndex.get(edge.id)) {
-                        //     this.fusionIndex.set(link.firstNodeId, edge.nodeForSymbol(link.firstNode.symbol));
-                        //     break;
-                        // }
-                    }
+                console.log("LINK", link);
+
+                let fromNodes = this.fusionNodes(link.firstNode);
+                let toNodes = this.fusionNodes(link.lastNode);
+
+                console.log("FROM NODES", fromNodes);
+                console.log("TO NODES", toNodes);
+
+                const firstSeen = seenIndex.get(link.firstNode.symbol);
+                const lastSeen = seenIndex.get(link.lastNode.symbol);
+                const seen = firstSeen || lastSeen;
+                console.log("SEEN", firstSeen, lastSeen, seen);
+                console.log(seenIndex);
+                if (!seen) {
+                    link.updateGraphData(nodes, links);
                 }
 
-                if (!this.isMasqueradeNode(link.lastNode)) {
-                    const edges = this.fusionLinks(link.lastNode);
-                    console.log("LAST EDGES", edges);
-                    for (const edge of edges) {
-                        if (seenIndex.get(edge.id)) {
-                            this.fusionIndex.set(link.lastNodeId, edge.nodeForSymbol(link.lastNode.symbol));
-                            break;
+                if (fromNodes.length === 0) {
+                    for (const node of link.nodes.slice(0, -1)) {
+                        console.log("ADDING");
+                        node.updateGraphData(nodes, links);
+                    }
+
+                    toNodes.push(link.firstNode);
+                }
+
+                if (toNodes.length === 0) {
+                    console.log("TO NODES EMPTY");
+                    for (const node of link.nodes.slice(1)) {
+                        console.log("ADDING1", node);
+                        node.updateGraphData(nodes, links);
+                    }
+
+                    toNodes.push(link.lastNode);
+                }
+
+                for (const fromNode of fromNodes) {
+                    for (const toNode of toNodes) {
+                        if (!nodes.has(fromNode.id)) {
+                            fromNode.updateGraphData(nodes, links);
                         }
+
+                        if (!nodes.has(toNode.id)) {
+                            toNode.updateGraphData(nodes, links);
+                        }
+
+                        const linkData = fromNode.link.linkData(fromNode, toNode);
+                        links.set(link.id, linkData);
                     }
                 }
-            }
-            */
 
-            seenIndex.set(link.id, true);
+            } else {
+                link.updateGraphData(nodes, links);
+            }
+
+            for (const node of link.nodes) {
+                seenIndex.set(node.symbol, true);
+            }
+
         }
+
+        console.log(nodes);
+        console.log(links);
+
     }
 
     // bridges are nodes that connect multiple hyperedges
