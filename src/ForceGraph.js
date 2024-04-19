@@ -282,7 +282,6 @@ export default class ForceGraph {
             for (const node of graphData.nodes.values()) {
                 const ids = node._meta.hyperedgeIDs;
                 if (ids.some(id => hyperedgeIDs.has(id))) {
-                    if (node.bridge && (!this.hypergraph.isBridge || depth === 0)) continue;
                     nodes.set(node.id, node);
                     nodeIDs.add(node.id);
                 }
