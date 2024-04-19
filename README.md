@@ -11,6 +11,7 @@
 <br />
 
 <div class="names">
+
 > Interwingled Information Language
 >
 > Hypertext on Hypergraphs
@@ -28,6 +29,7 @@
 > Knowledge Graph Toolkit
 >
 > Thinkable Type
+
 </div>
 
 <span class="thinkable">Thinkable<span class="type">Type</span></span> is a way to represent concepts, ideas and information.
