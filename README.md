@@ -11,19 +11,23 @@
 <br />
 
 <div class="names">
+> Interwingled Information Language
+>
 > Hypertext on Hypergraphs
 >
 > Multidimensional Mind Mapping
 >
 > Cognitive Cartography
 >
-> A DSL for Data Exploration
->
-> Interwingled Information
+> A DSL for Data Explorers
 >
 > Strange Loop Language
 >
+> Tangled Hierarchy Markup Language
+>
 > Knowledge Graph Toolkit
+>
+> Thinkable Type
 </div>
 
 <span class="thinkable">Thinkable<span class="type">Type</span></span> is a way to represent concepts, ideas and information.
@@ -209,7 +213,7 @@ const data = thinkabletype.graphData();
 
 #### Interwingle Fusion
 
-`Fusion` connects starts and ends.
+`Fusion` connects starts, ends and direct connections.
 
 ```javascript
 const thinkabletype = new ThinkableType({
@@ -226,6 +230,23 @@ const data = thinkabletype.graphData();
 ```
 
 ![Interwingle Fusion Think Machine Example](images/aristotle-plato-socrates-interwingle-3.png)
+
+##### Direct Connect
+
+When a hyperedge is two nodes long—it's treated as a direct connection.
+
+```yaml
+A,B,C
+1,2,3
+B,2
+```
+
+In this case, `B,2` says link every instance of **B** to every instance of **2**. So the other two edges `A,B,C` and `1,2,3` are linked together.
+
+This is especially useful for making simpler connections than **Bridge** and can keep knowledge graphs structured as you intend.
+
+
+
 
 #### Interwingle Bridge
 

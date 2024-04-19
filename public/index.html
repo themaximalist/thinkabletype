@@ -156,13 +156,15 @@ ThinkableType</a></li>
 <p><br /></p>
 <div class="names">
 <blockquote>
+<p>Interwingled Information Language</p>
 <p>Hypertext on Hypergraphs</p>
 <p>Multidimensional Mind Mapping</p>
 <p>Cognitive Cartography</p>
-<p>A DSL for Data Exploration</p>
-<p>Interwingled Information</p>
+<p>A DSL for Data Explorers</p>
 <p>Strange Loop Language</p>
+<p>Tangled Hierarchy Markup Language</p>
 <p>Knowledge Graph Toolkit</p>
+<p>Thinkable Type</p>
 </blockquote>
 </div>
 <p><span class="thinkable">Thinkable<span
@@ -327,7 +329,7 @@ alt="Interwingle Confluence Think Machine Example" />
 Example</figcaption>
 </figure>
 <h4 id="interwingle-fusion">Interwingle Fusion</h4>
-<p><code>Fusion</code> connects starts and ends.</p>
+<p><code>Fusion</code> connects starts, ends and direct connections.</p>
 <div class="sourceCode" id="cb12"><pre
 class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">interwingle</span><span class="op">:</span> ThinkableType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">FUSION</span><span class="op">,</span></span>
@@ -346,26 +348,40 @@ alt="Interwingle Fusion Think Machine Example" />
 <figcaption aria-hidden="true">Interwingle Fusion Think Machine
 Example</figcaption>
 </figure>
+<h5 id="direct-connect">Direct Connect</h5>
+<p>When a hyperedge is two nodes long—it’s treated as a direct
+connection.</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode yaml"><code class="sourceCode yaml"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="at">A,B,C</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="at">1,2,3</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="at">B,2</span></span></code></pre></div>
+<p>In this case, <code>B,2</code> says link every instance of
+<strong>B</strong> to every instance of <strong>2</strong>. So the other
+two edges <code>A,B,C</code> and <code>1,2,3</code> are linked
+together.</p>
+<p>This is especially useful for making simpler connections than
+<strong>Bridge</strong> and can keep knowledge graphs structured as you
+intend.</p>
 <h4 id="interwingle-bridge">Interwingle Bridge</h4>
 <p><code>Bridge</code> connects common symbols with a bridge.</p>
-<div class="sourceCode" id="cb13"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">interwingle</span><span class="op">:</span> ThinkableType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">BRIDGE</span><span class="op">,</span></span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">hyperedges</span><span class="op">:</span> [</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Vannevar Bush&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;As We May Think&quot;</span>]<span class="op">,</span></span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Computer Lib/Dream Machines&quot;</span>]<span class="op">,</span></span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Weaving the Web&quot;</span>]<span class="op">,</span></span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="co">// common symbols are connected through a bridge</span></span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a><span class="co">//  Vannevar Bush   -&gt; author -&gt; As We May Think</span></span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co">//  Ted Nelson      -&gt; author -&gt; Computer Lib/Dream Machines</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a><span class="co">//  Tim Berners-Lee -&gt; author -&gt; Weaving the Web</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">interwingle</span><span class="op">:</span> ThinkableType<span class="op">.</span><span class="at">INTERWINGLE</span><span class="op">.</span><span class="at">BRIDGE</span><span class="op">,</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Vannevar Bush&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;As We May Think&quot;</span>]<span class="op">,</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Computer Lib/Dream Machines&quot;</span>]<span class="op">,</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Weaving the Web&quot;</span>]<span class="op">,</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a><span class="co">// common symbols are connected through a bridge</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> data <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">graphData</span>()<span class="op">;</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co">//</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="co">//  Vannevar Bush   -&gt; author -&gt; As We May Think</span></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a><span class="co">//  Ted Nelson      -&gt; author -&gt; Computer Lib/Dream Machines</span></span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a><span class="co">//                     |</span></span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="co">//  Tim Berners-Lee -&gt; author -&gt; Weaving the Web</span></span></code></pre></div>
 <figure>
 <img src="images/authors-interwingle-4.png"
 alt="Interwingle Bridge ThinkableType Example" />
@@ -385,15 +401,15 @@ knowledge graph, step-by-step.</p>
 class="type">Type</span></span> helps you find the most referenced
 symbols and connections by running <code>PageRank</code> on your
 knowledge graph.</p>
-<div class="sourceCode" id="cb14"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="vs">`A,B,C</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="vs">A,B,D</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="vs">A,B,E</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="vs">A,C,Z`</span>)<span class="op">;</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span> <span class="co">// syncs pagerank</span></span>
-<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="at">pageranks</span> <span class="co">// { A: &lt;num&gt;, B: &lt;num&gt;, ... }</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">pagerank</span>(<span class="st">&quot;Z&quot;</span>) <span class="co">// { A: &lt;num&gt;, C: &lt;num&gt;, ... }</span></span></code></pre></div>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="vs">`A,B,C</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="vs">A,B,D</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="vs">A,B,E</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="vs">A,C,Z`</span>)<span class="op">;</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span> <span class="co">// syncs pagerank</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="at">pageranks</span> <span class="co">// { A: &lt;num&gt;, B: &lt;num&gt;, ... }</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">pagerank</span>(<span class="st">&quot;Z&quot;</span>) <span class="co">// { A: &lt;num&gt;, C: &lt;num&gt;, ... }</span></span></code></pre></div>
 <p>Note, <span class="thinkable">Thinkable<span
 class="type">Type</span></span> aims to work with very large knowledge
 graphs, so we keep expensive operations like <code>PageRank</code>
@@ -412,41 +428,41 @@ find hidden connections in your knowledge graph.</p>
 can use embeddings from <code>OpenAI</code> with a few config lines.</p>
 <h4 id="find-similar-symbols">Find Similar Symbols</h4>
 <p>Find similar symbols in the knowledge graph, on any edge.</p>
-<div class="sourceCode" id="cb15"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="vs">`Red,Green,Blue</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="vs">White,Black,Gray`</span>)<span class="op">;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">similarSymbols</span>(<span class="st">&quot;Redish&quot;</span>)<span class="op">;</span></span>
-<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">// [ { symbol: &quot;Red&quot;: distance: 0.5 } ]</span></span></code></pre></div>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> ThinkableType<span class="op">.</span><span class="fu">parse</span>(<span class="vs">`Red,Green,Blue</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="vs">White,Black,Gray`</span>)<span class="op">;</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">similarSymbols</span>(<span class="st">&quot;Redish&quot;</span>)<span class="op">;</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">// [ { symbol: &quot;Red&quot;: distance: 0.5 } ]</span></span></code></pre></div>
 <h4 id="find-similar-hyperedges">Find Similar Hyperedges</h4>
 <p>Find similar hyperedges based on symbols.</p>
-<div class="sourceCode" id="cb16"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>()<span class="op">;</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge1 <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span><span class="op">,</span> <span class="st">&quot;Green&quot;</span><span class="op">,</span> <span class="st">&quot;Blue&quot;</span>)<span class="op">;</span></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge2 <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span><span class="op">,</span> <span class="st">&quot;White&quot;</span><span class="op">,</span> <span class="st">&quot;Blue&quot;</span>)<span class="op">;</span></span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge3 <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Bob&quot;</span><span class="op">,</span> <span class="st">&quot;Sally&quot;</span><span class="op">,</span> <span class="st">&quot;Bill&quot;</span>)<span class="op">;</span></span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge1<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot;) ]</span></span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge2<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;Green&quot;, &quot;Blue&quot;) ]</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>()<span class="op">;</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge1 <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span><span class="op">,</span> <span class="st">&quot;Green&quot;</span><span class="op">,</span> <span class="st">&quot;Blue&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge2 <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Red&quot;</span><span class="op">,</span> <span class="st">&quot;White&quot;</span><span class="op">,</span> <span class="st">&quot;Blue&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> edge3 <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Bob&quot;</span><span class="op">,</span> <span class="st">&quot;Sally&quot;</span><span class="op">,</span> <span class="st">&quot;Bill&quot;</span>)<span class="op">;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> thinkabletype<span class="op">.</span><span class="fu">sync</span>()<span class="op">;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge1<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;White&quot;, &quot;Blue&quot;) ]</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="cf">await</span> edge2<span class="op">.</span><span class="fu">similar</span>()<span class="op">;</span> <span class="co">// [ Hyperedge(&quot;Red&quot;, &quot;Green&quot;, &quot;Blue&quot;) ]</span></span></code></pre></div>
 <h3 id="searching">Searching</h3>
 <p>Searching in <span class="thinkable">Thinkable<span
 class="type">Type</span></span> is easy, you can search by symbol,
 hyperedge or a partial hyperedge.</p>
-<div class="sourceCode" id="cb17"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">hyperedges</span><span class="op">:</span> [</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;Xanadu&quot;</span>]<span class="op">,</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;WWW&quot;</span>]<span class="op">,</span></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Weaving the Web&quot;</span>]<span class="op">,</span></span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ...</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;invented&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 2</span></span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 2</span></span>
-<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 1</span></span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>({</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">hyperedges</span><span class="op">:</span> [</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Ted Nelson&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;Xanadu&quot;</span>]<span class="op">,</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span><span class="op">,</span> <span class="st">&quot;WWW&quot;</span>]<span class="op">,</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        [<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;author&quot;</span><span class="op">,</span> <span class="st">&quot;Weaving the Web&quot;</span>]<span class="op">,</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>        <span class="co">// ...</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    ]<span class="op">,</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>})<span class="op">;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;invented&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 2</span></span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 2</span></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">filter</span>(<span class="st">&quot;Tim Berners-Lee&quot;</span><span class="op">,</span> <span class="st">&quot;invented&quot;</span>)<span class="op">.</span><span class="at">length</span><span class="op">;</span> <span class="co">// 1</span></span></code></pre></div>
 <h3 id="ai-auto-suggest">AI Auto Suggest</h3>
 <p><span class="thinkable">Thinkable<span
 class="type">Type</span></span> has <code>suggest()</code> built in,
@@ -455,18 +471,18 @@ which autocompletes any symbol or edge.</p>
 use any Large Language Model—like GPT-4, Claude, Mistral or local LLMs
 like <a
 href="https://github.com/Mozilla-Ocho/llamafile">Llamafile</a>.</p>
-<div class="sourceCode" id="cb18"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> options <span class="op">=</span> {</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">llm</span><span class="op">:</span> {</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">service</span><span class="op">:</span> <span class="st">&quot;openai&quot;</span><span class="op">,</span></span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;gpt-4-turbo-preview&quot;</span></span>
-<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">apikey</span><span class="op">:</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">OPENAI_API_KEY</span></span>
-<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>(options)<span class="op">;</span></span>
-<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedge <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Steve Jobs&quot;</span><span class="op">,</span> <span class="st">&quot;inventor&quot;</span>)<span class="op">;</span></span>
-<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">suggest</span>()<span class="op">;</span> <span class="co">// [&quot;iPhone&quot;, &quot;Macintosh&quot;, &quot;iPod&quot;, ... ]</span></span></code></pre></div>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> options <span class="op">=</span> {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">llm</span><span class="op">:</span> {</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">service</span><span class="op">:</span> <span class="st">&quot;openai&quot;</span><span class="op">,</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;gpt-4-turbo-preview&quot;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">apikey</span><span class="op">:</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">OPENAI_API_KEY</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>(options)<span class="op">;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedge <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">add</span>(<span class="st">&quot;Steve Jobs&quot;</span><span class="op">,</span> <span class="st">&quot;inventor&quot;</span>)<span class="op">;</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>thinkabletype<span class="op">.</span><span class="fu">suggest</span>()<span class="op">;</span> <span class="co">// [&quot;iPhone&quot;, &quot;Macintosh&quot;, &quot;iPod&quot;, ... ]</span></span></code></pre></div>
 <p>This makes programatically expanding knowledge graphs with LLMs
 incredibly easy!</p>
 <h3 id="ai-generate">AI Generate</h3>
@@ -475,36 +491,36 @@ class="type">Type</span></span> also has <code>generate()</code> built
 in, which generates hyperedges based on your prompt. This is a great way
 to expand your knowledge graph in a particular direction.</p>
 <p>Just like with AI Auto Suggest, you can use any LLM.</p>
-<div class="sourceCode" id="cb19"><pre
-class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> options <span class="op">=</span> {</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">llm</span><span class="op">:</span> {</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">service</span><span class="op">:</span> <span class="st">&quot;openai&quot;</span><span class="op">,</span></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;gpt-4-turbo-preview&quot;</span><span class="op">,</span></span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">apikey</span><span class="op">:</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">OPENAI_API_KEY</span><span class="op">,</span></span>
-<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
-<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
-<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>(options)<span class="op">;</span></span>
-<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedges <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">generate</span>(<span class="st">&quot;Steve Jobs&quot;</span>)<span class="op">;</span></span>
-<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,Apple Inc,CEO</span></span>
-<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,NeXT,Founder</span></span>
-<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,Macintosh,Personal Computers</span></span>
-<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,iPad,Tablet Computing</span></span>
-<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span></code></pre></div>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> options <span class="op">=</span> {</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">llm</span><span class="op">:</span> {</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>        <span class="dt">service</span><span class="op">:</span> <span class="st">&quot;openai&quot;</span><span class="op">,</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>        <span class="dt">model</span><span class="op">:</span> <span class="st">&quot;gpt-4-turbo-preview&quot;</span><span class="op">,</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>        <span class="dt">apikey</span><span class="op">:</span> <span class="bu">process</span><span class="op">.</span><span class="at">env</span><span class="op">.</span><span class="at">OPENAI_API_KEY</span><span class="op">,</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    }<span class="op">,</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>}<span class="op">;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> thinkabletype <span class="op">=</span> <span class="kw">new</span> <span class="fu">ThinkableType</span>(options)<span class="op">;</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> hyperedges <span class="op">=</span> thinkabletype<span class="op">.</span><span class="fu">generate</span>(<span class="st">&quot;Steve Jobs&quot;</span>)<span class="op">;</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,Apple Inc,CEO</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,NeXT,Founder</span></span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,Macintosh,Personal Computers</span></span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a><span class="co">// Steve Jobs,iPad,Tablet Computing</span></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co">// ...</span></span></code></pre></div>
 <h3 id="cli">CLI</h3>
 <p><span class="thinkable">Thinkable<span
 class="type">Type</span></span> ships with a command-line interfaces for
 searching and generating files.</p>
-<div class="sourceCode" id="cb20"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> thinkabletype <span class="ex">epic</span> of gilgamesh</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">epic</span> of gilgamesh,sumerian literature,ancient civilization  </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">epic</span> of gilgamesh,gilgamesh,enkidu,immortality,friendship  </span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sumerian</span> literature,cuneiform writing,mesopotamia</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> thinkabletype <span class="ex">epic</span> of gilgamesh</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="ex">epic</span> of gilgamesh,sumerian literature,ancient civilization  </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="ex">epic</span> of gilgamesh,gilgamesh,enkidu,immortality,friendship  </span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="ex">sumerian</span> literature,cuneiform writing,mesopotamia</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="ex">...</span></span></code></pre></div>
 <p>By default it writes to stdout, either copy and paste to a
 <code>.csv</code> file or redirect the out</p>
-<div class="sourceCode" id="cb21"><pre
-class="sourceCode bash"><code class="sourceCode bash"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> thinkabletype <span class="ex">mesopotamia</span> <span class="op">&gt;</span> mesopotamia.csv</span></code></pre></div>
+<div class="sourceCode" id="cb22"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="op">&gt;</span> thinkabletype <span class="ex">mesopotamia</span> <span class="op">&gt;</span> mesopotamia.csv</span></code></pre></div>
 <h2 id="the-design-of-thinkabletype">The Design of ThinkableType</h2>
 <p>A language for ideas needs a structureless structure. That’s exactly
 what Stephen Wolfram found hypergraphs to be while working on his
