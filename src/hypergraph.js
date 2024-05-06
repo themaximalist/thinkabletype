@@ -39,6 +39,10 @@ export default class Hypergraph {
         }
     }
 
+    get rawHyperedges() {
+        return this.hyperedges.map(edge => edge.symbols);
+    }
+
     get symbols() {
         const symbols = new Map();
         for (const hyperedge of this.hyperedges) {

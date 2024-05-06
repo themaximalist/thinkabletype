@@ -4,6 +4,7 @@ import Hypergraph from "./hypergraph.js";
 import { calculatePageRank, pageRank } from "./pagerank.js";
 import suggest from "./suggest.js";
 import generate from "./generate.js";
+import explain from "./explain.js";
 
 // VectorDB currently has an issue with embedding because of native HNSW library...will be refactored to pure JS version
 // import VectorDB from "@themaximalist/vectordb.js"
@@ -144,6 +145,11 @@ export default class ThinkableType extends Hypergraph {
     async generate(prompt, options = {}) {
         const llmOptions = Object.assign({}, this.options.llm || {}, options);
         return await generate(prompt, llmOptions);
+    }
+
+    async explain(input, options = {}) {
+        const llmOptions = Object.assign({}, this.options.llm || {}, options);
+        return await explain(input, this.rawHyperedges, llmOptions);
     }
 
     reset() {
