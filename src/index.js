@@ -51,6 +51,20 @@ export default class ThinkableType extends Hypergraph {
         return false;
     }
 
+    edgeById(id) {
+        return this.hyperedges.find(edge => edge.id === id);
+    }
+
+    edgeByNodeId(id) {
+        const edgeId = id.replaceAll(".", "->");
+        return this.hyperedges.find(edge => edge.id.startsWith(edgeId));
+    }
+
+    edgesByNodeId(id) {
+        const edgeId = id.replaceAll(".", "->");
+        return this.hyperedges.filter(edge => edge.id.startsWith(edgeId));
+    }
+
     async sync() {
         await this.syncPagerank();
         await this.syncEmbeddings();
@@ -166,5 +180,14 @@ export default class ThinkableType extends Hypergraph {
         if (this.hyperedges.length > 0) {
             this.setUnsynced();
         }
+    }
+
+    rename(nodeId, symbol) {
+        let found = false;
+        for (const edge of this.edgesByNodeId(nodeId)) {
+            edge.rename(nodeId, symbol);
+            found = true;
+        }
+        return found;
     }
 }

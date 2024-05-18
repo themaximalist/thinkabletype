@@ -51,51 +51,50 @@ test("unsyncs with add data on edge", async () => {
     expect(thinkabletype.synced).toBe(true);
 });
 
-test("renames", async () => {
+test("renames nodes by hyperedge ids (isolated)", async () => {
     const thinkabletype = new ThinkableType({
+        interwingle: ThinkableType.INTERWINGLE.ISOLATED,
         hyperedges: [
             ["A", "B"],
+            ["A", "B", "C"],
             ["1", "2"],
         ],
     });
 
     expect(thinkabletype.has("A")).toBeTruthy();
-    expect(thinkabletype.has("A1")).toBeFalsy();
-    thinkabletype.rename("A", "A1");
-    expect(thinkabletype.has("A")).toBeFalsy();
+    thinkabletype.rename("0:A", "A1");
     expect(thinkabletype.has("A1")).toBeTruthy();
+
+    expect(thinkabletype.has("B")).toBeTruthy();
+    thinkabletype.rename("0:A1.B", "B1");
+    expect(thinkabletype.has("B1")).toBeTruthy();
+
+    expect(thinkabletype.has("C")).toBeTruthy();
+    thinkabletype.rename("1:A.B.C", "C1");
+    expect(thinkabletype.has("C1")).toBeTruthy();
 });
 
-test("renames hyperedge", async () => {
+test("renames nodes by hyperedge ids (confluence)", async () => {
     const thinkabletype = new ThinkableType({
+        interwingle: ThinkableType.INTERWINGLE.CONFLUENCE,
         hyperedges: [
-            ["A", "B", "D"],
+            ["A", "B"],
             ["A", "B", "C"],
             ["1", "2"],
         ],
     });
 
-    const edge = thinkabletype.get("A", "B", "D");
+    // rename a single edge
+    const edge = thinkabletype.get("A", "B");
     edge.rename("A", "A1");
+    expect(thinkabletype.has("A")).toBeTruthy();
+    expect(thinkabletype.has("A1")).toBeTruthy();
 
-    expect(thinkabletype.has("A", "B", "D")).toBeFalsy();
-    expect(thinkabletype.has("A1", "B", "D")).toBeTruthy();
-    expect(thinkabletype.has("A", "B", "C")).toBeTruthy();
-});
-
-test("renames all", async () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["A", "B", "D"],
-            ["A", "B", "C"],
-            ["1", "2"],
-        ],
-    });
-
+    // sync
     thinkabletype.rename("A", "A1");
 
-    expect(thinkabletype.has("A", "B", "D")).toBeFalsy();
-    expect(thinkabletype.has("A", "B", "C")).toBeFalsy();
-    expect(thinkabletype.has("A1", "B", "D")).toBeTruthy();
-    expect(thinkabletype.has("A1", "B", "C")).toBeTruthy();
+    // rename all
+    thinkabletype.rename("A1.B", "B1");
+    expect(thinkabletype.has("B1")).toBeTruthy();
+    expect(thinkabletype.has("B")).toBeFalsy();
 });

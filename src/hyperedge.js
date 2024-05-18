@@ -73,11 +73,21 @@ export default class Hyperedge {
         return this.thinkabletype.suggest(this.symbols, options);
     }
 
-    rename(nodeId, symbol) {
-        const index = this.symbols.indexOf(nodeId);
-        if (index !== -1) {
-            this.symbols[index] = symbol;
-            this.thinkabletype.setUnsynced();
+    indexForId(id) {
+        const ids = id.replace(/^\d+:/, "").split(/\-\>|\./);
+        for (let i = 0; i < ids.length; i++) {
+            if (this.symbols[i] !== ids[i]) {
+                return -1;
+            }
         }
+
+        return ids.length - 1;
+    }
+
+    rename(nodeId, symbol) {
+        const idx = this.indexForId(nodeId);
+        if (idx === -1) { return false }
+        this.symbols[idx] = symbol;
+        this.thinkabletype.setUnsynced();
     }
 }
