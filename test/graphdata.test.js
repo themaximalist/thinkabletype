@@ -19,12 +19,12 @@ test("single hyperedge (isolate)", () => {
     expect(data.links[0].id).toBe("0:A->0:A.B");
     expect(data.links[0].source).toBe("0:A");
     expect(data.links[0].target).toBe("0:A.B");
-    expect(data.links[0]._meta.hyperedgeIDs).toContain("0:A->B->C");
+    expect(data.links[0]._meta.hyperedgeIDs).toContain("0:A.B.C");
 
     expect(data.links[1].id).toBe("0:A.B->0:A.B.C");
     expect(data.links[1].source).toBe("0:A.B");
     expect(data.links[1].target).toBe("0:A.B.C");
-    expect(data.links[1]._meta.hyperedgeIDs).toContain("0:A->B->C");
+    expect(data.links[1]._meta.hyperedgeIDs).toContain("0:A.B.C");
 });
 
 test("single hyperedge (confluence)", () => {
@@ -45,12 +45,12 @@ test("single hyperedge (confluence)", () => {
     expect(data.links[0].id).toBe("A->A.B");
     expect(data.links[0].source).toBe("A");
     expect(data.links[0].target).toBe("A.B");
-    expect(data.links[0]._meta.hyperedgeIDs).toContain("A->B->C");
+    expect(data.links[0]._meta.hyperedgeIDs).toContain("A.B.C");
 
     expect(data.links[1].id).toBe("A.B->A.B.C");
     expect(data.links[1].source).toBe("A.B");
     expect(data.links[1].target).toBe("A.B.C");
-    expect(data.links[1]._meta.hyperedgeIDs).toContain("A->B->C");
+    expect(data.links[1]._meta.hyperedgeIDs).toContain("A.B.C");
 });
 
 test("multiple hyperedge (confluence)", () => {
@@ -74,10 +74,10 @@ test("multiple hyperedge (confluence)", () => {
     expect(data.links[2].id).toBe("A->A.1");
     expect(data.links[3].id).toBe("A.1->A.1.2");
 
-    expect(data.links[0]._meta.hyperedgeIDs).toContain("A->B->C");
-    expect(data.links[1]._meta.hyperedgeIDs).toContain("A->B->C");
-    expect(data.links[2]._meta.hyperedgeIDs).toContain("A->1->2");
-    expect(data.links[3]._meta.hyperedgeIDs).toContain("A->1->2");
+    expect(data.links[0]._meta.hyperedgeIDs).toContain("A.B.C");
+    expect(data.links[1]._meta.hyperedgeIDs).toContain("A.B.C");
+    expect(data.links[2]._meta.hyperedgeIDs).toContain("A.1.2");
+    expect(data.links[3]._meta.hyperedgeIDs).toContain("A.1.2");
 });
 
 test("fusion start", () => {

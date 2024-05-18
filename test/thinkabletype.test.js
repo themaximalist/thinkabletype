@@ -61,16 +61,21 @@ test("renames nodes by hyperedge ids (isolated)", async () => {
         ],
     });
 
+    let id;
     expect(thinkabletype.has("A")).toBeTruthy();
-    thinkabletype.rename("0:A", "A1");
+    id = thinkabletype.rename("0:A", "A1");
+    expect(id).toBe("0:A1")
+
     expect(thinkabletype.has("A1")).toBeTruthy();
 
     expect(thinkabletype.has("B")).toBeTruthy();
-    thinkabletype.rename("0:A1.B", "B1");
+    id = thinkabletype.rename("0:A1.B", "B1");
+    expect(id).toBe("0:A1.B1")
     expect(thinkabletype.has("B1")).toBeTruthy();
 
     expect(thinkabletype.has("C")).toBeTruthy();
-    thinkabletype.rename("1:A.B.C", "C1");
+    id = thinkabletype.rename("1:A.B.C", "C1");
+    expect(id).toBe("1:A.B.C1")
     expect(thinkabletype.has("C1")).toBeTruthy();
 });
 
@@ -84,17 +89,21 @@ test("renames nodes by hyperedge ids (confluence)", async () => {
         ],
     });
 
+    let id;
     // rename a single edge
     const edge = thinkabletype.get("A", "B");
-    edge.rename("A", "A1");
+    id = edge.rename("A", "A1");
+    expect(id).toBe("A1")
     expect(thinkabletype.has("A")).toBeTruthy();
     expect(thinkabletype.has("A1")).toBeTruthy();
 
     // sync
-    thinkabletype.rename("A", "A1");
+    id = thinkabletype.rename("A", "A1");
+    expect(id).toBe("A1")
 
     // rename all
-    thinkabletype.rename("A1.B", "B1");
+    id = thinkabletype.rename("A1.B", "B1");
+    expect(id).toBe("A1.B1")
     expect(thinkabletype.has("B1")).toBeTruthy();
     expect(thinkabletype.has("B")).toBeFalsy();
 });

@@ -56,13 +56,11 @@ export default class ThinkableType extends Hypergraph {
     }
 
     edgeByNodeId(id) {
-        const edgeId = id.replaceAll(".", "->");
-        return this.hyperedges.find(edge => edge.id.startsWith(edgeId));
+        return this.hyperedges.find(edge => edge.id.startsWith(id));
     }
 
     edgesByNodeId(id) {
-        const edgeId = id.replaceAll(".", "->");
-        return this.hyperedges.filter(edge => edge.id.startsWith(edgeId));
+        return this.hyperedges.filter(edge => edge.id.startsWith(id));
     }
 
     async sync() {
@@ -183,11 +181,13 @@ export default class ThinkableType extends Hypergraph {
     }
 
     rename(nodeId, symbol) {
-        let found = false;
+        let renamed = null;
         for (const edge of this.edgesByNodeId(nodeId)) {
-            edge.rename(nodeId, symbol);
-            found = true;
+            const rename = edge.rename(nodeId, symbol);
+            if (!renamed) {
+                renamed = rename;
+            }
         }
-        return found;
+        return renamed;
     }
 }

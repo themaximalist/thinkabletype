@@ -8,7 +8,7 @@ export default class Hyperedge {
     }
 
     get id() {
-        const id = this.symbols.join("->");
+        const id = this.symbols.join(".");
         if (this.thinkabletype.isIsolated) {
             return `${this.index}:${id}`;
         }
@@ -32,6 +32,13 @@ export default class Hyperedge {
         const symbols = Array.from(arguments);
         this.symbols.push(...symbols);
         this.thinkabletype.setUnsynced();
+    }
+
+    nodeId(idx) {
+        if (this.thinkabletype.isIsolated) {
+            return `${this.index}:${this.symbols.slice(0, idx + 1).join(".")}`;
+        }
+        return this.symbols.slice(0, idx + 1).join(".");
     }
 
     remove(symbol_or_index) {
@@ -86,8 +93,9 @@ export default class Hyperedge {
 
     rename(nodeId, symbol) {
         const idx = this.indexForId(nodeId);
-        if (idx === -1) { return false }
+        if (idx === -1) { return null }
         this.symbols[idx] = symbol;
         this.thinkabletype.setUnsynced();
+        return this.nodeId(idx);
     }
 }

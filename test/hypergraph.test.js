@@ -13,12 +13,12 @@ test("build edge (isolated)", () => {
   const edge = thinkabletype.add("A", "B");
   expect(edge).instanceOf(Hyperedge);
   expect(edge.symbols).toEqual(["A", "B"]);
-  expect(edge.id).toEqual("0:A->B");
+  expect(edge.id).toEqual("0:A.B");
   expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge.add("C");
   expect(edge.symbols).toEqual(["A", "B", "C"]);
-  expect(edge.id).toEqual("0:A->B->C");
+  expect(edge.id).toEqual("0:A.B.C");
   expect(thinkabletype.symbols).toEqual(["A", "B", "C"]);
 
   const edge2 = thinkabletype.get("A", "B", "C");
@@ -26,7 +26,7 @@ test("build edge (isolated)", () => {
 
   edge2.remove("C");
   expect(edge.symbols).toEqual(["A", "B"]);
-  expect(edge.id).toEqual("0:A->B");
+  expect(edge.id).toEqual("0:A.B");
   expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge2.remove(0)
@@ -40,12 +40,12 @@ test("build edge (confluence)", () => {
   const edge = thinkabletype.add("A", "B");
   expect(edge).instanceOf(Hyperedge);
   expect(edge.symbols).toEqual(["A", "B"]);
-  expect(edge.id).toEqual("A->B");
+  expect(edge.id).toEqual("A.B");
   expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge.add("C");
   expect(edge.symbols).toEqual(["A", "B", "C"]);
-  expect(edge.id).toEqual("A->B->C");
+  expect(edge.id).toEqual("A.B.C");
   expect(thinkabletype.symbols).toEqual(["A", "B", "C"]);
 
   const edge2 = thinkabletype.get("A", "B", "C");
@@ -53,7 +53,7 @@ test("build edge (confluence)", () => {
 
   edge2.remove("C");
   expect(edge.symbols).toEqual(["A", "B"]);
-  expect(edge.id).toEqual("A->B");
+  expect(edge.id).toEqual("A.B");
   expect(thinkabletype.symbols).toEqual(["A", "B"]);
 
   edge2.remove(0)
