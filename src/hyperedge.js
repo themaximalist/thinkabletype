@@ -72,4 +72,12 @@ export default class Hyperedge {
     async suggest(options = {}) {
         return this.thinkabletype.suggest(this.symbols, options);
     }
+
+    rename(nodeId, symbol) {
+        const index = this.symbols.indexOf(nodeId);
+        if (index !== -1) {
+            this.symbols[index] = symbol;
+            this.thinkabletype.setUnsynced();
+        }
+    }
 }

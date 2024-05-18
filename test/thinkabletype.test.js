@@ -50,3 +50,52 @@ test("unsyncs with add data on edge", async () => {
     await thinkabletype.sync();
     expect(thinkabletype.synced).toBe(true);
 });
+
+test("renames", async () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B"],
+            ["1", "2"],
+        ],
+    });
+
+    expect(thinkabletype.has("A")).toBeTruthy();
+    expect(thinkabletype.has("A1")).toBeFalsy();
+    thinkabletype.rename("A", "A1");
+    expect(thinkabletype.has("A")).toBeFalsy();
+    expect(thinkabletype.has("A1")).toBeTruthy();
+});
+
+test("renames hyperedge", async () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "D"],
+            ["A", "B", "C"],
+            ["1", "2"],
+        ],
+    });
+
+    const edge = thinkabletype.get("A", "B", "D");
+    edge.rename("A", "A1");
+
+    expect(thinkabletype.has("A", "B", "D")).toBeFalsy();
+    expect(thinkabletype.has("A1", "B", "D")).toBeTruthy();
+    expect(thinkabletype.has("A", "B", "C")).toBeTruthy();
+});
+
+test("renames all", async () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "D"],
+            ["A", "B", "C"],
+            ["1", "2"],
+        ],
+    });
+
+    thinkabletype.rename("A", "A1");
+
+    expect(thinkabletype.has("A", "B", "D")).toBeFalsy();
+    expect(thinkabletype.has("A", "B", "C")).toBeFalsy();
+    expect(thinkabletype.has("A1", "B", "D")).toBeTruthy();
+    expect(thinkabletype.has("A1", "B", "C")).toBeTruthy();
+});

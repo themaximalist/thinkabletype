@@ -128,4 +128,10 @@ export default class Hypergraph {
         this.hyperedges.splice(this.hyperedges.indexOf(edge), 1);
         return true;
     }
+
+    rename(nodeId, symbol) {
+        for (const hyperedge of this.hyperedges) {
+            hyperedge.rename(nodeId, symbol);
+        }
+    }
 }
