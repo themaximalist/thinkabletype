@@ -1,193 +1,58 @@
-import csv from "papaparse"
-import Hypergraph from "./hypergraph.js";
+import Hyperedge from './hyperedge.js';
+import Node from './node.js';
 
-import { calculatePageRank, pageRank } from "./pagerank.js";
-import suggest from "./suggest.js";
-import generate from "./generate.js";
-import explain from "./explain.js";
+export default class Hypergraph {
+    static INTERWINGLE = {
+        ISOLATED: 0,        // only explicit connections you've added
+        CONFLUENCE: 1,      // shared parents
+        FUSION: 2,          // shared children
+        BRIDGE: 3           // shared symbols
+    };
 
-// VectorDB currently has an issue with embedding because of native HNSW library...will be refactored to pure JS version
-// import VectorDB from "@themaximalist/vectordb.js"
+    static DEPTH = {
+        SHALLOW: 0,         // don't connect
+        // any number between 1 and Infinity is valid, up to maxDepth
+        DEEP: Infinity,     // infinitely connect
+    };
 
-// ThinkableType class wraps the HyperGraph, adding additional functionality on top
-export default class ThinkableType extends Hypergraph {
+    constructor(hyperedges = [], options = {}) {
+        this.hyperedges = [];
+        this.options = options;
+        this.interwingle = typeof options.interwingle === "undefined" ? Hypergraph.INTERWINGLE.ISOLATED : options.interwingle;
+        this.add(hyperedges);
+    }
 
-    constructor(options = {}) {
-        super(options);
+    get isIsolated() { return this.interwingle === Hypergraph.INTERWINGLE.ISOLATED }
+    get isConfluence() { return this.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE }
+    get isFusion() { return this.interwingle >= Hypergraph.INTERWINGLE.FUSION }
+    get isBridge() { return this.interwingle >= Hypergraph.INTERWINGLE.BRIDGE }
 
-        // this.vectordb = new VectorDB(options.vectordb);
-
-        this.pageranks = {};
-        this._synced = {
-            pagerank: true,
-            embeddings: true,
-        };
-
-        if (this.hyperedges.length > 0) {
-            this.setUnsynced();
+    add(symbols) {
+        if (!Array.isArray(symbols)) throw new Error("Expected an array of symbols");
+        if (symbols.length === 0) return;
+        if (Array.isArray(symbols[0])) {
+            for (const hyperedge of symbols) {
+                this.add(hyperedge);
+            }
+            return;
         }
+
+        this.hyperedges.push(new Hyperedge(symbols, this));
     }
 
-    add() {
-        this.setUnsynced();
-        return super.add.apply(this, arguments);
-    }
+    graphData() {
+        const nodes = new Map();
+        const links = new Map();
 
-    get synced() {
-        for (const sync of Object.values(this._synced)) {
-            if (!sync) return false;
-        }
-        return true;
-    }
-
-    setUnsynced() {
-        const obj = Object.assign({}, this._synced);
-
-        for (const key of Object.keys(obj)) {
-            obj[key] = false;
-        }
-        this._synced = obj;
-
-        return false;
-    }
-
-    edgeById(id) {
-        return this.hyperedges.find(edge => edge.id === id);
-    }
-
-    edgeByNodeId(id) {
-        return this.hyperedges.find(edge => edge.id.startsWith(id));
-    }
-
-    edgesByNodeId(id) {
-        return this.hyperedges.filter(edge => edge.id.startsWith(id));
-    }
-
-    async sync() {
-        await this.syncPagerank();
-        await this.syncEmbeddings();
-        return this.synced;
-    }
-
-    async syncPagerank() {
-        if (this._synced.pagerank) return true;
-        this.pageranks = await calculatePageRank(this);
-        this._synced.pagerank = true;
-        return true;
-    }
-
-    async syncEmbeddings() {
-        if (this._synced.embeddings) return true;
-
-        // for (const hyperedge of this.hyperedges) {
-        //     for (const symbol of hyperedge.symbols) {
-        //         await this.vectordb.add(symbol);
-        //     }
-        // }
-
-        this._synced.embeddings = true;
-        return true;
-    }
-
-    pagerank(symbol) {
-        return pageRank(this, symbol);
-    }
-
-
-    static parse(input, options = {}) {
-        const thinkabletype = new ThinkableType(options);
-        thinkabletype.parse(input, options);
-        return thinkabletype;
-    }
-
-    parse(input, options = {}) {
-        this.reset();
-        const hyperedges = csv.parse(input.trim(), options.parse || {}).data;
-        this.addHyperedges(hyperedges);
-    }
-
-    export() {
-        const hyperedges = this.hyperedges.map(hyperedge => hyperedge.symbols);
-        return csv.unparse(hyperedges, {
-            header: false,
-        });
-    }
-
-    // find similar hyperedges based on a symbol embedding
-    async similar(symbol, num = 3, threshold = 1.0) {
-        const similarSymbols = await this.similarSymbols(symbol, num, threshold);
-        const hyperedges = new Map();
         for (const hyperedge of this.hyperedges) {
-            for (const similarSymbol of similarSymbols) {
-                if (hyperedge.has(similarSymbol.symbol)) {
-                    if (!hyperedge.distance || hyperedge.distance < similarSymbol.distance) {
-                        hyperedge.distance = similarSymbol.distance;
-                    }
-                    hyperedges.set(hyperedge.id, hyperedge);
-                }
-            }
+            hyperedge.graphData(nodes, links);
         }
 
-        return Array.from(hyperedges.values());
-    }
-
-    // find similar symbols based on a symbol embedding
-    async similarSymbols(symbol, num = 3, threshold = 1.0) {
-        // const matches = await this.vectordb.search(symbol, num, threshold);
-        const results = [];
-
-        // for (const { input, distance } of matches) {
-        //     if (symbol == input) continue;
-        //     results.push({ distance, symbol: input });
-        // }
-
-        // results.sort((a, b) => a.distance - b.distance);
-
-        return results;
-    }
-
-    // autocomplete hyperedge
-    async suggest(symbols, options = {}) {
-        const llmOptions = Object.assign({}, this.options.llm || {}, options);
-        const phrase = symbols.join(" ");
-        return await suggest(phrase, llmOptions);
-    }
-
-    // generate hyperedges based on a prompt
-    async generate(prompt, options = {}) {
-        const llmOptions = Object.assign({}, this.options.llm || {}, options);
-        return await generate(prompt, llmOptions);
-    }
-
-    async explain(input, options = {}) {
-        const llmOptions = Object.assign({}, this.options.llm || {}, options);
-        return await explain(input, this.rawHyperedges, llmOptions);
-    }
-
-    reset() {
-        super.reset();
-
-        // this.vectordb = new VectorDB(this.options.vectordb);
-
-        this.pageranks = {};
-        this._synced = {
-            pagerank: true,
-            embeddings: true,
+        return {
+            nodes: Array.from(nodes.values()),
+            links: Array.from(links.values()),
         };
-
-        if (this.hyperedges.length > 0) {
-            this.setUnsynced();
-        }
     }
 
-    rename(nodeId, symbol) {
-        let renamed = null;
-        for (const edge of this.edgesByNodeId(nodeId)) {
-            const rename = edge.rename(nodeId, symbol);
-            if (!renamed) {
-                renamed = rename;
-            }
-        }
-        return renamed;
-    }
+
 }

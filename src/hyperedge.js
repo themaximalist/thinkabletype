@@ -1,101 +1,73 @@
-import * as utils from "./utils.js";
+import Node from './node.js';
 
-// Hyperedge is made up of symbols
 export default class Hyperedge {
-    constructor(symbols = [], thinkabletype) {
-        this.symbols = symbols;
-        this.thinkabletype = thinkabletype;
+    constructor(symbols = [], hypergraph) {
+        // this.symbols = symbols;
+        this.nodes = [];
+        this.hypergraph = hypergraph;
+        this.add(symbols);
     }
 
     get id() {
         const id = this.symbols.join(".");
-        if (this.thinkabletype.isIsolated) {
+        if (this.hypergraph.isIsolated) {
+            return `${this.index}:${id}`;
+        }
+        return id;
+    }
+
+    get index() {
+        return this.hypergraph.hyperedges.indexOf(this);
+    }
+
+    get symbols() {
+        return this.nodes.map(node => node.symbol);
+    }
+
+    nodeId(index) {
+        const id = this.symbols.slice(0, index + 1).join(".");
+        if (this.hypergraph.isIsolated) {
             return `${this.index}:${id}`;
         }
 
         return id;
     }
 
-    get index() {
-        return this.thinkabletype.hyperedges.indexOf(this);
-    }
-
-    get firstSymbol() {
-        return this.symbols[0];
-    }
-
-    get lastSymbol() {
-        return this.symbols[this.symbols.length - 1];
-    }
-
-    add() {
-        const symbols = Array.from(arguments);
-        this.symbols.push(...symbols);
-        this.thinkabletype.setUnsynced();
-    }
-
-    nodeId(idx) {
-        if (this.thinkabletype.isIsolated) {
-            return `${this.index}:${this.symbols.slice(0, idx + 1).join(".")}`;
-        }
-        return this.symbols.slice(0, idx + 1).join(".");
-    }
-
-    remove(symbol_or_index) {
-        if (typeof symbol_or_index === "number") {
-            this.symbols.splice(symbol_or_index, 1);
-            this.thinkabletype.setUnsynced();
-        } else if (typeof symbol_or_index === "string") {
-            const index = this.symbols.indexOf(symbol_or_index);
-            if (index !== -1) {
-                this.symbols.splice(index, 1);
-                this.thinkabletype.setUnsynced();
+    add(symbol) {
+        if (Array.isArray(symbol)) {
+            for (const s of symbol) {
+                this.add(s);
             }
+            return;
         }
+
+        this.nodes.push(new Node(symbol, this));
     }
 
-    has(hyperedge) {
-        if (!Array.isArray(hyperedge)) hyperedge = [hyperedge];
-        return utils.arrayContains(this.symbols, hyperedge);
-    }
+    graphData(nodes, links) {
+        let parent = null;
 
-    equal(hyperedge) {
-        return this.id === hyperedge.id;
-    }
+        for (const node of this.nodes) {
+            node.graphData(nodes, links)
 
-    async similar() {
-        const hyperedges = new Map();
-        for (const symbol of this.symbols) {
-            const edges = await this.thinkabletype.similar(symbol);
-            for (const edge of edges) {
-                if (edge.equal(this)) continue;
-                hyperedges.set(edge.id, edge);
+            if (parent) {
+                const link = this.linkData(parent, node);
+                links.set(link.id, link);
             }
+
+            parent = node;
         }
-
-        return Array.from(hyperedges.values());
     }
 
-    async suggest(options = {}) {
-        return this.thinkabletype.suggest(this.symbols, options);
-    }
-
-    indexForId(id) {
-        const ids = id.replace(/^\d+:/, "").split(/\-\>|\./);
-        for (let i = 0; i < ids.length; i++) {
-            if (this.symbols[i] !== ids[i]) {
-                return -1;
-            }
-        }
-
-        return ids.length - 1;
-    }
-
-    rename(nodeId, symbol) {
-        const idx = this.indexForId(nodeId);
-        if (idx === -1) { return null }
-        this.symbols[idx] = symbol;
-        this.thinkabletype.setUnsynced();
-        return this.nodeId(idx);
+    linkData(parent, child) {
+        return {
+            id: `${parent.id}->${child.id}`,
+            source: parent.id,
+            target: child.id,
+            // color: this.color,
+            // _meta: {
+            //     hyperedgeIDs: Array.from(hyperedgeIDs)
+            // }
+        };
     }
 }
