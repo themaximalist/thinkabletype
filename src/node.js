@@ -16,6 +16,15 @@ export default class Node {
         return this.hyperedge.nodes.indexOf(this);
     }
 
+    rename(symbol) {
+        this.symbol = symbol;
+        return this.id;
+    }
+
+    remove() {
+        this.hyperedge.nodes.splice(this.index, 1);
+    }
+
     graphData(nodes, links) {
         if (nodes.has(this.id)) return;
 
@@ -26,7 +35,3 @@ export default class Node {
     }
 }
 
-// local storage -> settings
-// node -> uuid (stack them)
-// objects in app.state
-// model deployer for frontend

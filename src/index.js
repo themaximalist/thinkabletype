@@ -40,6 +40,20 @@ export default class Hypergraph {
         this.hyperedges.push(new Hyperedge(symbols, this));
     }
 
+    nodeByUUID(uuid) {
+        for (const hyperedge of this.hyperedges) {
+            for (const node of hyperedge.nodes) {
+                if (node.uuid === uuid) return node;
+            }
+        }
+    }
+
+    edgeByUUID(uuid) {
+        for (const hyperedge of this.hyperedges) {
+            if (hyperedge.uuid === uuid) return hyperedge;
+        }
+    }
+
     graphData() {
         const nodes = new Map();
         const links = new Map();
@@ -53,6 +67,4 @@ export default class Hypergraph {
             links: Array.from(links.values()),
         };
     }
-
-
 }
