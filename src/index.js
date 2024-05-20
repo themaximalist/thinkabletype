@@ -2,8 +2,9 @@ import csv from "papaparse"
 
 import Hyperedge from './hyperedge.js';
 import BridgeNode from './bridgenode.js';
-
+import Colors from "./colors.js";
 import * as utils from "./utils.js";
+import filterGraph from "./filterGraph.js";
 
 export default class Hypergraph {
     static INTERWINGLE = {
@@ -34,6 +35,7 @@ export default class Hypergraph {
 
         options.interwingle = options.interwingle || Hypergraph.INTERWINGLE.ISOLATED;
         options.depth = options.depth || Hypergraph.DEPTH.SHALLOW;
+        options.colors = options.colors || Colors;
         this.options = options;
 
         this.hyperedges = [];
@@ -44,6 +46,8 @@ export default class Hypergraph {
     set interwingle(value) { this.options.interwingle = value }
     get depth() { return this.options.depth }
     set depth(value) { this.options.depth = value }
+    get colors() { return this.options.colors }
+    set colors(value) { this.options.colors = value }
     get isIsolated() { return this.interwingle === Hypergraph.INTERWINGLE.ISOLATED }
     get isConfluence() { return this.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE }
     get isFusion() { return this.interwingle >= Hypergraph.INTERWINGLE.FUSION }
@@ -62,13 +66,47 @@ export default class Hypergraph {
         if (!Array.isArray(symbols)) throw new Error("Expected an array of symbols");
         if (symbols.length === 0) return;
         if (Array.isArray(symbols[0])) {
-            for (const hyperedge of symbols) {
-                this.add(hyperedge);
-            }
-            return;
+            return symbols.map(symbols => this.add(symbols));
         }
 
-        this.hyperedges.push(new Hyperedge(symbols, this));
+        const hyperedge = new Hyperedge(symbols, this);
+        this.hyperedges.push(hyperedge);
+        return hyperedge;
+    }
+
+    get(symbols) {
+        for (const hyperedge of this.hyperedges) {
+            if (utils.arrayContains(hyperedge.symbols, symbols)) {
+                return hyperedge;
+            }
+        }
+
+        return null;
+    }
+
+    has(symbol) {
+        if (Array.isArray(symbol)) {
+            return !!this.get(symbol);
+        } else {
+            return this.symbols.includes(symbol);
+        }
+    }
+
+    filter(symbols) {
+        if (symbols.length === 0) return [];
+        if (!Array.isArray(symbols[0])) {
+            symbols = [symbols];
+        }
+
+        return this.hyperedges.filter(hyperedge => {
+            for (const symbol of symbols) {
+                if (hyperedge.has(symbol)) {
+                    return true;
+                }
+            }
+
+            return false;
+        });
     }
 
     static parse(input, options = {}) {
@@ -143,7 +181,12 @@ export default class Hypergraph {
         utils.verifyGraphData(nodes, links);
 
         if (Array.isArray(filter)) {
-            return this.filterGraphData(this.edgesForFilter(filter), { nodes, links });
+            return filterGraph({
+                filter,
+                hyperedges: this.hyperedges,
+                graphData: { nodes, links },
+                depth: this.depth
+            });
         }
 
         return {
@@ -250,89 +293,8 @@ export default class Hypergraph {
 
     }
 
-    edgesForFilter(filter) {
-        return this.hyperedges.filter(hyperedge => {
-            for (const f of filter) {
-                if (utils.arrayContains(hyperedge.symbols, f)) return true;
-            }
-            return false;
-        });
-    }
-
-    filterGraphData(hyperedges, graphData) {
-        const hyperedgeIDs = new Set(hyperedges.map(hyperedge => hyperedge.id));
-        const nodeIDs = new Set();
-
-        const nodes = new Map();
-        const links = new Map();
-
-        let depth = this.depth;
-
-        const updateNodesAndLinks = () => {
-            for (const node of graphData.nodes.values()) {
-                if (Array.from(node.ids).some(id => hyperedgeIDs.has(id))) {
-                    nodes.set(node.id, node);
-                    nodeIDs.add(node.id);
-                }
-            }
-
-            for (const link of graphData.links.values()) {
-                if (nodeIDs.has(link.source) && nodeIDs.has(link.target)) {
-                    links.set(link.id, link);
-                }
-            }
-
-        }
-
-        function updateHyperedges() {
-            for (const node of nodes.values()) {
-                for (const id of node.ids) {
-                    hyperedgeIDs.add(id);
-                }
-            }
-
-            for (const link of links.values()) {
-                for (const id of link.ids) {
-                    hyperedgeIDs.add(id);
-                }
-            }
-        }
-
-        updateNodesAndLinks();
-
-        let finalNodes = new Map(nodes);
-        let finalLinks = new Map(links);
-        let maxDepth = 0;
-
-        while (true) {
-            const existingNodeSize = nodes.size;
-            const existingLinkSize = links.size;
-
-            updateHyperedges();
-            updateNodesAndLinks();
-
-            if (maxDepth < depth) {
-                finalNodes = new Map(nodes);
-                finalLinks = new Map(links);
-            }
-
-            if (existingNodeSize === nodes.size && existingLinkSize === links.size) {
-                break;
-            }
-
-            maxDepth++;
-        }
-
-        utils.verifyGraphData(finalNodes, finalLinks);
-
-        if (maxDepth < 0) { maxDepth = 0 }
-        if (depth > maxDepth) { depth = maxDepth }
-
-        return {
-            nodes: Array.from(finalNodes.values()),
-            links: Array.from(finalLinks.values()),
-            depth,
-            maxDepth,
-        };
+    export() {
+        const hyperedges = this.hyperedges.map(hyperedge => hyperedge.symbols);
+        return csv.unparse(hyperedges, { header: false });
     }
 }

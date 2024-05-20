@@ -648,3 +648,45 @@ test("max depth collapse regression", () => {
     expect(graphData.depth).toBe(5);
     expect(graphData.maxDepth).toBe(5);
 });
+
+test("filter on symbol", () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "C"],
+            ["1", "2", "C"],
+        ]
+    });
+
+    expect(thinkabletype.filter("A").length).toBe(1);
+    expect(thinkabletype.filter("B").length).toBe(1);
+    expect(thinkabletype.filter("1").length).toBe(1);
+    expect(thinkabletype.filter("2").length).toBe(1);
+    expect(thinkabletype.filter("C").length).toBe(2);
+});
+
+test("filter on partial edge", () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "C"],
+            ["A", "B", "D"],
+        ]
+    });
+
+    expect(thinkabletype.filter(["A", "B"]).length).toBe(2);
+    expect(thinkabletype.filter(["A", "B", "C"]).length).toBe(1);
+    expect(thinkabletype.filter(["A", "B", "D"]).length).toBe(1);
+});
+
+test("filter on multiple edges", () => {
+    const thinkabletype = new ThinkableType({
+        hyperedges: [
+            ["A", "B", "1"],
+            ["A", "B", "2"],
+        ]
+    });
+
+    expect(thinkabletype.filter([["A", "B", "1"]]).length).toBe(1);
+    expect(thinkabletype.filter(["A", "B"]).length).toBe(2);
+    expect(thinkabletype.filter(["A", "B", "1"]).length).toBe(1);
+    expect(thinkabletype.filter([["A", "B", "1"], ["A", "B", "2"]]).length).toBe(2);
+});

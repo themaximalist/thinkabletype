@@ -1,6 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
 
 import Node from './node.js';
+import * as utils from './utils.js';
 
 export default class Hyperedge {
     constructor(symbols = [], hypergraph) {
@@ -8,6 +9,7 @@ export default class Hyperedge {
         this.hypergraph = hypergraph;
         this.add(symbols);
         this.uuid = uuidv4();
+        this.color = utils.stringToColor(this.firstNode.symbol, this.hypergraph.colors);
     }
 
     get id() {
@@ -74,6 +76,26 @@ export default class Hyperedge {
         this.nodes.push(new Node(symbol, this));
     }
 
+    remove() {
+        this.hypergraph.hyperedges.splice(this.index, 1);
+    }
+
+    removeIndex(idx) {
+        this.nodes.splice(idx, 1);
+    }
+
+    has(symbol) {
+        if (Array.isArray(symbol)) {
+            return utils.arrayContains(this.symbols, symbol);
+        } else {
+            return this.symbols.includes(symbol);
+        }
+    }
+
+    equal(edge) {
+        return this.id === edge.id;
+    }
+
     updateGraphData(nodes, links) {
         let parent = null;
 
@@ -119,7 +141,7 @@ export default class Hyperedge {
             target: child.id,
             ids,
             uuids,
-            // color: this.color,
+            color: this.color,
         };
     }
 }

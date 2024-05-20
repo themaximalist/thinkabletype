@@ -20,6 +20,10 @@ export default class Node {
         return this.hypergraph.masqueradeNode(this) !== this;
     }
 
+    equal(node) {
+        return this.id === node.id;
+    }
+
     rename(symbol) {
         this.symbol = symbol;
         return this.id;
@@ -41,6 +45,7 @@ export default class Node {
             id: node.id,
             uuid: node.uuid,
             name: node.symbol,
+            color: this.hyperedge.color,
             ids,
         });
     }
