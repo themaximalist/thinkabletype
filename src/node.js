@@ -32,10 +32,39 @@ export default class Node {
     updateGraphData(nodes, links) {
         const node = this.hypergraph.masqueradeNode(this);
 
+        const existing = nodes.get(node.id);
+        const ids = existing ? existing.ids : new Set();
+
+        ids.add(this.hyperedge.id);
+
         nodes.set(node.id, {
             id: node.id,
             uuid: node.uuid,
             name: node.symbol,
+            ids,
+        });
+    }
+
+    _updateGraphData(nodes, links) {
+        const node = this.forcegraph.masqueradeNode(this);
+        const hypergraphIDs = new Set();
+        const existingNode = nodes.get(node.id);
+        if (existingNode) {
+            for (const id of existingNode._meta.hyperedgeIDs) {
+                hypergraphIDs.add(id);
+            }
+        }
+
+        hypergraphIDs.add(this.link.id);
+
+        nodes.set(node.id, {
+            id: node.id,
+            name: node.symbol,
+            color: node.link.color,
+            textHeight: 8,
+            _meta: {
+                hyperedgeIDs: Array.from(hypergraphIDs)
+            }
         });
     }
 }

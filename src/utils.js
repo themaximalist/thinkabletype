@@ -60,21 +60,6 @@ export function stringToColor(str, colors = Colors) {
     return colors[index];
 }
 
-export function hyperedgesFromArguments() {
-    let hyperedges;
-    if (Array.isArray(arguments[0])) {
-        hyperedges = arguments[0];
-    } else {
-        hyperedges = Array.from(arguments);
-    }
-
-    if (!Array.isArray(hyperedges[0])) {
-        hyperedges = [hyperedges]
-    }
-
-    return hyperedges;
-}
-
 export function verifyGraphData(nodes, links) {
     const nodeIDs = new Set(nodes.keys());
 
