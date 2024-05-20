@@ -326,3 +326,26 @@ test("two edge close loop", () => {
     expect(graphData.nodes.length).toBe(3);
     expect(graphData.links.length).toBe(3);
 });
+
+
+test("closed fusion loop", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
+    thinkabletype.add(["A", "B", "C", "A"]);
+
+    const data = thinkabletype.graphData();
+
+    expect(data.nodes.length).toBe(3);
+    expect(data.links.length).toBe(3);
+});
+
+
+test("two two-edge connections", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
+    thinkabletype.add(["A", "B", "C"]);
+    thinkabletype.add(["D", "A"]);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
+});
+
