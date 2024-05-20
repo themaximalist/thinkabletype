@@ -1,5 +1,6 @@
 import Hyperedge from './hyperedge.js';
 import Node from './node.js';
+import * as utils from "./utils.js";
 
 export default class Hypergraph {
     static INTERWINGLE = {
@@ -26,6 +27,15 @@ export default class Hypergraph {
     get isConfluence() { return this.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE }
     get isFusion() { return this.interwingle >= Hypergraph.INTERWINGLE.FUSION }
     get isBridge() { return this.interwingle >= Hypergraph.INTERWINGLE.BRIDGE }
+    get symbols() {
+        const symbols = new Set();
+        for (const hyperedge of this.hyperedges) {
+            for (const symbol of hyperedge.symbols) {
+                symbols.add(symbol);
+            }
+        }
+        return Array.from(symbols);
+    }
 
     add(symbols) {
         if (!Array.isArray(symbols)) throw new Error("Expected an array of symbols");
@@ -54,17 +64,80 @@ export default class Hypergraph {
         }
     }
 
+    masqueradeNode(node, max = 1000) {
+        let i = 0;
+
+        while (true) {
+            if (i++ > max) {
+                console.log("Infinite loop for", node.id)
+                throw new Error("Infinite loop");
+            }
+
+            const masqueradeNode = this.fusionIndex.get(node.uuid);
+            if (!masqueradeNode || masqueradeNode.uuid === node.uuid) {
+                return node;
+            }
+
+            // console.log("NODE", node);
+            node = masqueradeNode;
+        }
+    }
+
+
     graphData() {
         const nodes = new Map();
         const links = new Map();
 
+        this.updateIndexes();
+
         for (const hyperedge of this.hyperedges) {
+            // if (link.nodes.length === 2) continue; // ??
             hyperedge.graphData(nodes, links);
         }
+
+        utils.verifyGraphData(nodes, links);
 
         return {
             nodes: Array.from(nodes.values()),
             links: Array.from(links.values()),
         };
     }
+
+    updateIndexes() {
+        this.symbolIndex = new Map();
+        this.startSymbolIndex = new Map();
+        this.endSymbolIndex = new Map();
+
+        this.fusionIndex = new Map();
+
+        for (const edge of this.hyperedges) {
+            for (const node of edge.nodes) {
+                utils.addIndex(this.symbolIndex, node.symbol, node);
+            }
+
+            utils.addIndex(this.startSymbolIndex, edge.firstNode.symbol, edge.firstNode);
+            utils.addIndex(this.endSymbolIndex, edge.lastNode.symbol, edge.lastNode);
+        }
+
+        if (this.isFusion) {
+            for (const edge of this.hyperedges) {
+                let nodes;
+
+                // start fusion
+                nodes = this.endSymbolIndex.get(edge.firstNode.symbol) || [];
+                if (nodes.length > 0) {
+                    this.fusionIndex.set(edge.firstNode.uuid, nodes[0]); // should this crawl to edge and lastNode?
+                }
+
+                // end fusion
+                nodes = this.endSymbolIndex.get(edge.lastNode.symbol) || [];
+                if (nodes.length > 0) {
+                    this.fusionIndex.set(edge.lastNode.uuid, nodes[0]);
+                }
+
+            }
+        }
+    }
+
+
 }

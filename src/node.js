@@ -16,6 +16,11 @@ export default class Node {
         return this.hyperedge.nodes.indexOf(this);
     }
 
+    get isMasqueradeNode() {
+        return this.hypergraph.masqueradeNode(this) !== this;
+    }
+
+
     rename(symbol) {
         this.symbol = symbol;
         return this.id;
@@ -26,11 +31,14 @@ export default class Node {
     }
 
     graphData(nodes, links) {
-        if (nodes.has(this.id)) return;
+        // if (nodes.has(this.id)) return;
 
-        nodes.set(this.id, {
-            id: this.id,
-            name: this.symbol,
+        const node = this.hypergraph.masqueradeNode(this);
+
+        nodes.set(node.id, {
+            id: node.id,
+            uuid: node.uuid,
+            name: node.symbol,
         });
     }
 }

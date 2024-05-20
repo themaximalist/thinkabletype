@@ -26,6 +26,26 @@ export default class Hyperedge {
         return this.nodes.map(node => node.symbol);
     }
 
+    get firstNode() {
+        return this.nodes[0];
+    }
+
+    get lastNode() {
+        return this.nodes[this.nodes.length - 1];
+    }
+
+    get middleNodes() {
+        if (this.nodes.length < 3) {
+            return [];
+        }
+
+        return this.nodes.slice(1, this.nodes.length - 1);
+    }
+
+    get lastNodes() {
+        return this.nodes.slice(1);
+    }
+
     nodeId(index) {
         const id = this.symbols.slice(0, index + 1).join(".");
         if (this.hypergraph.isIsolated) {
@@ -62,14 +82,28 @@ export default class Hyperedge {
     }
 
     linkData(parent, child) {
+        const ids = new Set();
+        const uuids = new Set();
+
+        ids.add(parent.hyperedge.id);
+        ids.add(child.hyperedge.id);
+        uuids.add(parent.hyperedge.uuid);
+        uuids.add(child.hyperedge.uuid);
+
+        parent = this.hypergraph.masqueradeNode(parent);
+        child = this.hypergraph.masqueradeNode(child);
+        ids.add(parent.hyperedge.id);
+        ids.add(child.hyperedge.id);
+        uuids.add(parent.hyperedge.uuid);
+        uuids.add(child.hyperedge.uuid);
+
         return {
             id: `${parent.id}->${child.id}`,
             source: parent.id,
             target: child.id,
+            ids,
+            uuids,
             // color: this.color,
-            // _meta: {
-            //     hyperedgeIDs: Array.from(hyperedgeIDs)
-            // }
         };
     }
 }
