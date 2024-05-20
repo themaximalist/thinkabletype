@@ -1,6 +1,8 @@
+import csv from "papaparse"
+
 import Hyperedge from './hyperedge.js';
-import Node from './node.js';
 import BridgeNode from './bridgenode.js';
+
 import * as utils from "./utils.js";
 
 export default class Hypergraph {
@@ -68,6 +70,23 @@ export default class Hypergraph {
 
         this.hyperedges.push(new Hyperedge(symbols, this));
     }
+
+    static parse(input, options = {}) {
+        const graph = new Hypergraph(options);
+        graph.parse(input, options);
+        return graph;
+    }
+
+    parse(input, options = {}) {
+        this.reset();
+        const hyperedges = csv.parse(input.trim(), options.parse || {}).data;
+        this.add(hyperedges);
+    }
+
+    reset() {
+        this.hyperedges = [];
+    }
+
 
     nodeByUUID(uuid) {
         for (const hyperedge of this.hyperedges) {
