@@ -384,5 +384,63 @@ test("bridge", () => {
     expect(data.links[5].id).toBe("vs#bridge->1.vs");
 });
 
+test("single node edge", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    thinkabletype.add(["A"]);
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(1);
+});
+
+test("two-edge end bridge incoming", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    thinkabletype.add(["1", "B", "2"]);
+    thinkabletype.add(["A", "B"]);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
+});
+
+test("two-edge end bridge reverse order", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    thinkabletype.add(["A", "B"]);
+    thinkabletype.add(["1", "B", "2"]);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(4);
+    expect(data.links.length).toBe(3);
+});
+
+test("two-edge fusion skip bridge", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    thinkabletype.add(["A", "B"]);
+    thinkabletype.add(["B", "C"]);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(3);
+    expect(data.links.length).toBe(2);
+});
 
 
+test("two-edge confluence skip fusion and bridge", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    thinkabletype.add(["A", "B"]);
+    thinkabletype.add(["B", "C"]);
+    thinkabletype.add(["B", "1", "2"]);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(5);
+    expect(data.links.length).toBe(4);
+});
+
+test("two-edge fusion bridge", () => {
+    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
+    thinkabletype.add(["A", "B"]);
+    thinkabletype.add(["B", "C"]);
+    thinkabletype.add(["1", "B", "2"]);
+    thinkabletype.add(["3", "B", "4"]);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(10);
+    expect(data.links.length).toBe(12);
+});
