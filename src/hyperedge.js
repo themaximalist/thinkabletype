@@ -112,16 +112,32 @@ export default class Hyperedge {
         const uuids = new Set();
 
         ids.add(parent.hyperedge.id);
-        ids.add(child.hyperedge.id);
         uuids.add(parent.hyperedge.uuid);
-        uuids.add(child.hyperedge.uuid);
+
+        if (child.bridge) {
+            for (const edge of child.hyperedges) {
+                ids.add(edge.id);
+                uuids.add(edge.uuid);
+            }
+        } else {
+            ids.add(child.hyperedge.id);
+            uuids.add(child.hyperedge.uuid);
+        }
 
         parent = this.hypergraph.masqueradeNode(parent);
         child = this.hypergraph.masqueradeNode(child);
         ids.add(parent.hyperedge.id);
-        ids.add(child.hyperedge.id);
         uuids.add(parent.hyperedge.uuid);
-        uuids.add(child.hyperedge.uuid);
+
+        if (child.bridge) {
+            for (const edge of child.hyperedges) {
+                ids.add(edge.id);
+                uuids.add(edge.uuid);
+            }
+        } else {
+            ids.add(child.hyperedge.id);
+            uuids.add(child.hyperedge.uuid);
+        }
 
         return {
             id: `${parent.id}->${child.id}`,

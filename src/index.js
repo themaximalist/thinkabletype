@@ -1,5 +1,6 @@
 import Hyperedge from './hyperedge.js';
 import Node from './node.js';
+import BridgeNode from './bridgenode.js';
 import * as utils from "./utils.js";
 
 export default class Hypergraph {
@@ -110,7 +111,11 @@ export default class Hypergraph {
         }
 
         if (this.isFusion) {
-            this.updateFusionBridges(nodes, links);
+            this.updateFusionData(nodes, links);
+        }
+
+        if (this.isBridge) {
+            this.updateBridgeData(nodes, links);
         }
 
         utils.verifyGraphData(nodes, links);
@@ -161,7 +166,7 @@ export default class Hypergraph {
         return nodes.filter(n => { return n.hyperedge.uuid !== node.hyperedge.uuid });
     }
 
-    updateFusionBridges(nodes, links) {
+    updateFusionData(nodes, links) {
 
         for (const hyperedge of this.hyperedges) {
             if (!hyperedge.isFusionBridge) continue;
@@ -198,5 +203,24 @@ export default class Hypergraph {
                 }
             }
         }
+    }
+
+    updateBridgeData(nodes, links) {
+        const bridgeIndex = new Map();
+
+        for (const hyperedge of this.hyperedges) {
+            if (hyperedge.isFusionBridge) continue;
+            for (let node of hyperedge.nodes) {
+                node = this.masqueradeNode(node);
+                utils.setIndex(bridgeIndex, node.symbol, node);
+            }
+        }
+
+        for (let bridgeNodes of bridgeIndex.values()) {
+            if (bridgeNodes.size < 2) continue;
+            const bridgeNode = new BridgeNode(Array.from(bridgeNodes.values()));
+            bridgeNode.updateGraphData(nodes, links);
+        }
+
     }
 }

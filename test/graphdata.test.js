@@ -2,6 +2,8 @@ import ThinkableType from "../src/index.js";
 
 import { expect, test } from "vitest";
 
+// ISOLATED
+
 test("graph data (interwingle)", () => {
     const thinkabletype = new ThinkableType([
         ["A", "B", "C"],
@@ -16,22 +18,6 @@ test("graph data (interwingle)", () => {
     expect(data.links.length).toBe(2);
     expect(data.links[0].id).toBe("0:A->0:A.B");
     expect(data.links[1].id).toBe("0:A.B->0:A.B.C");
-});
-
-test("graph data (confluence)", () => {
-    const thinkabletype = new ThinkableType([
-        ["A", "B", "C"],
-    ], { interwingle: ThinkableType.INTERWINGLE.CONFLUENCE });
-
-    const data = thinkabletype.graphData();
-    expect(data.nodes.length).toBe(3);
-    expect(data.nodes[0].id).toBe("A");
-    expect(data.nodes[1].id).toBe("A.B");
-    expect(data.nodes[2].id).toBe("A.B.C");
-
-    expect(data.links.length).toBe(2);
-    expect(data.links[0].id).toBe("A->A.B");
-    expect(data.links[1].id).toBe("A.B->A.B.C");
 });
 
 test("single hyperedge (isolate)", () => {
@@ -55,6 +41,26 @@ test("single hyperedge (isolate)", () => {
     expect(data.links[1].source).toBe("0:A.B");
     expect(data.links[1].target).toBe("0:A.B.C");
     expect(data.links[1].ids).toContain("0:A.B.C");
+});
+
+
+
+// CONFLUENCE
+
+test("graph data (confluence)", () => {
+    const thinkabletype = new ThinkableType([
+        ["A", "B", "C"],
+    ], { interwingle: ThinkableType.INTERWINGLE.CONFLUENCE });
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(3);
+    expect(data.nodes[0].id).toBe("A");
+    expect(data.nodes[1].id).toBe("A.B");
+    expect(data.nodes[2].id).toBe("A.B.C");
+
+    expect(data.links.length).toBe(2);
+    expect(data.links[0].id).toBe("A->A.B");
+    expect(data.links[1].id).toBe("A.B->A.B.C");
 });
 
 test("single hyperedge (confluence)", () => {
@@ -105,6 +111,8 @@ test("multiple hyperedge (confluence)", () => {
     expect(data.links[2].ids).toContain("A.1.2");
     expect(data.links[3].ids).toContain("A.1.2");
 });
+
+// FUSION
 
 test("fusion start", () => {
     const hyperedges = [
@@ -348,4 +356,33 @@ test("two two-edge connections", () => {
     expect(data.nodes.length).toBe(4);
     expect(data.links.length).toBe(3);
 });
+
+// BRIDGE
+
+test.skip("bridge", () => {
+    const hyperedges = [
+        ["A", "vs", "B"],
+        ["1", "vs", "2"],
+    ];
+
+    const thinkabletype = new ThinkableType({
+        hyperedges,
+        interwingle: ThinkableType.INTERWINGLE.BRIDGE
+    });
+
+    expect(thinkabletype.hyperedges.length).toEqual(2);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(7);
+    expect(data.links.length).toBe(6);
+
+    expect(data.links[0].id).toBe("A->A.vs");
+    expect(data.links[1].id).toBe("A.vs->A.vs.B");
+    expect(data.links[2].id).toBe("1->1.vs");
+    expect(data.links[3].id).toBe("1.vs->1.vs.2");
+    expect(data.links[4].id).toBe("vs#bridge->A.vs");
+    expect(data.links[5].id).toBe("vs#bridge->1.vs");
+});
+
+
 

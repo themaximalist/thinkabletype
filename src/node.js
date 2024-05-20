@@ -20,7 +20,6 @@ export default class Node {
         return this.hypergraph.masqueradeNode(this) !== this;
     }
 
-
     rename(symbol) {
         this.symbol = symbol;
         return this.id;
@@ -31,8 +30,6 @@ export default class Node {
     }
 
     updateGraphData(nodes, links) {
-        // if (nodes.has(this.id)) return;
-
         const node = this.hypergraph.masqueradeNode(this);
 
         nodes.set(node.id, {

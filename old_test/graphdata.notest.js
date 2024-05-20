@@ -2,33 +2,6 @@ import ThinkableType from "../src/index.js";
 
 import { expect, test } from "vitest";
 
-
-
-test("bridge", () => {
-    const hyperedges = [
-        ["A", "vs", "B"],
-        ["1", "vs", "2"],
-    ];
-
-    const thinkabletype = new ThinkableType({
-        hyperedges,
-        interwingle: ThinkableType.INTERWINGLE.BRIDGE
-    });
-
-    expect(thinkabletype.hyperedges.length).toEqual(2);
-
-    const data = thinkabletype.graphData();
-    expect(data.nodes.length).toBe(7);
-    expect(data.links.length).toBe(6);
-
-    expect(data.links[0].id).toBe("A->A.vs");
-    expect(data.links[1].id).toBe("A.vs->A.vs.B");
-    expect(data.links[2].id).toBe("1->1.vs");
-    expect(data.links[3].id).toBe("1.vs->1.vs.2");
-    expect(data.links[4].id).toBe("vs#bridge->A.vs");
-    expect(data.links[5].id).toBe("vs#bridge->1.vs");
-});
-
 test("single node edge", () => {
     const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.BRIDGE });
     thinkabletype.add("A");
@@ -56,140 +29,6 @@ test("two-edge end bridge reverse order", () => {
     const data = thinkabletype.graphData();
     expect(data.nodes.length).toBe(4);
     expect(data.links.length).toBe(3);
-});
-
-test("continuous fusion", () => {
-    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
-    thinkabletype.add("A", "B");
-    thinkabletype.add("B", "C");
-    thinkabletype.add("C", "D");
-    thinkabletype.add("D", "E");
-
-    const data = thinkabletype.graphData();
-    expect(data.nodes.length).toBe(5);
-    expect(data.links.length).toBe(4);
-});
-
-test("two edge disconnected", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["A", "B", "C"],
-            ["B", "2"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(4);
-    expect(graphData.links.length).toBe(3);
-});
-
-
-test("two edge start connection", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["A", "B", "C"],
-            ["1", "2", "3"],
-            ["A", "1"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(6);
-    expect(graphData.links.length).toBe(5);
-});
-
-test("two edge middle connection", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["A", "B", "C"],
-            ["1", "2", "3"],
-            ["B", "2"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(6);
-    expect(graphData.links.length).toBe(5);
-});
-
-test("two edge end connection", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["A", "B", "C"],
-            ["1", "2", "3"],
-            ["C", "3"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(6);
-    expect(graphData.links.length).toBe(5);
-});
-
-test("two edge multiple start connections", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["A", "Y", "Z"],
-            ["A", "B", "C"],
-            ["1", "2", "3"],
-            ["A", "1"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(8);
-    expect(graphData.links.length).toBe(7); // would be 8 but A hits confluence node
-});
-
-test("two edge multiple middle connections", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["X", "Y", "Z"],
-            ["A", "Y", "C"],
-            ["1", "2", "3"],
-            ["Y", "1"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(9);
-    expect(graphData.links.length).toBe(8);
-});
-
-test("two edge multiple end connections", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["X", "Y", "Z"],
-            ["A", "B", "Z"],
-            ["1", "2", "3"],
-            ["Z", "1"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(8);
-    expect(graphData.links.length).toBe(7);
-});
-
-test("two edge close loop", () => {
-    const thinkabletype = new ThinkableType({
-        hyperedges: [
-            ["A", "B", "C"],
-            ["A", "C"],
-        ],
-        interwingle: ThinkableType.INTERWINGLE.FUSION
-    });
-
-    const graphData = thinkabletype.graphData();
-    expect(graphData.nodes.length).toBe(3);
-    expect(graphData.links.length).toBe(3);
 });
 
 
@@ -227,15 +66,8 @@ test("two-edge fusion bridge", () => {
     expect(data.links.length).toBe(12);
 });
 
-test("closed fusion loop", () => {
-    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
-    thinkabletype.add("A", "B", "C", "A");
 
-    const data = thinkabletype.graphData();
-
-    expect(data.nodes.length).toBe(3);
-    expect(data.links.length).toBe(3);
-});
+/// FILTER
 
 test("filter on isolated", () => {
     const thinkabletype = new ThinkableType({
@@ -440,17 +272,6 @@ test("custom colors", () => {
         expect(node.color).toBe("#000000");
     }
 });
-
-test("two two-edge connections", () => {
-    const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
-    thinkabletype.add("A", "B", "C");
-    thinkabletype.add("D", "A");
-
-    const data = thinkabletype.graphData();
-    expect(data.nodes.length).toBe(4);
-    expect(data.links.length).toBe(3);
-});
-
 
 test.skip("huge", async () => {
     const fs = require("fs");
