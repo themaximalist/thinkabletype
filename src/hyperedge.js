@@ -22,6 +22,10 @@ export default class Hyperedge {
         return this.hypergraph.hyperedges.indexOf(this);
     }
 
+    get isFusionBridge() {
+        return this.nodes.length === 2;
+    }
+
     get symbols() {
         return this.nodes.map(node => node.symbol);
     }
@@ -70,11 +74,11 @@ export default class Hyperedge {
         this.nodes.push(new Node(symbol, this));
     }
 
-    graphData(nodes, links) {
+    updateGraphData(nodes, links) {
         let parent = null;
 
         for (const node of this.nodes) {
-            node.graphData(nodes, links)
+            node.updateGraphData(nodes, links)
 
             if (parent) {
                 const link = this.linkData(parent, node);
@@ -83,7 +87,25 @@ export default class Hyperedge {
 
             parent = node;
         }
+
+        // for (const node of this.nodes) {
+
+        //     if (parent) {
+        //         const link = this.linkData(parent, node);
+
+        //         // a little hacky, but ensures masqurade nodes are properly linked to their hyperedges
+        //         const existingLink = links.get(link.id);
+        //         if (existingLink) {
+        //             link._meta.hyperedgeIDs = link._meta.hyperedgeIDs.concat(existingLink._meta.hyperedgeIDs);
+        //         }
+
+        //         links.set(link.id, link);
+        //     }
+
+        //     parent = node;
+        // }
     }
+
 
     linkData(parent, child) {
         const ids = new Set();

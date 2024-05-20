@@ -88,7 +88,7 @@ export default class Hypergraph {
                 throw new Error("Infinite loop");
             }
 
-            const masqueradeNode = this.fusionIndex.get(node.uuid);
+            const masqueradeNode = this.fusionIndex.get(node.id);
             if (!masqueradeNode || masqueradeNode.uuid === node.uuid) {
                 return node;
             }
@@ -105,11 +105,13 @@ export default class Hypergraph {
         this.updateIndexes();
 
         for (const hyperedge of this.hyperedges) {
-            // if (link.nodes.length === 2) continue; // ??
-            hyperedge.graphData(nodes, links);
+            if (this.isFusion && hyperedge.isFusionBridge) continue;
+            hyperedge.updateGraphData(nodes, links);
         }
 
-        this.updateFusionGraphData(nodes, links);
+        if (this.isFusion) {
+            this.updateFusionBridges(nodes, links);
+        }
 
         utils.verifyGraphData(nodes, links);
 
@@ -142,82 +144,58 @@ export default class Hypergraph {
                 // start fusion
                 nodes = this.endSymbolIndex.get(edge.firstNode.symbol) || [];
                 if (nodes.length > 0) {
-                    this.fusionIndex.set(edge.firstNode.uuid, nodes[0]); // should this crawl to edge and lastNode?
+                    this.fusionIndex.set(edge.firstNode.id, nodes[0]); // should this crawl to edge and lastNode?
                 }
 
                 // end fusion
                 nodes = this.endSymbolIndex.get(edge.lastNode.symbol) || [];
                 if (nodes.length > 0) {
-                    this.fusionIndex.set(edge.lastNode.uuid, nodes[0]);
+                    this.fusionIndex.set(edge.lastNode.id, nodes[0]);
                 }
-
             }
         }
     }
 
-    fusionLinks(node) {
+    fusionBridgeNodes(node) {
         const nodes = this.symbolIndex.get(node.symbol) || [];
         return nodes.filter(n => { return n.hyperedge.uuid !== node.hyperedge.uuid });
     }
 
-    fusionNodes(node) {
-        return this.symbolIndex.get(node.symbol) || [];
-    }
-
-    updateFusionGraphData(nodes, links) {
-        const seenIndex = new Map();
+    updateFusionBridges(nodes, links) {
 
         for (const hyperedge of this.hyperedges) {
+            if (!hyperedge.isFusionBridge) continue;
 
-            if (hyperedge.nodes.length !== 2) {
-                for (const node of hyperedge.nodes) {
-                    seenIndex.set(node.symbol, true);
-                }
+            const fromNodes = this.fusionBridgeNodes(hyperedge.firstNode);
+            const toNodes = this.fusionBridgeNodes(hyperedge.lastNode);
+
+            if (fromNodes.length === 0 && toNodes.length === 0) {
                 continue;
             }
 
-            if (this.isFusion) {
-                let fromNodes = this.fusionNodes(hyperedge.firstNode);
-                let toNodes = this.fusionNodes(hyperedge.lastNode);
-
-
-                const firstSeen = seenIndex.get(hyperedge.firstNode.symbol);
-                const lastSeen = seenIndex.get(hyperedge.lastNode.symbol);
-                const seen = firstSeen || lastSeen;
-                if (!seen) {
-                    hyperedge.graphData(nodes, links);
-                }
-
-                if (fromNodes.length === 0) {
-                    for (const node of hyperedge.firstNodes) { node.graphData(nodes, links) }
-                    fromNodes.push(hyperedge.firstNode);
-                }
-
-                if (toNodes.length === 0) {
-                    for (const node of hyperedge.lastNodes) { node.graphData(nodes, links) }
-                    toNodes.push(hyperedge.lastNode);
-                }
-
-                for (let fromNode of fromNodes) {
-                    fromNode = this.masqueradeNode(fromNode);
-
-                    for (let toNode of toNodes) {
-                        toNode = this.masqueradeNode(toNode);
-
-                        if (!nodes.has(fromNode.id)) { fromNode.graphData(nodes, links) }
-                        if (!nodes.has(toNode.id)) { toNode.graphData(nodes, links) }
-
-                        const linkData = hyperedge.linkData(fromNode, toNode);
-                        links.set(linkData.id, linkData);
-                    }
-                }
-
-            } else {
-                link.updateGraphData(nodes, links);
+            // if one side of the connection doesn't exist, create it
+            if (fromNodes.length === 0 && toNodes.length > 0) {
+                hyperedge.firstNode.updateGraphData(nodes, links);
+                fromNodes.push(hyperedge.firstNode);
             }
 
-            for (const node of hyperedge.nodes) {
-                seenIndex.set(node.symbol, true);
+            if (fromNodes.length > 0 && toNodes.length === 0) {
+                hyperedge.lastNode.updateGraphData(nodes, links);
+                toNodes.push(hyperedge.lastNode);
+            }
+
+            for (let fromNode of fromNodes) {
+                fromNode = this.masqueradeNode(fromNode);
+
+                for (let toNode of toNodes) {
+                    toNode = this.masqueradeNode(toNode);
+
+                    if (!nodes.has(fromNode.id)) { fromNode.updateGraphData(nodes, links) }
+                    if (!nodes.has(toNode.id)) { toNode.updateGraphData(nodes, links) }
+
+                    const linkData = hyperedge.linkData(fromNode, toNode);
+                    links.set(linkData.id, linkData);
+                }
             }
         }
     }

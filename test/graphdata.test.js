@@ -166,26 +166,29 @@ test("fusion no bridge", () => {
     expect(data.links.length).toBe(10);
 });
 
-test.skip("two-edge start bridge", () => {
+test("two-edge start bridge", () => {
     const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
     thinkabletype.add(["1", "B", "2"]);
     thinkabletype.add(["B", "C"]);
 
     const data = thinkabletype.graphData();
-    console.log(data);
     expect(data.nodes.length).toBe(4);
-    // expect(data.links.length).toBe(3);
+    expect(data.nodes[0].name).toBe("1");
+    expect(data.nodes[1].name).toBe("B");
+    expect(data.nodes[2].name).toBe("2");
+    expect(data.nodes[3].name).toBe("C");
+    expect(data.links.length).toBe(3);
+    expect(data.links[0].id).toBe("1->1.B");
+    expect(data.links[1].id).toBe("1.B->1.B.2");
+    expect(data.links[2].id).toBe("1.B->B.C");
 });
 
-/*
 test("two-edge start fusion incoming", () => {
     const thinkabletype = new ThinkableType({ interwingle: ThinkableType.INTERWINGLE.FUSION });
-    thinkabletype.add("1", "B", "2");
-    thinkabletype.add("A", "B");
+    thinkabletype.add(["1", "B", "2"]);
+    thinkabletype.add(["A", "B"]);
 
     const data = thinkabletype.graphData();
     expect(data.nodes.length).toBe(4);
     expect(data.links.length).toBe(3);
 });
-
-*/

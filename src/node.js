@@ -30,7 +30,7 @@ export default class Node {
         this.hyperedge.nodes.splice(this.index, 1);
     }
 
-    graphData(nodes, links) {
+    updateGraphData(nodes, links) {
         // if (nodes.has(this.id)) return;
 
         const node = this.hypergraph.masqueradeNode(this);
