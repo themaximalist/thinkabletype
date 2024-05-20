@@ -359,7 +359,7 @@ test("two two-edge connections", () => {
 
 // BRIDGE
 
-test.skip("bridge", () => {
+test("bridge", () => {
     const hyperedges = [
         ["A", "vs", "B"],
         ["1", "vs", "2"],

@@ -87,23 +87,6 @@ export default class Hyperedge {
 
             parent = node;
         }
-
-        // for (const node of this.nodes) {
-
-        //     if (parent) {
-        //         const link = this.linkData(parent, node);
-
-        //         // a little hacky, but ensures masqurade nodes are properly linked to their hyperedges
-        //         const existingLink = links.get(link.id);
-        //         if (existingLink) {
-        //             link._meta.hyperedgeIDs = link._meta.hyperedgeIDs.concat(existingLink._meta.hyperedgeIDs);
-        //         }
-
-        //         links.set(link.id, link);
-        //     }
-
-        //     parent = node;
-        // }
     }
 
 
@@ -111,33 +94,24 @@ export default class Hyperedge {
         const ids = new Set();
         const uuids = new Set();
 
-        ids.add(parent.hyperedge.id);
-        uuids.add(parent.hyperedge.uuid);
-
-        if (child.bridge) {
-            for (const edge of child.hyperedges) {
-                ids.add(edge.id);
-                uuids.add(edge.uuid);
+        function updateIDs(node) {
+            if (node.bridge) {
+                for (const edge of node.hyperedges) {
+                    ids.add(edge.id);
+                    uuids.add(edge.uuid);
+                }
+            } else {
+                ids.add(node.hyperedge.id);
+                uuids.add(node.hyperedge.uuid);
             }
-        } else {
-            ids.add(child.hyperedge.id);
-            uuids.add(child.hyperedge.uuid);
         }
 
+        updateIDs(parent);
+        updateIDs(child);
         parent = this.hypergraph.masqueradeNode(parent);
         child = this.hypergraph.masqueradeNode(child);
-        ids.add(parent.hyperedge.id);
-        uuids.add(parent.hyperedge.uuid);
-
-        if (child.bridge) {
-            for (const edge of child.hyperedges) {
-                ids.add(edge.id);
-                uuids.add(edge.uuid);
-            }
-        } else {
-            ids.add(child.hyperedge.id);
-            uuids.add(child.hyperedge.uuid);
-        }
+        updateIDs(parent);
+        updateIDs(child);
 
         return {
             id: `${parent.id}->${child.id}`,

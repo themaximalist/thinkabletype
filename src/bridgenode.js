@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid';
 export default class BridgeNode {
     constructor(nodes) {
         this.nodes = nodes;
-        console.log("NODES", nodes);
         this.hypergraph = this.nodes[0].hypergraph;
         this.uuid = uuidv4();
         this.bridge = true;
@@ -47,7 +46,8 @@ export default class BridgeNode {
         });
 
         for (const node of this.nodes) {
-            node.hyperedge.linkData(node, this);
+            const link = node.hyperedge.linkData(this, node);
+            links.set(link.id, link);
         }
     }
 }
