@@ -129,3 +129,26 @@ test("fusion start", () => {
     expect(data.links[2].id).toBe("A.B.C->C.D");
     expect(data.links[3].id).toBe("C.D->C.D.E");
 });
+
+test("fusion end", () => {
+    const hyperedges = [
+        // A.B.C && 1.2.C with C as fusion node
+        ["A", "B", "C"],
+        ["1", "2", "C"],
+    ];
+
+    const thinkabletype = new ThinkableType(hyperedges, {
+        interwingle: ThinkableType.INTERWINGLE.FUSION
+    });
+
+    expect(thinkabletype.hyperedges.length).toEqual(2);
+
+    const data = thinkabletype.graphData();
+    expect(data.nodes.length).toBe(5); // C masquerades as A.B.C
+    expect(data.links.length).toBe(4);
+
+    expect(data.links[0].id).toBe("A->A.B");
+    expect(data.links[1].id).toBe("A.B->A.B.C");
+    expect(data.links[2].id).toBe("1->1.2");
+    expect(data.links[3].id).toBe("1.2->A.B.C");
+});

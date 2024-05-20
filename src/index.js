@@ -18,11 +18,17 @@ export default class Hypergraph {
 
     constructor(hyperedges = [], options = {}) {
         this.hyperedges = [];
+
+        if (typeof options.interwingle === "undefined") {
+            options.interwingle = Hypergraph.INTERWINGLE.ISOLATED;
+        }
+
         this.options = options;
-        this.interwingle = typeof options.interwingle === "undefined" ? Hypergraph.INTERWINGLE.ISOLATED : options.interwingle;
         this.add(hyperedges);
     }
 
+    get interwingle() { return this.options.interwingle }
+    set interwingle(value) { this.options.interwingle = value }
     get isIsolated() { return this.interwingle === Hypergraph.INTERWINGLE.ISOLATED }
     get isConfluence() { return this.interwingle >= Hypergraph.INTERWINGLE.CONFLUENCE }
     get isFusion() { return this.interwingle >= Hypergraph.INTERWINGLE.FUSION }
