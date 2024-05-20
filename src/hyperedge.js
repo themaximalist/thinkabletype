@@ -42,6 +42,10 @@ export default class Hyperedge {
         return this.nodes.slice(1, this.nodes.length - 1);
     }
 
+    get firstNodes() {
+        return this.nodes.slice(0, -1);
+    }
+
     get lastNodes() {
         return this.nodes.slice(1);
     }

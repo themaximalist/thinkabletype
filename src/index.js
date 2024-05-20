@@ -16,14 +16,23 @@ export default class Hypergraph {
         DEEP: Infinity,     // infinitely connect
     };
 
-    constructor(hyperedges = [], options = {}) {
-        this.hyperedges = [];
+    constructor(input, options = {}) {
+        let hyperedges;
 
-        if (typeof options.interwingle === "undefined") {
-            options.interwingle = Hypergraph.INTERWINGLE.ISOLATED;
+        if (Array.isArray(input)) {
+            hyperedges = input;
+        } else if (typeof input === "object") {
+            hyperedges = input.hyperedges || [];
+            delete input.hyperedges;
+            options = input;
+        } else {
+            hyperedges = [];
         }
 
+        options.interwingle = options.interwingle || Hypergraph.INTERWINGLE.ISOLATED;
         this.options = options;
+
+        this.hyperedges = [];
         this.add(hyperedges);
     }
 
@@ -84,7 +93,6 @@ export default class Hypergraph {
                 return node;
             }
 
-            // console.log("NODE", node);
             node = masqueradeNode;
         }
     }
@@ -100,6 +108,8 @@ export default class Hypergraph {
             // if (link.nodes.length === 2) continue; // ??
             hyperedge.graphData(nodes, links);
         }
+
+        this.updateFusionGraphData(nodes, links);
 
         utils.verifyGraphData(nodes, links);
 
@@ -145,5 +155,70 @@ export default class Hypergraph {
         }
     }
 
+    fusionLinks(node) {
+        const nodes = this.symbolIndex.get(node.symbol) || [];
+        return nodes.filter(n => { return n.hyperedge.uuid !== node.hyperedge.uuid });
+    }
 
+    fusionNodes(node) {
+        return this.symbolIndex.get(node.symbol) || [];
+    }
+
+    updateFusionGraphData(nodes, links) {
+        const seenIndex = new Map();
+
+        for (const hyperedge of this.hyperedges) {
+
+            if (hyperedge.nodes.length !== 2) {
+                for (const node of hyperedge.nodes) {
+                    seenIndex.set(node.symbol, true);
+                }
+                continue;
+            }
+
+            if (this.isFusion) {
+                let fromNodes = this.fusionNodes(hyperedge.firstNode);
+                let toNodes = this.fusionNodes(hyperedge.lastNode);
+
+
+                const firstSeen = seenIndex.get(hyperedge.firstNode.symbol);
+                const lastSeen = seenIndex.get(hyperedge.lastNode.symbol);
+                const seen = firstSeen || lastSeen;
+                if (!seen) {
+                    hyperedge.graphData(nodes, links);
+                }
+
+                if (fromNodes.length === 0) {
+                    for (const node of hyperedge.firstNodes) { node.graphData(nodes, links) }
+                    fromNodes.push(hyperedge.firstNode);
+                }
+
+                if (toNodes.length === 0) {
+                    for (const node of hyperedge.lastNodes) { node.graphData(nodes, links) }
+                    toNodes.push(hyperedge.lastNode);
+                }
+
+                for (let fromNode of fromNodes) {
+                    fromNode = this.masqueradeNode(fromNode);
+
+                    for (let toNode of toNodes) {
+                        toNode = this.masqueradeNode(toNode);
+
+                        if (!nodes.has(fromNode.id)) { fromNode.graphData(nodes, links) }
+                        if (!nodes.has(toNode.id)) { toNode.graphData(nodes, links) }
+
+                        const linkData = hyperedge.linkData(fromNode, toNode);
+                        links.set(linkData.id, linkData);
+                    }
+                }
+
+            } else {
+                link.updateGraphData(nodes, links);
+            }
+
+            for (const node of hyperedge.nodes) {
+                seenIndex.set(node.symbol, true);
+            }
+        }
+    }
 }
