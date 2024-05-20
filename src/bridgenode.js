@@ -21,7 +21,7 @@ export default class BridgeNode {
     }
 
     get ids() {
-        return this.nodes.map(node => node.id);
+        return this.hyperedges.map(edge => edge.id);
     }
 
     get hyperedges() {
@@ -46,6 +46,8 @@ export default class BridgeNode {
         });
 
         for (const node of this.nodes) {
+            const n = nodes.get(node.id);
+            n.ids.add(this.id);
             const link = node.hyperedge.linkData(this, node);
             links.set(link.id, link);
         }
