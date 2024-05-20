@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 
-import Node from './node.js';
+import Node from './Node.js';
 import * as utils from './utils.js';
 
 export default class Hyperedge {
