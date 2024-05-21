@@ -164,7 +164,7 @@ export default class Hypergraph {
         }
     }
 
-    graphData(filter) {
+    graphData(filter = null, lastData = null) {
         const nodes = new Map();
         const links = new Map();
 
@@ -173,6 +173,10 @@ export default class Hypergraph {
         for (const hyperedge of this.hyperedges) {
             if (this.isFusion && hyperedge.isFusionBridge) continue;
             hyperedge.updateGraphData(nodes, links);
+        }
+
+        if (lastData) {
+            utils.restoreData({ nodes, links }, lastData);
         }
 
         if (this.isFusion) {

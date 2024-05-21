@@ -16,6 +16,12 @@ export function setIndex(index, key, val) {
     index.get(key).set(val.id, val);
 }
 
+export function createIndex(items) {
+    const index = new Map();
+    for (const item of items) { index.set(item.id, item) }
+    return index;
+}
+
 export function arrayContains(x, y) {
     if (y.length > x.length) {
         return false;
@@ -69,5 +75,19 @@ export function verifyGraphData(nodes, links) {
         } else if (!nodeIDs.has(link.target)) {
             throw `Missing target ${link.target}`;
         }
+    }
+}
+
+export function restoreData(data, old) {
+    const index = createIndex(old.nodes.values());
+    for (const node of data.nodes.values()) {
+        const old = index.get(node.id);
+        if (!old) continue;
+        if (typeof old.x === 'number') node.x = old.x;
+        if (typeof old.y === 'number') node.y = old.y;
+        if (typeof old.z === 'number') node.z = old.z;
+        if (typeof old.vx === 'number') node.vx = old.vx;
+        if (typeof old.vy === 'number') node.vy = old.vy;
+        if (typeof old.vz === 'number') node.vz = old.vz;
     }
 }

@@ -1,5 +1,5 @@
 import ThinkableType from "../src/index.js";
-import Hyperedge from "../src/hyperedge.js";
+import Hyperedge from "../src/Hyperedge.js";
 
 import { expect, test } from "vitest";
 
@@ -327,6 +327,29 @@ test("hyperedge has", () => {
 
     expect(edge.has("A", "C")).toBeTruthy();
     expect(edge.has(["A", "C"])).toBeFalsy();
+});
+
+test("restore node position", () => {
+    const thinkabletype = new ThinkableType([
+        ["A", "B", "C"],
+    ]);
+
+    let oldData = thinkabletype.graphData();
+    oldData.nodes[0].x = 100;
+    oldData.nodes[0].y = 100;
+    oldData.nodes[0].z = 100;
+    oldData.nodes[0].vx = 100;
+    oldData.nodes[0].vy = 100;
+    oldData.nodes[0].vz = 100;
+
+    let newData = thinkabletype.graphData(null, oldData);
+    expect(oldData.nodes[0].id).toBe(newData.nodes[0].id);
+    expect(newData.nodes[0].x).toBe(100);
+    expect(newData.nodes[0].y).toBe(100);
+    expect(newData.nodes[0].z).toBe(100);
+    expect(newData.nodes[0].vx).toBe(100);
+    expect(newData.nodes[0].vy).toBe(100);
+    expect(newData.nodes[0].vz).toBe(100);
 });
 
 
