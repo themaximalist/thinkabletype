@@ -468,7 +468,12 @@ ThinkableType is currently used in the following projects:
 -   [The Maximalist](https://themaximalist.com/)
 -   [@themaximal1st](https://twitter.com/themaximal1st)
 
+Check out these other projects we've made:
 
+-   [Infinity Arcade](https://infinityarcade.com) — play any text adventure game
+-   [News Score](https://newsscore.com) — score and sort the news
+-   [AI Image Explorer](https://aiimageexplorer.com) — image explorer
+-   [Minds App](https://mindsapp.com) — AI chat in your menubar
 
 ## License
 
