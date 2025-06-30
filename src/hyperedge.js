@@ -20,6 +20,10 @@ export default class Hyperedge {
         return id;
     }
 
+    get length() {
+        return this.nodes.length;
+    }
+
     get index() {
         return this.hypergraph.hyperedges.indexOf(this);
     }

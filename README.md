@@ -462,12 +462,15 @@ ThinkableType is currently used in the following projects:
 -   [Think Machine](https://thinkmachine.com)
 
 
-
 ## Author
 
 -   [The Maximalist](https://themaximalist.com/)
 -   [@themaximal1st](https://twitter.com/themaximal1st)
 
+Check out some of these other AI related projects you might be interested in:
+
+-   [News Score](https://newsscore.com) — score and sort the news
+-   [Minds App](https://mindsapp.com) — AI chat in your menubar
 
 
 ## License

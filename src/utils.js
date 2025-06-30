@@ -22,6 +22,12 @@ export function createIndex(items) {
     return index;
 }
 
+export function createUUIDIndex(items) {
+    const index = new Map();
+    for (const item of items) { index.set(item.uuid, item) }
+    return index;
+}
+
 export function arrayContains(x, y) {
     if (y.length > x.length) {
         return false;
@@ -79,9 +85,9 @@ export function verifyGraphData(nodes, links) {
 }
 
 export function restoreData(data, old) {
-    const index = createIndex(old.nodes.values());
+    const index = createUUIDIndex(old.nodes.values());
     for (const node of data.nodes.values()) {
-        const old = index.get(node.id);
+        const old = index.get(node.uuid);
         if (!old) continue;
         if (typeof old.x === 'number') node.x = old.x;
         if (typeof old.y === 'number') node.y = old.y;
@@ -89,5 +95,9 @@ export function restoreData(data, old) {
         if (typeof old.vx === 'number') node.vx = old.vx;
         if (typeof old.vy === 'number') node.vy = old.vy;
         if (typeof old.vz === 'number') node.vz = old.vz;
+        if (typeof old.fx === 'number') node.fx = old.fx;
+        if (typeof old.fy === 'number') node.fy = old.fy;
+        if (typeof old.fz === 'number') node.fz = old.fz;
+        console.log("RESTORED NODE", node.uuid);
     }
 }
